@@ -6,12 +6,20 @@ rule all:
     input: "build/report.html"
 
 
+rule scenario_space:
+    message: "Plot sketch of scenario space."
+    input: src="src/scenarios.py"
+    output: "build/scenario-space.png"
+    script: "src/scenarios.py"
+
+
 rule report:
     message: "Compile report."
     input:
         "report/literature.bib",
         "report/main.md",
-        "report/pandoc-metadata.yml"
+        "report/pandoc-metadata.yml",
+        rules.scenario_space.output
     output:
         "build/report.html"
     shell:

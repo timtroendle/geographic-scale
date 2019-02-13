@@ -19,6 +19,7 @@ rule report:
         "report/literature.bib",
         "report/main.md",
         "report/pandoc-metadata.yml",
+        "report/report.css",
         rules.scenario_space.output
     output:
         "build/report.html"
@@ -27,6 +28,19 @@ rule report:
         cd ./report
         {PANDOC} --self-contained --css=report.css main.md pandoc-metadata.yml \
         --to html5 -o ../build/report.html
+        """
+
+
+rule pdf_report:
+    message: "Compile PDF report."
+    input: rules.report.output # to avoid repeating all dependencies
+    output: "build/report.pdf"
+    conda: "envs/pdf.yaml"
+    shell:
+        """
+        cd ./report
+        {PANDOC} --css=report.css main.md pandoc-metadata.yml --pdf-engine weasyprint \
+        -o ../build/report.pdf
         """
 
 

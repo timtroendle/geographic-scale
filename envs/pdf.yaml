@@ -1,0 +1,14 @@
+name: pdf-print
+channels:
+    - conda-forge
+dependencies:
+    - python=3.7
+    - pango=1.40.14
+    - pandoc=2.5
+    - pip:
+        - pytest-pythonpath # adds the root path "./" to PYTHONPATH
+        - pandoc-tablenos
+        - pandoc-fignos
+        - pantable
+        - cairocffi==1.0.1
+        - weasyprint==44

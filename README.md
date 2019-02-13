@@ -30,7 +30,12 @@ To generate a PDF of the dependency graph of all steps, and if you have `dot` in
 
 * `report`: contains all files necessary to build the report; plots and result files are not in here but generated automatically
 * `src`: contains the Python source code
+* `envs`: contains execution environments
 * `tests`: contains the test code
 * `config`: configurations used in the study
 * `data`: place for raw data
 * `build`: will contain all results (does not exist initially)
+
+## License
+
+The code in this repo is MIT licensed, see `./LICENSE.md`. This excludes the KlinicSlab font family (all files in `./report/fonts/`) which is copyright Lost Type.

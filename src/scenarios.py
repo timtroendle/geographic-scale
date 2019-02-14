@@ -10,14 +10,14 @@ COST_DATA = """autarky_scale,grid_scale,net_exchange_potential,cost
 regional,regional,0%,10
 regional,national,0%,9
 regional,continental,0%,7
-regional,national,≤10%,8
-regional,continental,≤10%,6
-regional,national,≤20%,7
-regional,continental,≤20%,5
+regional,national,≤15%,8
+regional,continental,≤15%,6
+regional,national,≤30%,7
+regional,continental,≤30%,5
 national,national,0%,9
 national,continental,0%,7
-national,continental,≤10%,6
-national,continental,≤20%,5
+national,continental,≤15%,6
+national,continental,≤30%,5
 continental,continental,0%,4
 """
 
@@ -72,7 +72,7 @@ def cost_heatmap(data, autarky_scale):
     )
     pivoted_data.columns.name = "grid size"
     pivoted_data.index.name = "net electricity import"
-    return pivoted_data[columns].reindex(["≤20%", "≤10%", "0%"])
+    return pivoted_data[columns].reindex(["≤30%", "≤15%", "0%"])
 
 
 if __name__ == "__main__":

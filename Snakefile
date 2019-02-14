@@ -13,6 +13,13 @@ rule scenario_space:
     script: "src/scenarios.py"
 
 
+rule sensitivity_heatmap:
+    message: "Plot sketch of sensitivity heatmap."
+    input: src="src/sensitivity.py"
+    output: "build/parameter-sensitivity.png"
+    script: "src/sensitivity.py"
+
+
 rule report:
     message: "Compile report."
     input:
@@ -20,7 +27,8 @@ rule report:
         "report/main.md",
         "report/pandoc-metadata.yml",
         "report/report.css",
-        rules.scenario_space.output
+        rules.scenario_space.output,
+        rules.sensitivity_heatmap.output
     output:
         "build/report.html"
     shell:

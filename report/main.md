@@ -35,7 +35,31 @@ In addition, we also consider different intensities of trade, ranging from allow
 ![Sketch of scenario space including hypothesised total system costs for each scenario.
 ](../build/scenario-space.png){#fig:scenario-space .class}
 
-
 ## Uncertainty Quantification
+
+Qualitatively, and because of the method described above, the answer to our research question is known even before we start our work: small scale designs of the electricity system will always be equally costly, or -- more likely -- more costly than large scale designs. That is because theoretically in our model, small scale designs add constraints to an optimisation model which can make the solution only worse. So we already know parts of the answer, but we do not know exactly how much more costly small scale will be.
+
+But we cannot find out exactly how much more costly small scale will be. That is because we know neither how costly small scale will be, nor do we know how costly large scale will be. This is mostly due to parametric uncertainty: for many parameters, the correct value (whatever that means) is not know. Some of those unknown parameters will have a large impact: the costs of generation, storage, and transmission capacity for example. Solar photovoltaics may cost around 500 €/kW in Europe in the foreseeable future, but it may cost as well more than 1000 €/kW. Considering that a third or more of European electricity could be produced with photovoltaics, this will impact total system costs strongly. Unfortunately the value is not only unknown (as in: try harder finding out), but it is also partly in our hands (as a society or as consumers) and based on our future decisions the value may stay at above 1000 €/kW or may come down to 500 €/kW.
+
+This means our study cannot tell how much more costly small scale will be in the future compared to large scale. But it can do three things, each adding a little more information. First, it can tell how much more costly small scale will be, depending on some assumed parameter values. Second, assuming we know reasonable ranges for the unknown parameters and assuming we can run the model sufficiently often, we can show sensitivities of the results to parameter values (something like: small scale is always much more expensive, but not if battery prices drop below 100 €/kW). Third, assuming we can furthermore attach probability densities to the parameter ranges, we can determine probabilities of cost differences between small and large scale (something like: with 90% probability, small scale will cost 0.05 €/kWh more than large scale). Some more details about these three types of findings below.
+
+### Isolated sets of parameter values
+
+Because we assume the uncertainty of our model results stems mainly from the parameters, not the model itself, we can always choose values for all parameters and we will receive a result which is accurate. But this won't allow us to say anything about the probability of the result being close to reality, or about how strongly results vary should parameter values vary.
+
+### Parameter sensitivity
+
+If we are able to run the model many times, we can determine the sensitivity of the result to changes in the parameter values --- changes of the values of single parameters, but also to combined changes of several parameters. This will allow us to rank parameters -- solely or in combination. For example, we will be able to say that the most important parameters are the cost of batteries and the cost of transmission grid, but that the costs of batteries are only important when the costs for photovoltaics are below 750 €/kW. We can also visualise the relationship of the most important parameters on the result, see Figure @fig:parameter-sensitivity. Limiting the parameter values to possible values only, will furthermore allow us to quantify the range within which the result will lie: small scale will at least be 0.02 €/kWh more costly than large scale, but not more than 0.09 €/kWh.
+
+![Sketch of the relationship of the two most important parameters on the additional costs of small scale over large scale electricity grids in Europe [€/kWh].
+](../build/parameter-sensitivity.png){#fig:parameter-sensitivity .class}
+
+Considering that we can easily identify 10 parameters (or more) for which we would like to analyse the sensitivity, to be able to actually analyse it, we likely need 100,000s of model runs or more even when using smarter methods than brute force. Our model takes hours to run, maybe even days. So reasonably, we can run it in the order of 10s of times. A sensitivity analysis as described above is thus only possible with a surrogate model: a model that resembles ours in its input-output behaviour, but runs orders of magnitude faster.
+
+### Probability of results
+
+Should we know the probability density of the input parameters, we can additionally determine the probability of extra costs for small scale designs using Monte Carlo and the surrogate model demanded above. Additionally to the range 0.02 €/kWh to 0.09 €/kWh from above, we could for example also say that with 90% probability the additional cost of small scale are more than 0.05 €/kWh and with only 10% probability they are above 0.07 €/kWh.
+
+Can we assume any reasonable probability density of the input parameters? I do not know. But indeed we do know a few things on their shapes. First, we do know ranges: all components are very unlikely to be more costly in the future than they are now, and they will always stay above 0. Second, we also know that the extreme ends of that range are less likely than values in the center of the range. Maybe we can find out more about the probability density, and maybe that is already all we need to know.
 
 # Bibliography

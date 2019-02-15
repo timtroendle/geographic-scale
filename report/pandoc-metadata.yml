@@ -1,15 +1,22 @@
 ---
 title: Geographical Scale
+subtitle: --Concept--
 author:
     - Tim Tröndle
 institute: ETH Zürich
 tags:
-    - 'reproducible-research'
+    - 'energy'
+    - 'renewable electricity'
+    - 'Europe'
+    - 'localism'
+    - 'autarky'
+    - 'self-sufficiency'
+    - 'cooperation'
 abstract: |
     Analysis of the costs of electricity autarky and small scale grids.
 bibliography:
     - 'literature.bib'
 csl: 'energy-policy.csl'
 link-citations: True
-date: 0.1.0.dev
+date: 2019-02-15
 ---

@@ -4,7 +4,7 @@ import numpy as np
 
 def plot_sensitivity(path_to_output):
     battery, transmission = np.meshgrid(np.linspace(0, 500, 100), np.linspace(0, 0.250, 100))
-    z = 0.01 + (battery * 0.0008 + transmission * 0.4 + battery * transmission * 0.0006) * 0.25
+    z = 0.01 + (battery * 0.0008 - transmission * 0.7 - battery * transmission * 0.001) * 0.25
     z = z[:-1, :-1]
     z_min, z_max = 0.01, np.abs(z).max()
 

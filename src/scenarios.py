@@ -5,6 +5,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
+GREEN = "#679436"
 
 COST_DATA = """autarky_scale,grid_scale,net_exchange_potential,cost
 regional,regional,0%,10
@@ -28,7 +29,7 @@ def plot_costs(path_to_costs):
 
     sns.set_context("paper")
     fig = plt.figure(figsize=(8, 3))
-    pal = sns.light_palette("green")
+    pal = sns.light_palette(GREEN)
     gs = gridspec.GridSpec(1, 4, width_ratios=[3, 2, 1, 0.2])
     ax4 = fig.add_subplot(gs[3])
     ax1 = fig.add_subplot(gs[0])

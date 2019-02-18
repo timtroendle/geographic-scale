@@ -3,6 +3,8 @@ title: Geographical Scale
 subtitle: --Concept--
 author:
     - Tim Tröndle
+    - Johan Lilliestam
+    - Stefan Pfenninger
 institute: ETH Zürich
 tags:
     - 'energy'
@@ -18,5 +20,5 @@ bibliography:
     - 'literature.bib'
 csl: 'energy-policy.csl'
 link-citations: True
-date: 2019-02-15
+date: 2019-02-18
 ---

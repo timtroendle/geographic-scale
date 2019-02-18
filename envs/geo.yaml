@@ -1,0 +1,13 @@
+name: geo
+channels:
+    - conda-forge
+    - nodefaults # will be fixed with conda 4.6: https://github.com/conda/conda/issues/7656
+dependencies:
+    - python=3.7
+    - numpy=1.15.4
+    - pandas=0.23.4
+    - matplotlib=3.0.2
+    - seaborn=0.9.0
+    - gdal=2.4
+    - fiona=1.8.4
+    - geopandas=0.4.0

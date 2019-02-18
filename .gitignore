@@ -1,6 +1,9 @@
 # generated files
 build/
 
+# input data
+data/
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

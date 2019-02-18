@@ -13,6 +13,18 @@ rule scenario_space:
     script: "src/scenarios.py"
 
 
+rule map:
+    message: "Create map of results."
+    input:
+        src = "src/map.py",
+        continental_shape = "data/units-continental.geojson",
+        national_shapes = "data/units-national.geojson",
+        regional_shapes = "data/units-regional.geojson"
+    output: "build/map.png"
+    conda: "envs/geo.yaml"
+    script: "src/map.py"
+
+
 rule sensitivity_heatmap:
     message: "Plot sketch of sensitivity heatmap."
     input: src="src/sensitivity.py"
@@ -28,7 +40,8 @@ rule report:
         "report/pandoc-metadata.yml",
         "report/report.css",
         rules.scenario_space.output,
-        rules.sensitivity_heatmap.output
+        rules.sensitivity_heatmap.output,
+        rules.map.output
     output:
         "build/report.html"
     shell:

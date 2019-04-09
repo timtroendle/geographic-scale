@@ -1,8 +1,12 @@
 # generated files
 build/
+build-by-euler/
 
 # input data
 data/
+
+# notebooks
+notebooks/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

@@ -1,0 +1,10 @@
+.snakemake
+.pytest_cache
+__pycache__
+*.pyc
+*.pyo
+.vscode
+.DS_Store
+build
+build-by-euler
+data/automatic

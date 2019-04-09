@@ -1,5 +1,17 @@
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablenos --filter pandoc-citeproc"
 
+include: "./rules/sync.smk"
+localrules: all, report, pdf_report, clean
+
+onstart:
+    shell("mkdir -p build/logs")
+onsuccess:
+    if "email" in config.keys():
+        shell("echo "" | mail -s 'ose-model-comparison succeeded' {config[email]}")
+onerror:
+    if "email" in config.keys():
+        shell("echo "" | mail -s 'ose-model-comparison crashed' {config[email]}")
+
 
 rule all:
     message: "Run entire analysis and compile report."

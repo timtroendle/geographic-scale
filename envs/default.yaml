@@ -1,4 +1,4 @@
-name: geo
+name: default
 channels:
     - conda-forge
 dependencies:
@@ -7,6 +7,3 @@ dependencies:
     - pandas=0.24.2
     - matplotlib=3.0.2
     - seaborn=0.9.0
-    - gdal=2.4
-    - fiona=1.8.6
-    - geopandas=0.4.1

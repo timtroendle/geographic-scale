@@ -12,7 +12,7 @@ You need [conda](https://conda.io/docs/index.html) to run the analysis. Using co
 
 ## Run the analysis
 
-    snakemake
+    snakemake --use-conda
 
 This will run all analysis steps to reproduce results and eventually build the report.
 
@@ -24,7 +24,7 @@ To generate a PDF of the dependency graph of all steps, and if you have `dot` in
 
 ## Run the tests
 
-    snakemake test
+    snakemake test --use-conda
 
 ## Repo structure
 

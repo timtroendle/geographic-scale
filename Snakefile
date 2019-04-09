@@ -10,6 +10,7 @@ rule scenario_space:
     message: "Plot sketch of scenario space."
     input: src="src/scenarios.py"
     output: "build/scenario-space.png"
+    conda: "envs/default.yaml"
     script: "src/scenarios.py"
 
 
@@ -29,6 +30,7 @@ rule sensitivity_heatmap:
     message: "Plot sketch of sensitivity heatmap."
     input: src="src/sensitivity.py"
     output: "build/parameter-sensitivity.png"
+    conda: "envs/default.yaml"
     script: "src/sensitivity.py"
 
 
@@ -44,6 +46,7 @@ rule report:
         rules.map.output
     output:
         "build/report.html"
+    conda: "envs/pdf.yaml"
     shell:
         """
         cd ./report
@@ -74,5 +77,6 @@ rule clean: # removes all generated results
 
 
 rule test:
+    conda: "envs/test.yaml"
     shell:
         "py.test"

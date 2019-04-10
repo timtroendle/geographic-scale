@@ -1,0 +1,33 @@
+import:
+    - './interest-rate.yaml'
+    - './renewable-techs.yaml'
+    - './storage-techs.yaml'
+    - './national/locations.yaml'
+    - './link-techs.yaml'
+overrides:
+    baseline_override:
+        techs.demand_elec.parent: demand # FIXME remove dummy override
+scenarios:
+    baseline: "baseline_override"
+model:
+    name: 'Geographic Scale'
+    calliope_version: 0.6.3
+    timeseries_data_path: './national/'
+    subset_time: ['2016-01-01', '2016-01-01']
+run:
+    solver: gurobi
+    solver_io: python
+    mode: plan
+    solver_options:
+        Threads: 4
+        Method: 2 # use barrier, but do not run simplex in parallel
+        FeasibilityTol: 1e-5
+        OptimalityTol: 1e-5
+techs:
+    demand_elec:
+        essentials:
+            name: 'Electricity demand'
+            parent: demand
+            carrier: electricity
+        constraints:
+            resource: file=electricity-demand.csv

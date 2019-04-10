@@ -1,0 +1,6 @@
+scaling-factors:
+    power: 0.001 # from MW to GW
+    area: 0.001 # from km to 1000 km2
+    monetary: 0.000001 # from EUR to Mio EUR
+scenarios:
+    - baseline

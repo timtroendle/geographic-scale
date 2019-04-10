@@ -2,5 +2,7 @@ name: test
 channels:
     - conda-forge
 dependencies:
-    - python=3.7
+    - python=3.6
     - pytest=4.2.0
+    - calliope=0.6.3
+    - pytest-html=1.20.0

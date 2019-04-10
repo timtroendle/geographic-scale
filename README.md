@@ -6,9 +6,15 @@ This repository contains the entire scientific project, including code and repor
 
 ## Getting ready
 
-You need [conda](https://conda.io/docs/index.html) to run the analysis. Using conda, you can create a conda environment from within you can run it:
+1. Clone the repo. Because `euro-calliope` is added as a git submodule, you may want to clone using `git clone --recurse-submodules <link-to-this-repo>`.
 
-    conda env create -f environment.yaml
+2. Create an environment to run the analysis. You need [conda](https://conda.io/docs/index.html) to run the analysis. Using conda, you can create a conda environment from within you can run it:
+
+    `conda env create -f environment.yaml`
+
+3. Make sure you have a Gurobi license, or install and configure another solver.
+
+4. Provide the input data for Euro-Calliope, as defined in "Getting Ready" in  `./euro-calliope/README.md`.
 
 ## Run the analysis
 

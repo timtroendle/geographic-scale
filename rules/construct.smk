@@ -24,6 +24,7 @@ rule model:
         "build/model/storage-techs.yaml",
         "build/model/link-techs.yaml",
         "build/model/national/locations.yaml",
+        "build/model/national/link-all-neighbours.yaml",
         expand(
             "build/model/{resolution}/electricity-demand.csv",
             resolution=["national"]

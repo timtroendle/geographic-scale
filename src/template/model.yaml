@@ -2,8 +2,9 @@ import:
     - './interest-rate.yaml'
     - './renewable-techs.yaml'
     - './storage-techs.yaml'
-    - './national/locations.yaml'
     - './link-techs.yaml'
+    - './national/locations.yaml'
+    - './national/link-all-neighbours.yaml'
 overrides:
     baseline_override:
         techs.demand_elec.parent: demand # FIXME remove dummy override

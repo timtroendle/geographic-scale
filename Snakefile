@@ -19,7 +19,6 @@ onerror:
 rule all:
     message: "Run entire analysis and compile report."
     input:
-        "build/output/baseline/results.nc",
         "build/logs/test-report.html"
 
 

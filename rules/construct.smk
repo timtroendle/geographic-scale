@@ -6,7 +6,7 @@ subworkflow eurocalliope:
 configfile: "./config/default.yaml"
 
 localrules: copy_euro_calliope, model
-ruleorder: model > copy_euro_calliope
+ruleorder: model > import_restrictions > copy_euro_calliope
 
 
 rule copy_euro_calliope:
@@ -14,6 +14,18 @@ rule copy_euro_calliope:
     input: eurocalliope("build/model/{definition_file}.{suffix}"),
     output: "build/model/{definition_file}.{suffix}"
     shell: "cp {input} {output}"
+
+
+rule import_restrictions:
+    message: "Create import restriction overrides for {wildcards.resolution} resolution."
+    input:
+        src = "src/construct/import_restrictions.py",
+        locations = "build/model/{resolution}/locations.yaml"
+    params:
+        restrictions = [0, 15, 30]
+    conda: "../envs/default.yaml"
+    output: "build/model/{resolution}/import-restrictions.yaml"
+    script: "../src/construct/import_restrictions.py"
 
 
 rule model:
@@ -25,6 +37,7 @@ rule model:
         "build/model/link-techs.yaml",
         "build/model/national/locations.yaml",
         "build/model/national/link-all-neighbours.yaml",
+        "build/model/national/import-restrictions.yaml",
         expand(
             "build/model/{resolution}/electricity-demand.csv",
             resolution=["national"]

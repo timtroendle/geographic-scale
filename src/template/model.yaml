@@ -5,17 +5,25 @@ import:
     - './link-techs.yaml'
     - './national/locations.yaml'
     - './national/link-all-neighbours.yaml'
+    - './national/import-restrictions.yaml'
 overrides:
     baseline_override:
         techs.demand_elec.parent: demand # FIXME remove dummy override
 scenarios:
-    baseline: "baseline_override"
+    continental-autarky: ["baseline_override"]
+    national-autarky-strict: ["import_restriction_0_percent"]
+    national-autarky-weak15: ["import_restriction_15_percent"]
+    national-autarky-weak30: ["import_restriction_30_percent"]
 model:
     name: 'Geographic Scale'
-    calliope_version: 0.6.3
+    calliope_version: 0.6.4
     timeseries_data_path: './national/'
     subset_time: ['2016-01-01', '2016-01-01']
 run:
+    objective_options: {
+        'cost_class': {'monetary': 1},
+        'sense': 'minimize'
+    }
     solver: gurobi
     solver_io: python
     mode: plan

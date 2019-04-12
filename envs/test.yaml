@@ -2,7 +2,10 @@ name: test
 channels:
     - conda-forge
 dependencies:
-    - python=3.6
+    - python=3.7
     - pytest=4.2.0
-    - calliope=0.6.3
     - pytest-html=1.20.0
+    - pip=19.0.3
+    - pip:
+        - pytest-pythonpath # adds the root path "./" to PYTHONPATH
+        - git+git://github.com/calliope-project/calliope.git@7cc46dba5da3ac7f3e710f906b0bacf914c54d28 # FIXME install development version. Remove after release of 0.6.4

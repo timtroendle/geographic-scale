@@ -6,7 +6,6 @@ dependencies:
     - pango=1.40.14
     - pandoc=2.5
     - pip:
-        - pytest-pythonpath # adds the root path "./" to PYTHONPATH
         - pandoc-tablenos
         - pandoc-fignos
         - pantable

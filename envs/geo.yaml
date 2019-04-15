@@ -10,3 +10,4 @@ dependencies:
     - gdal=2.4
     - fiona=1.8.6
     - geopandas=0.4.1
+    - jinja2=2.10.1

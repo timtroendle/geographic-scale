@@ -10,10 +10,10 @@ overrides:
     baseline_override:
         techs.demand_elec.parent: demand # FIXME remove dummy override
 scenarios:
-    continental-autarky: ["baseline_override"]
-    national-autarky-strict: ["import_restriction_0_percent"]
-    national-autarky-weak15: ["import_restriction_15_percent"]
-    national-autarky-weak30: ["import_restriction_30_percent"]
+    continental-autarky-strict: ["continental-autarky-100-percent"]
+    national-autarky-strict: ["national-autarky-100-percent"]
+    national-autarky-weak85: ["national-autarky-85-percent"]
+    national-autarky-weak70: ["national-autarky-70-percent"]
 model:
     name: 'Geographic Scale'
     calliope_version: 0.6.4

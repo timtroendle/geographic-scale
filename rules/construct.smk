@@ -20,10 +20,10 @@ rule import_restrictions:
     message: "Create import restriction overrides for {wildcards.resolution} resolution."
     input:
         src = "src/construct/import_restrictions.py",
-        locations = "build/model/{resolution}/locations.yaml"
+        units = "euro-calliope/data/national/units.geojson"
     params:
         restrictions = [0, 15, 30]
-    conda: "../envs/default.yaml"
+    conda: "../envs/geo.yaml"
     output: "build/model/{resolution}/import-restrictions.yaml"
     script: "../src/construct/import_restrictions.py"
 

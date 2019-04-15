@@ -6,7 +6,7 @@ subworkflow eurocalliope:
 configfile: "./config/default.yaml"
 
 localrules: copy_euro_calliope, model
-ruleorder: model > import_restrictions > copy_euro_calliope
+ruleorder: model > import_restrictions > grid_size_restrictions > copy_euro_calliope
 
 
 rule copy_euro_calliope:
@@ -28,6 +28,17 @@ rule import_restrictions:
     script: "../src/construct/import_restrictions.py"
 
 
+rule grid_size_restrictions:
+    message: "Create grid size restriction overrides for {wildcards.resolution} resolution."
+    input:
+        src = "src/construct/grid_size_restrictions.py",
+        links = "build/model/{resolution}/link-all-neighbours.yaml",
+        units = "euro-calliope/data/{resolution}/units.geojson"
+    conda: "../envs/geo.yaml"
+    output: "build/model/{resolution}/grid-size-restrictions.yaml"
+    script: "../src/construct/grid_size_restrictions.py"
+
+
 rule model:
     message: "Build entire model."
     input:
@@ -38,6 +49,7 @@ rule model:
         "build/model/national/locations.yaml",
         "build/model/national/link-all-neighbours.yaml",
         "build/model/national/import-restrictions.yaml",
+        "build/model/national/grid-size-restrictions.yaml",
         expand(
             "build/model/{resolution}/electricity-demand.csv",
             resolution=["national"]

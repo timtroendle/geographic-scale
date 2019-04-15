@@ -3,7 +3,8 @@ scaling-factors:
     area: 0.001 # from km to 1000 km2
     monetary: 0.000001 # from EUR to Mio EUR
 scenarios:
-    # - continental-autarky-strict FIXME currently broken due to https://github.com/calliope-project/calliope/issues/227
-    # - national-autarky-strict FIXME currently broken due to https://github.com/calliope-project/calliope/issues/227
-    - national-autarky-weak85
-    - national-autarky-weak70
+    # - continental-autarky-100-continental-grid FIXME currently broken due to https://github.com/calliope-project/calliope/issues/227
+    # - national-autarky-100-continental-grid FIXME currently broken due to https://github.com/calliope-project/calliope/issues/227
+    # - national-autarky-100-national-grid FIXME currently broken due to https://github.com/calliope-project/calliope/issues/227
+    - national-autarky-85-continental-grid
+    - national-autarky-70-continental-grid

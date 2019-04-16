@@ -3,3 +3,7 @@ __default__:
     cores: 1
     memory: 16000
     output: "build/logs/{rule}.{wildcards}.log"
+run:
+    runtime: 1439
+    cores: 4
+    memory: 16000

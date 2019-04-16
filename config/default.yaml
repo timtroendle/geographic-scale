@@ -4,8 +4,8 @@ scaling-factors:
     monetary: 0.00000001 # from EUR to 100 Mio EUR
 minimal-capacity-factor: 0.001 # consider smaller values to be 0; this helps numerics in the LP
 scenarios:
-    # - continental-autarky-100-continental-grid FIXME currently broken due to https://github.com/calliope-project/calliope/issues/227
-    # - national-autarky-100-continental-grid FIXME currently broken due to https://github.com/calliope-project/calliope/issues/227
-    # - national-autarky-100-national-grid FIXME currently broken due to https://github.com/calliope-project/calliope/issues/227
+    - continental-autarky-100-continental-grid
+    - national-autarky-100-continental-grid
+    - national-autarky-100-national-grid
     - national-autarky-85-continental-grid
     - national-autarky-70-continental-grid

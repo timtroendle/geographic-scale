@@ -2,6 +2,7 @@ scaling-factors:
     power: 0.001 # from MW to GW
     area: 0.001 # from km to 1000 km2
     monetary: 0.000001 # from EUR to Mio EUR
+minimal-capacity-factor: 0.001 # consider smaller values to be 0; this helps numerics in the LP
 scenarios:
     # - continental-autarky-100-continental-grid FIXME currently broken due to https://github.com/calliope-project/calliope/issues/227
     # - national-autarky-100-continental-grid FIXME currently broken due to https://github.com/calliope-project/calliope/issues/227

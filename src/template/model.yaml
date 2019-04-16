@@ -17,7 +17,7 @@ model:
     name: 'Geographic Scale'
     calliope_version: 0.6.4
     timeseries_data_path: './national/'
-    subset_time: ['2016-01-01', '2016-01-01']
+    subset_time: ['2016-01-01', '2016-07-01']
 run:
     objective_options: {
         'cost_class': {'monetary': 1},

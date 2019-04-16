@@ -8,4 +8,4 @@ dependencies:
     - pip=19.0.3
     - pip:
         - pytest-pythonpath # adds the root path "./" to PYTHONPATH
-        - git+git://github.com/calliope-project/calliope.git@7cc46dba5da3ac7f3e710f906b0bacf914c54d28 # FIXME install development version. Remove after release of 0.6.4
+        - git+git://github.com/calliope-project/calliope.git@cf283818711b6412593efd7197c2fc688a319e3f # FIXME install development version. Remove after release of 0.6.4

@@ -8,11 +8,11 @@ import:
     - './national/import-restrictions.yaml'
     - './national/grid-size-restrictions.yaml'
 scenarios:
-    continental-autarky-100-continental-grid: ["continental-autarky-100-percent", "continental-grid-size"]
-    national-autarky-100-continental-grid: ["national-autarky-100-percent", "continental-grid-size"]
-    national-autarky-100-national-grid: ["national-autarky-100-percent", "national-grid-size"]
-    national-autarky-85-continental-grid: ["national-autarky-85-percent", "national-grid-size"]
-    national-autarky-70-continental-grid: ["national-autarky-70-percent", "national-grid-size"]
+    continental-autarky-100-continental-grid: ["continental-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs"]
+    national-autarky-100-continental-grid: ["national-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs"]
+    national-autarky-100-national-grid: ["national-autarky-100-percent", "national-grid-size", "no-variable-storage-costs"]
+    national-autarky-85-continental-grid: ["national-autarky-85-percent", "national-grid-size", "no-variable-storage-costs"]
+    national-autarky-70-continental-grid: ["national-autarky-70-percent", "national-grid-size", "no-variable-storage-costs"]
 model:
     name: 'Geographic Scale'
     calliope_version: 0.6.4
@@ -39,3 +39,11 @@ techs:
             carrier: electricity
         constraints:
             resource: file=electricity-demand.csv
+overrides:
+    no-variable-storage-costs:
+        # These costs are speculative, especially for batteries.
+        # Not applying them furthermore allows to easier scale
+        # the problem and reach a better numeric range.
+        techs.battery.costs.monetary.om_prod: 0
+        techs.hydrogen.costs.monetary.om_prod: 0
+        techs.pumped_hydro.costs.monetary.om_prod: 0

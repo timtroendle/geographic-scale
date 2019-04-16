@@ -9,10 +9,10 @@ onstart:
     shell("mkdir -p build/logs")
 onsuccess:
     if "email" in config.keys():
-        shell("echo "" | mail -s 'ose-model-comparison succeeded' {config[email]}")
+        shell("echo "" | mail -s 'geographical-scale succeeded' {config[email]}")
 onerror:
     if "email" in config.keys():
-        shell("echo "" | mail -s 'ose-model-comparison crashed' {config[email]}")
+        shell("echo "" | mail -s 'geographical-scale crashed' {config[email]}")
 
 
 rule all:

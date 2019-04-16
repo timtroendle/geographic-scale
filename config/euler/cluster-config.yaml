@@ -7,3 +7,7 @@ run:
     runtime: 1439
     cores: 4
     memory: 16000
+performance_run:
+    runtime: 1439
+    cores: 4
+    memory: 16000

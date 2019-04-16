@@ -3,7 +3,6 @@ PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablen
 include: "./rules/sync.smk"
 include: "./rules/construct.smk"
 include: "./rules/analyse.smk"
-include: "./rules/concept.smk"
 localrules: all, clean
 
 onstart:
@@ -19,7 +18,9 @@ onerror:
 rule all:
     message: "Run entire analysis and compile report."
     input:
-        "build/logs/test-report.html"
+        "build/logs/test-report.html",
+        "build/scenario-space.png",
+        "build/map.png"
 
 
 rule clean: # removes all generated results

@@ -33,10 +33,10 @@ We use these scales for sub dividing the European system, but also for defining 
 In addition, we also consider different intensities of trade, ranging from allowing net zero trade to allowing up to 30% electricity to be imported. Together with the size of the divisions and the size of the trade network, this gives our scenario space a third dimension and 12 scenarios in total. The scenario space and hypothesised results for each scenario are shown in Figure @fig:scenario-space. Aside from analysing the total system costs, we may as well visualise the local costs on a map for a subset of all scenarios, as shown in Figure @fig:result-map.
 
 ![Sketch of scenario space including hypothesised total system costs for each scenario.
-](../build/scenario-space.png){#fig:scenario-space .class}
+](../build/concept/scenario-space.png){#fig:scenario-space .class}
 
 ![Sketch of distribution of costs for a subset of the scenarios in the scenario space. Each map includes the name of the scenario and the average total cost.
-](../build/map.png){#fig:result-map .class}
+](../build/concept/map.png){#fig:result-map .class}
 
 ## Uncertainty Quantification
 
@@ -55,7 +55,7 @@ Because we assume the uncertainty of our model results stems mainly from the par
 If we are able to run the model many times, we can determine the sensitivity of the result to changes in the parameter values --- changes of the values of single parameters, but also to combined changes of several parameters. This will allow us to rank parameters -- solely or in combination. For example, we will be able to say that the most important parameters are the cost of batteries and the cost of transmission grid, but that the costs of batteries are only important when the costs for photovoltaics are below 750 €/kW. We can also visualise the relationship of the most important parameters on the result, see Figure @fig:parameter-sensitivity. Limiting the parameter values to possible values only will furthermore allow us to quantify the range within which the result will lie: small scale will at least be 0.02 €/kWh more costly than large scale, but not more than 0.09 €/kWh.
 
 ![Sketch of the relationship of the two most important parameters on the additional costs of small scale over large scale electricity grids in Europe [€/kWh].
-](../build/parameter-sensitivity.png){#fig:parameter-sensitivity .class}
+](../build/concept/parameter-sensitivity.png){#fig:parameter-sensitivity .class}
 
 Considering that we can easily identify 10 parameters (or more) for which we would like to analyse the sensitivity, we likely need 100,000s of model runs or more even when using smarter methods than brute force. Our model takes hours to run, maybe even days. So reasonably, we can run it in the order of 10s of times. A sensitivity analysis as described above is thus only possible with a surrogate model: a model that resembles ours in its input-output behaviour, but runs orders of magnitude faster.
 

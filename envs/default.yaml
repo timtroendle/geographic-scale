@@ -8,3 +8,5 @@ dependencies:
     - matplotlib=3.0.2
     - seaborn=0.9.0
     - jinja2=2.10.1
+    - xarray=0.12.1
+    - netcdf4=1.5.0.1

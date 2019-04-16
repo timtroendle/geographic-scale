@@ -15,7 +15,7 @@ MAP_MIN_Y = 1400000
 MAP_MAX_X = 6600000
 MAP_MAX_Y = 5500000
 
-PATH_TO_FONT_AWESOME = Path(__file__).parent / 'fonts' / 'fa-solid-900.ttf'
+PATH_TO_FONT_AWESOME = Path(__file__).parent.parent / 'fonts' / 'fa-solid-900.ttf'
 LAYER_UNICODE = "\uf5fd"
 MONEY_UNICODE = "\uf3d1"
 

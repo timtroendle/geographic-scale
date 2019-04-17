@@ -20,7 +20,7 @@ rule import_restrictions:
     message: "Create import restriction overrides for {wildcards.resolution} resolution."
     input:
         src = "src/construct/import_restrictions.py",
-        units = "euro-calliope/data/national/units.geojson"
+        units = "euro-calliope/data/{resolution}/units.geojson"
     params:
         restrictions = [0, 15, 30]
     conda: "../envs/geo.yaml"
@@ -40,27 +40,23 @@ rule grid_size_restrictions:
 
 
 rule model:
-    message: "Build entire model."
+    message: "Build entire model on resolution {wildcards.resolution}."
     input:
         "build/model/interest-rate.yaml",
         "build/model/renewable-techs.yaml",
         "build/model/storage-techs.yaml",
         "build/model/link-techs.yaml",
-        "build/model/national/locations.yaml",
-        "build/model/national/link-all-neighbours.yaml",
-        "build/model/national/import-restrictions.yaml",
-        "build/model/national/grid-size-restrictions.yaml",
+        "build/model/{resolution}/locations.yaml",
+        "build/model/{resolution}/link-all-neighbours.yaml",
+        "build/model/{resolution}/import-restrictions.yaml",
+        "build/model/{resolution}/grid-size-restrictions.yaml",
+        "build/model/{resolution}/electricity-demand.csv",
         expand(
-            "build/model/{resolution}/electricity-demand.csv",
-            resolution=["national"]
-        ),
-        expand(
-            "build/model/{resolution}/capacityfactors-{technology}.csv",
+            "build/model/{{resolution}}/capacityfactors-{technology}.csv",
             technology=["open-field-pv", "rooftop-pv", "wind-offshore", "wind-onshore"],
-            resolution=["national"]
         ),
         definition = "src/template/model.yaml"
     output:
-        model = "build/model/model.yaml"
+        model = "build/model/{resolution}/model.yaml"
     shell:
         "cp {input.definition} {output}"

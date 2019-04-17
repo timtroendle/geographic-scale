@@ -3,8 +3,7 @@ ruleorder: performance_run > run_national > run_regional
 
 rule performance_run:
     message: "Run {wildcards.run_id} with feas {wildcards.feasibility_tol} and opt {wildcards.optimality_tol}."
-    input: model = rules.model.output.model
-    #output: "build/output/performance/{feasibility_tol}/{optimality_tol}/results{run_id}.nc"
+    input: model = "build/model/national/model.yaml"
     params: scenario = "national-autarky-100-continental-grid"
     conda: "../envs/calliope.yaml"
     log: "build/logs/performance/feas_{feasibility_tol}-opt_{optimality_tol}/{run_id}.log"

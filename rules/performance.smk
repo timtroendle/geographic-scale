@@ -1,4 +1,4 @@
-ruleorder: performance_run > run
+ruleorder: performance_run > run_national > run_regional
 
 
 rule performance_run:

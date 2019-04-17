@@ -24,7 +24,7 @@ rule performance_analysis:
             "build/logs/performance/feas_{feasibility_tol}-opt_{optimality_tol}/{run_id}.log",
             feasibility_tol=["1e-2", "1e-3", "1e-4", "1e-5", "1e-6"],
             optimality_tol=["1e-2", "1e-3", "1e-4", "1e-5", "1e-6"],
-            run_id=range(3)
+            run_id=range(2)
         )
     output: "build/logs/performance/analysis.log"
     conda: "../envs/default.yaml"

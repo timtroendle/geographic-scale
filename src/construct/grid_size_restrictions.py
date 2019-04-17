@@ -24,6 +24,7 @@ class Link:
 
 def grid_size_restriction(path_to_units, path_to_links, path_to_result):
     units = gpd.read_file(path_to_units).set_index("id", drop=True)
+    units.index = units.index.map(lambda unit_id: unit_id.replace(".", "-"))
     restrictions = {
         "continental-grid-size": _continental_grid_size(units, links=_read_links(path_to_links)),
         "national-grid-size": _national_grid_size(units, links=_read_links(path_to_links)),

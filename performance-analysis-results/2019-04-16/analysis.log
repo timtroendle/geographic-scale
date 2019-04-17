@@ -1,0 +1,70 @@
+Parameter setting feas_1e-2-opt_1e-2:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-2-opt_1e-3:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-2-opt_1e-5:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-2-opt_1e-6:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-3-opt_1e-2:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-3-opt_1e-3:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-3-opt_1e-5:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-3-opt_1e-6:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-5-opt_1e-2:
+3 runs.
+Gurobi found the following optimal value on average: 1863.00687 (std 0.0).
+Gurobi needed on average 1560632 (std 0) iterations to find the optimal value.
+Gurobi needed on average 8693s (std 435s) to find the optimal value.
+
+Parameter setting feas_1e-5-opt_1e-3:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-5-opt_1e-5:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-5-opt_1e-6:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-6-opt_1e-2:
+3 runs.
+Gurobi found the following optimal value on average: 1863.00687 (std 0.0).
+Gurobi needed on average 1782875 (std 0) iterations to find the optimal value.
+Gurobi needed on average 8330s (std 315s) to find the optimal value.
+
+Parameter setting feas_1e-6-opt_1e-3:
+3 runs.
+Gurobi found the following optimal value on average: 1863.00687 (std 0.0).
+Gurobi needed on average 2094892 (std 0) iterations to find the optimal value.
+Gurobi needed on average 70546s (std 1102s) to find the optimal value.
+
+Parameter setting feas_1e-6-opt_1e-5:
+3 runs.
+All runs crashed.
+
+Parameter setting feas_1e-6-opt_1e-6:
+3 runs.
+All runs crashed.
+

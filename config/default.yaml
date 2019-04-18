@@ -9,3 +9,19 @@ scenarios:
     - national-autarky-100-national-grid
     - national-autarky-85-continental-grid
     - national-autarky-70-continental-grid
+uncertainty:
+    experiment-design: ./config/uncertainty-experiment-design.tsv
+    resolution: national
+    parameters:
+        installation-costs-battery-energy:
+            min: 50000 # FIXME correct and cite
+            max: 322730 # FIXME correct and cite
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-param: techs.battery.costs.monetary.storage_cap
+        installation-costs-pv:
+            min: 100000 # FIXME correct and cite
+            max: 1401490 # FIXME correct and cite
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-param: tech_groups.pv.costs.monetary.energy_cap

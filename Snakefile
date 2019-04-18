@@ -3,6 +3,7 @@ PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablen
 include: "./rules/sync.smk"
 include: "./rules/construct.smk"
 include: "./rules/analyse.smk"
+include: "./rules/uncertainty.smk"
 localrules: all, clean
 
 onstart:

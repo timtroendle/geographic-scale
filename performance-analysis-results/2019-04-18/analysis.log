@@ -1,0 +1,127 @@
+Parameter setting feas_1e-2-opt_1e-2:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-2-opt_1e-3:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-2-opt_1e-4:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-2-opt_1e-5:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-2-opt_1e-6:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-3-opt_1e-2:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-3-opt_1e-3:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-3-opt_1e-4:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 509077 (std 0) iterations to find the optimal value.
+Gurobi needed on average 687s (std 87s) to find the optimal value.
+
+Parameter setting feas_1e-3-opt_1e-5:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 509695 (std 0) iterations to find the optimal value.
+Gurobi needed on average 755s (std 60s) to find the optimal value.
+
+Parameter setting feas_1e-3-opt_1e-6:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-4-opt_1e-2:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-4-opt_1e-3:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-4-opt_1e-4:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 502235 (std 0) iterations to find the optimal value.
+Gurobi needed on average 859s (std 35s) to find the optimal value.
+
+Parameter setting feas_1e-4-opt_1e-5:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 503377 (std 0) iterations to find the optimal value.
+Gurobi needed on average 1578s (std 96s) to find the optimal value.
+
+Parameter setting feas_1e-4-opt_1e-6:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-5-opt_1e-2:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 516812 (std 0) iterations to find the optimal value.
+Gurobi needed on average 560s (std 65s) to find the optimal value.
+
+Parameter setting feas_1e-5-opt_1e-3:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 519672 (std 0) iterations to find the optimal value.
+Gurobi needed on average 1067s (std 189s) to find the optimal value.
+
+Parameter setting feas_1e-5-opt_1e-4:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 502803 (std 0) iterations to find the optimal value.
+Gurobi needed on average 699s (std 97s) to find the optimal value.
+
+Parameter setting feas_1e-5-opt_1e-5:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 506451 (std 0) iterations to find the optimal value.
+Gurobi needed on average 1204s (std 41s) to find the optimal value.
+
+Parameter setting feas_1e-5-opt_1e-6:
+2 runs.
+All runs crashed.
+
+Parameter setting feas_1e-6-opt_1e-2:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 607259 (std 0) iterations to find the optimal value.
+Gurobi needed on average 650s (std 49s) to find the optimal value.
+
+Parameter setting feas_1e-6-opt_1e-3:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 606980 (std 0) iterations to find the optimal value.
+Gurobi needed on average 568s (std 35s) to find the optimal value.
+
+Parameter setting feas_1e-6-opt_1e-4:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 591199 (std 0) iterations to find the optimal value.
+Gurobi needed on average 640s (std 86s) to find the optimal value.
+
+Parameter setting feas_1e-6-opt_1e-5:
+2 runs.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 593831 (std 0) iterations to find the optimal value.
+Gurobi needed on average 963s (std 76s) to find the optimal value.
+
+Parameter setting feas_1e-6-opt_1e-6:
+2 runs.
+1 run(s) failed.
+Gurobi found the following optimal value on average: 1056.89298 (std 0.0).
+Gurobi needed on average 1681014 (std 0) iterations to find the optimal value.
+Gurobi needed on average 73004s (std 0s) to find the optimal value.
+

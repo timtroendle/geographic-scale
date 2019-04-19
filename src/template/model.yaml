@@ -36,8 +36,8 @@ run:
     solver_options:
         Threads: 4
         Method: 2 # use barrier, but do not run simplex in parallel
-        FeasibilityTol: 1e-5
-        OptimalityTol: 1e-5
+        FeasibilityTol: 1e-3
+        OptimalityTol: 1e-4
 techs:
     demand_elec:
         essentials:

@@ -9,3 +9,87 @@ scenarios:
     - national-autarky-100-national-grid
     - national-autarky-85-continental-grid
     - national-autarky-70-continental-grid
+uncertainty:
+    experiment-design: ./config/uncertainty-experiment-design.tsv
+    resolution: national
+    parameters:
+        installation-costs-battery-power:
+            description: Costs for installing battery power capacity (inverter etc.).
+            min: 30000
+            max: 150000
+            unit: EUR/MW
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-param: techs.battery.costs.monetary.energy_cap
+        installation-costs-battery-energy:
+            description: Costs for installing battery energy capacity.
+            min: 50000
+            max: 350000
+            unit: EUR/MWh
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-param: techs.battery.costs.monetary.storage_cap
+        lifetime-battery:
+            description: (Technical) Lifetime of battery capacity.
+            min: 5
+            max: 30
+            unit: yr
+            scaling-factor:
+            inverse-scaling-factor:
+            calliope-param: techs.battery.constraints.lifetime
+        installation-costs-hydrogen-power:
+            description: Costs for installing hydrogen power capacity (fuel cell etc.).
+            min: 250000
+            max: 1708060
+            unit: EUR/MW
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-param: techs.hydrogen.costs.monetary.energy_cap
+        installation-costs-hydrogen-energy:
+            description: Costs for installing hydrogen energy capacity.
+            min: 5000
+            max: 28520
+            unit: EUR/MWh
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-param: techs.hydrogen.costs.monetary.storage_cap
+        lifetime-hydrogen:
+            description: (Technical) Lifetime of hydrogen capacity.
+            min: 10
+            max: 30
+            unit: yr
+            scaling-factor:
+            inverse-scaling-factor:
+            calliope-param: techs.hydrogen.constraints.lifetime
+        installation-costs-pv:
+            description: Costs for installing photovoltaics capacity.
+            min: 100000
+            max: 1500000
+            unit: EUR/MW
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-param: tech_groups.pv.costs.monetary.energy_cap
+        installation-costs-wind-onshore: # offshore directly dependent?
+            description: Costs for installing onshore wind capacity.
+            min: 100000
+            max: 1400000
+            unit: EUR/MW
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-param: tech_groups.wind_onshore.costs.monetary.energy_cap
+        installation-costs-ntc:
+            description: Costs for installing net transfer capacity (high voltage ac transmission).
+            min: 0.1
+            max: 3.8
+            unit: EUR/MW/m
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-param: techs.ac_transmission.costs.monetary.energy_cap_per_distance
+        interest-rate:
+            description: System- and sector-wide interest rate of investments.
+            min: 2
+            max: 10
+            unit: "%/yr"
+            scaling-factor:
+            inverse-scaling-factor:
+            calliope-param: # TODO several

@@ -44,6 +44,10 @@ If you want to run on another cluster, read [snakemake's documentation on cluste
 
     snakemake test --use-conda
 
+## Units and scaling
+
+The default units for Euro-Calliope are `MW`, `MWh`, `EUR`, and `km2`, but you can scale all of these using the configuration values in `config/default.yaml`. Apart from convenience, this may be important to handle numerical issues with your solver.
+
 ## Repo structure
 
 * `report`: contains all files necessary to build the report; plots and result files are not in here but generated automatically

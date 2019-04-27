@@ -13,5 +13,5 @@ run_regional:
     memory: 48000
 performance_run:
     runtime: 1439
-    cores: 4
+    cores: 16
     memory: 16000

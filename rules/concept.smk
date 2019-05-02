@@ -16,9 +16,9 @@ rule map:
     message: "Create map of results."
     input:
         src = "src/concept/map.py",
-        continental_shape = "data/units-continental.geojson",
-        national_shapes = "data/units-national.geojson",
-        regional_shapes = "data/units-regional.geojson"
+        continental_shape = "data/continental/units.geojson",
+        national_shapes = "data/national/units.geojson",
+        regional_shapes = "data/regional/units.geojson"
     output: "build/concept/map.png"
     conda: "../envs/geo.yaml"
     script: "../src/concept/map.py"

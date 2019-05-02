@@ -20,8 +20,8 @@ rule all:
     message: "Run entire analysis and compile report."
     input:
         "build/logs/test-report.html",
-        "build/scenario-space.png",
-        "build/map.png"
+        "build/output/{}/scenario-space.png".format(config["resolution"]),
+        "build/output/{}/map.png".format(config["resolution"])
 
 
 rule clean: # removes all generated results

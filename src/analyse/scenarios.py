@@ -114,8 +114,6 @@ def read_results(paths_to_results, scaling_factor_cost):
                                .squeeze(["costs", "carriers"])
                                .item()) * scaling_factor_cost / 1e3 # scale from EUR/MWh to EUR/kWh
         results.loc[autarky_layer, grid_size, autarky_level] = total_system_cost
-    results.fillna(0.16, inplace=True) # FIXME only because scenarios are missing
-    results.loc[("regional", "regional", "0%")] = 0.16 # FIXME only because scenario is missing
     return results.reset_index()
 
 

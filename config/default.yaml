@@ -3,12 +3,21 @@ scaling-factors:
     area: 0.001 # from km to 1000 km2
     monetary: 0.00000001 # from EUR to 100 Mio EUR
 minimal-capacity-factor: 0.001 # consider smaller values to be 0; this helps numerics in the LP
+resolution: national
+subset_time: "['2016-01-01', '2016-01-01']"
 scenarios:
     - continental-autarky-100-continental-grid
     - national-autarky-100-continental-grid
     - national-autarky-100-national-grid
     - national-autarky-85-continental-grid
     - national-autarky-70-continental-grid
+    - regional-autarky-100-continental-grid
+    - regional-autarky-100-national-grid
+    - regional-autarky-100-regional-grid
+    - regional-autarky-85-continental-grid
+    - regional-autarky-85-national-grid
+    - regional-autarky-70-continental-grid
+    - regional-autarky-70-national-grid
 uncertainty:
     experiment-design: ./config/uncertainty-experiment-design.tsv
     resolution: national

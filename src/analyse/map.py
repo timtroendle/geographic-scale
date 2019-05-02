@@ -23,7 +23,8 @@ MONEY_UNICODE = "\uf3d1"
 
 
 def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regional_shapes,
-             path_to_continental_result, path_to_national_result, path_to_plot, scaling_factor_cost):
+             path_to_continental_result, path_to_national_result, path_to_regional_result,
+             path_to_plot, scaling_factor_cost):
     """Plot maps of results."""
     np.random.seed(123456789)
     fig = plt.figure(figsize=(8, 8), constrained_layout=True)
@@ -35,10 +36,10 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     regional = gpd.read_file(path_to_regional_shapes).to_crs(EPSG_3035_PROJ4).set_index("id")
     regional_relaxed = regional.copy()
 
-    continental["cost"] = _read_continental_cost(path_to_continental_result, scaling_factor_cost)
-    national["cost"] = _read_national_cost(path_to_national_result, scaling_factor_cost)
-    regional["cost"] = np.random.normal(loc=0.18, scale=0.04, size=len(regional))
-    regional_relaxed["cost"] = np.random.normal(loc=0.12, scale=0.04, size=len(regional_relaxed))
+    continental["cost"] = _read_cost(path_to_continental_result, scaling_factor_cost)
+    national["cost"] = _read_cost(path_to_national_result, scaling_factor_cost)
+    regional["cost"] = _read_cost(path_to_regional_result, scaling_factor_cost)
+    regional_relaxed["cost"] = np.random.normal(loc=0.12, scale=0.04, size=len(regional_relaxed)) # FIXME remove
 
     _plot_layer(continental, "continental", norm, cmap, axes[0])
     _plot_layer(national, "national", norm, cmap, axes[1])
@@ -93,14 +94,8 @@ def _plot_colorbar(fig, axes, norm, cmap):
     cbar.outline.set_linewidth(0)
 
 
-def _read_continental_cost(path_to_continental_result, scaling_factor_cost):
-    return (xr.open_dataset(path_to_continental_result)["total_levelised_cost"]
-              .squeeze(["costs", "carriers"])
-              .item()) * scaling_factor_cost / 1e3 # scale from EUR/MWh to EUR/kWh
-
-
-def _read_national_cost(path_to_national_result, scaling_factor_cost):
-    results = xr.open_dataset(path_to_national_result)
+def _read_cost(path_to_result, scaling_factor_cost):
+    results = xr.open_dataset(path_to_result)
     cost = results['cost']
     cost = _split_loc_techs(cost).sum(dim=['techs']).squeeze('costs')
     carrier_prod = results['carrier_prod']
@@ -194,6 +189,7 @@ if __name__ == "__main__":
         path_to_regional_shapes=snakemake.input.regional_shapes,
         path_to_continental_result=snakemake.input.continental_result,
         path_to_national_result=snakemake.input.national_result,
+        path_to_regional_result=snakemake.input.regional_result,
         path_to_plot=snakemake.output[0],
         scaling_factor_cost=snakemake.params.scaling_factor_cost
     )

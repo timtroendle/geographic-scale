@@ -34,6 +34,8 @@ rule plot_scenario_space:
     input:
         src = "src/analyse/scenarios.py",
         results = expand("build/output/national/{scenario}/results.nc", scenario=config["scenarios"])
+    params:
+        scaling_factor_cost = config["scaling-factors"]["power"] / config["scaling-factors"]["monetary"]
     output: "build/scenario-space.png"
     conda: "../envs/default.yaml"
     script: "../src/analyse/scenarios.py"
@@ -48,6 +50,8 @@ rule plot_map:
         regional_shapes = "data/units-regional.geojson",
         continental_result = "build/output/national/continental-autarky-100-continental-grid/results.nc",
         national_result = "build/output/national/national-autarky-100-national-grid/results.nc"
+    params:
+        scaling_factor_cost = config["scaling-factors"]["power"] / config["scaling-factors"]["monetary"]
     output: "build/map.png"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/map.py"

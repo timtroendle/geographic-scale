@@ -9,7 +9,7 @@ overrides:
         {% for location_group, sublocations in location_groups.items() %}
         group_constraints.import_restriction_{{ restriction }}_percent_{{ location_group | replace(".", "-") }}:
             locs: [{{ sublocations | map("replace", ".", "-") | join(",") }}]
-            techs: ["open_field_pv", "roof_mounted_pv", "wind_onshore_monopoly", "wind_onshore_competing", "wind_offshore"]
+            techs: ["open_field_pv", "roof_mounted_pv", "wind_onshore_monopoly", "wind_onshore_competing", "wind_offshore", "load_shedding"]
             demand_share_min:
                 electricity: {{ 1 - (restriction / 100) }}
         {% endfor %}

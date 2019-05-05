@@ -7,24 +7,25 @@ import:
     - './link-all-neighbours.yaml'
     - './import-restrictions.yaml'
     - './grid-size-restrictions.yaml'
+    - './load-shedding.yaml'
 scenarios:
     continental-autarky-100-continental-grid: ["continental-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
     national-autarky-100-continental-grid: ["national-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
     national-autarky-100-national-grid: ["national-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
     national-autarky-85-continental-grid: ["national-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
     national-autarky-70-continental-grid: ["national-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-100-continental-grid: ["regional-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-100-national-grid: ["regional-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-100-regional-grid: ["regional-autarky-100-percent", "regional-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-85-continental-grid: ["regional-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-85-national-grid: ["regional-autarky-85-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-70-continental-grid: ["regional-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-70-national-grid: ["regional-autarky-70-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
+    regional-autarky-100-continental-grid: ["load-shedding", "regional-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
+    regional-autarky-100-national-grid: ["load-shedding", "regional-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
+    regional-autarky-100-regional-grid: ["load-shedding", "regional-autarky-100-percent", "regional-grid-size", "no-variable-storage-costs", "stylised-storage"]
+    regional-autarky-85-continental-grid: ["load-shedding", "regional-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
+    regional-autarky-85-national-grid: ["load-shedding", "regional-autarky-85-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
+    regional-autarky-70-continental-grid: ["load-shedding", "regional-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
+    regional-autarky-70-national-grid: ["load-shedding", "regional-autarky-70-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
 model:
     name: 'Geographic Scale'
     calliope_version: 0.6.4
     timeseries_data_path: './'
-    subset_time: ['2016-01-01', '2016-01-01']
+    subset_time: ['2016-01-01', '2016-12-31']
 run:
     objective_options: {
         'cost_class': {'monetary': 1},

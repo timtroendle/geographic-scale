@@ -51,6 +51,7 @@ rule model:
         "build/model/{resolution}/import-restrictions.yaml",
         "build/model/{resolution}/grid-size-restrictions.yaml",
         "build/model/{resolution}/electricity-demand.csv",
+        "build/model/{resolution}/load-shedding.yaml",
         expand(
             "build/model/{{resolution}}/capacityfactors-{technology}.csv",
             technology=["open-field-pv", "rooftop-pv", "wind-offshore", "wind-onshore"],

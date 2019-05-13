@@ -56,6 +56,7 @@ rule plot_map:
     message: "Create map of results."
     input:
         src = "src/analyse/map.py",
+        shapes = "data/{resolution}/units.geojson",
         continental_shape = "data/continental/units.geojson",
         national_shapes = "data/national/units.geojson",
         regional_shapes = "data/regional/units.geojson",

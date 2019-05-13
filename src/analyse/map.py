@@ -24,27 +24,35 @@ MONEY_UNICODE = "\uf3d1"
 
 def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regional_shapes,
              path_to_continental_result, path_to_national_result, path_to_regional_result,
-             path_to_plot, scaling_factor_cost):
+             path_to_shapes, path_to_plot, scaling_factor_cost):
     """Plot maps of results."""
     np.random.seed(123456789)
     fig = plt.figure(figsize=(8, 8), constrained_layout=True)
     axes = fig.subplots(2, 2).flatten()
-    norm = matplotlib.colors.Normalize(vmin=0, vmax=0.25)
+    norm = matplotlib.colors.Normalize(vmin=0, vmax=25)
     cmap = sns.light_palette(sns.desaturate(RED, 0.85), reverse=False, as_cmap=True)
+    shapes = (gpd.read_file(path_to_shapes)
+                 .to_crs(EPSG_3035_PROJ4)
+                 .rename(columns={"id": "locs"})
+                 .set_index("locs")
+                 .rename(index=lambda idx: idx.replace(".", "-")))
     continental = gpd.read_file(path_to_continental_shape).to_crs(EPSG_3035_PROJ4).set_index("id")
-    national = gpd.read_file(path_to_national_shapes).to_crs(EPSG_3035_PROJ4).set_index("id")
-    regional = gpd.read_file(path_to_regional_shapes).to_crs(EPSG_3035_PROJ4).set_index("id")
-    regional_relaxed = regional.copy()
+    national = gpd.read_file(path_to_national_shapes).to_crs(EPSG_3035_PROJ4).set_index("country_code")
+    regional = (gpd.read_file(path_to_regional_shapes)
+                   .to_crs(EPSG_3035_PROJ4)
+                   .set_index("id")
+                   .rename(index=lambda idx: idx.replace(".", "-")))
 
-    continental["cost"] = _read_cost(path_to_continental_result, scaling_factor_cost)
-    national["cost"] = _read_cost(path_to_national_result, scaling_factor_cost)
-    regional["cost"] = _read_cost(path_to_regional_result, scaling_factor_cost)
-    regional_relaxed["cost"] = np.random.normal(loc=0.12, scale=0.04, size=len(regional_relaxed)) # FIXME remove
+    continental["cost"] = _read_cost(shapes, path_to_continental_result, scaling_factor_cost, "continental")
+    national["cost"] = _read_cost(shapes, path_to_national_result, scaling_factor_cost, "national")
+    regional["cost"] = _read_cost(shapes, path_to_regional_result, scaling_factor_cost, "regional")
 
     _plot_layer(continental, "continental", norm, cmap, axes[0])
     _plot_layer(national, "national", norm, cmap, axes[1])
     _plot_layer(regional, "regional", norm, cmap, axes[2])
-    _plot_layer(regional_relaxed, "regional with trade", norm, cmap, axes[3])
+    sns.despine(ax=axes[3], top=True, bottom=True, left=True, right=True)
+    axes[3].set_xticks([])
+    axes[3].set_yticks([])
 
     _plot_colorbar(fig, axes, norm, cmap)
     fig.savefig(path_to_plot, dpi=300, transparent=True)
@@ -81,7 +89,7 @@ def _plot_layer(units, layer_name, norm, cmap, ax):
         color=sns.desaturate(RED, 0.85)
     )
     ax.annotate(layer_name, xy=[0.17, 0.90], xycoords='axes fraction')
-    ax.annotate(f"{units.cost.mean():.2f}€/kWh", xy=[0.17, 0.85], xycoords='axes fraction')
+    ax.annotate(f"{units.cost.mean():.0f} €ct/kWh", xy=[0.17, 0.85], xycoords='axes fraction')
 
 
 def _plot_colorbar(fig, axes, norm, cmap):
@@ -89,31 +97,67 @@ def _plot_colorbar(fig, axes, norm, cmap):
     s_m.set_array([])
     cbar = fig.colorbar(s_m, ax=axes, fraction=1, aspect=35, shrink=0.65)
     cbar.set_ticks(cbar.get_ticks())
-    cbar.set_ticklabels(["{:.2f}€/kWh".format(tick)
+    cbar.set_ticklabels(["{:.0f} €ct/kWh".format(tick)
                          for tick in cbar.get_ticks()])
     cbar.outline.set_linewidth(0)
 
 
-def _read_cost(path_to_result, scaling_factor_cost):
+def _read_cost(shapes, path_to_result, scaling_factor_cost, level):
+    assert level in ["continental", "national", "regional"]
     results = xr.open_dataset(path_to_result)
     cost = results['cost']
-    cost = _split_loc_techs(cost).sum(dim=['techs']).squeeze('costs')
+    cost = split_loc_techs(cost).sum(dim=['techs']).squeeze('costs')
     carrier_prod = results['carrier_prod']
     supply_only_carrier_prod = carrier_prod.sel(
         loc_tech_carriers_prod=list(results.loc_tech_carriers_supply_all.values)
     )
     carrier_prod = (
-        _split_loc_techs(supply_only_carrier_prod)
+        split_loc_techs(supply_only_carrier_prod)
         .sum(dim=['timesteps', 'techs'])
         .squeeze(['carriers'])
     )
-    return (cost / carrier_prod).to_series() * scaling_factor_cost / 1e3 # scale from EUR/MWh to EUR/kWh
+    if level == "continental":
+        cost = cost.sum(dim="locs").item()
+        carrier_prod = carrier_prod.sum(dim="locs").item()
+    elif level == "national":
+        cost = (cost.groupby(shapes.country_code.to_xarray().sortby(cost.locs))
+                    .sum(xr.ALL_DIMS)
+                    .to_series())
+        carrier_prod = (carrier_prod.groupby(shapes.country_code.to_xarray().sortby(carrier_prod.locs))
+                                    .sum(xr.ALL_DIMS)
+                                    .to_series())
+    elif level == "regional":
+        cost = cost.to_series()
+        carrier_prod.to_series()
+    return (cost / carrier_prod) * scaling_factor_cost / 1e1 # scale from €/MWh to €ct/kWh
 
 
-def _split_loc_techs(data_var, as_='DataArray'):
-    # copy from Calliope source code, copyright Calliope authors
-    # I am using the copy here because Calliope does not support xarray 0.12.
-    # which I need for the data handling. Thus, I cannot import calliope here.
+def reorganise_xarray_dimensions(data):
+    """
+    Reorganise Dataset or DataArray dimensions to be alphabetical *except*
+    `timesteps`, which must always come last in any DataArray's dimensions
+    """
+
+    if not (isinstance(data, xr.Dataset) or isinstance(data, xr.DataArray)):
+        raise TypeError('Must provide either xarray Dataset or DataArray to be reorganised')
+
+    steps = [i for i in ['datesteps', 'timesteps'] if i in data.dims]
+
+    if isinstance(data, xr.Dataset):
+        new_dims = (
+            sorted(list(set(data.dims.keys()) - set(steps)))
+        ) + steps
+    elif isinstance(data, xr.DataArray):
+        new_dims = (
+            sorted(list(set(data.dims) - set(steps)))
+        ) + steps
+
+    updated_data = data.transpose(*new_dims).reindex({k: data[k] for k in new_dims})
+
+    return updated_data
+
+
+def split_loc_techs(data_var, as_='DataArray'):
     """
     Get a DataArray with locations technologies, and possibly carriers
     split into separate coordinates.
@@ -133,7 +177,6 @@ def _split_loc_techs(data_var, as_='DataArray'):
     loc_tech_dim = [i for i in data_var.dims if 'loc_tech' in i]
     if not loc_tech_dim:
         loc_tech_dim = [i for i in data_var.dims if 'loc_carrier' in i]
-    non_loc_tech_dims = list(set(data_var.dims).difference(loc_tech_dim))
 
     if not loc_tech_dim:
         if as_ == 'Series':
@@ -144,37 +187,27 @@ def _split_loc_techs(data_var, as_='DataArray'):
             raise ValueError('`as_` must be `DataArray` or `Series`, '
                              'but `{}` given'.format(as_))
 
-    elif len(loc_tech_dim) > 1:
-        raise ValueError("Cannot split loc_techs or loc_techs_carrier dimension "
-                         "for DataArray {}".format(data_var.name))
-
     loc_tech_dim = loc_tech_dim[0]
     # xr.Datarray -> pd.Series allows for string operations
-    data_var_df = data_var.to_series().unstack(non_loc_tech_dims)
-    index_list = data_var_df.index.str.split('::').tolist()
+    data_var_idx = data_var[loc_tech_dim].to_index()
+    index_list = data_var_idx.str.split('::').tolist()
 
     # carrier_prod, carrier_con, and carrier_export will return an index_list
     # of size 3, all others will be an index list of size 2
     possible_names = ['loc', 'tech', 'carrier']
     names = [i + 's' for i in possible_names if i in loc_tech_dim]
 
-    data_var_df.index = pd.MultiIndex.from_tuples(index_list, names=names)
+    data_var_midx = pd.MultiIndex.from_tuples(index_list, names=names)
 
-    # If there were no other dimensions other than loc_techs(_carriers) then
-    # nothing was unstacked on creating data_var_df, so nothing is stacked now
-    if isinstance(data_var_df, pd.Series):
-        data_var_series = data_var_df
-    else:
-        data_var_series = data_var_df.stack(non_loc_tech_dims)
+    # Replace the Datarray loc_tech_dim with this new MultiIndex
+    updated_data_var = data_var.copy()
+    updated_data_var.coords[loc_tech_dim] = data_var_midx
+    updated_data_var = reorganise_xarray_dimensions(updated_data_var.unstack())
 
     if as_ == "Series":
-        return data_var_series
+        return updated_data_var.to_series()
 
     elif as_ == "DataArray":
-        updated_data_var = xr.DataArray.from_series(data_var_series)
-        updated_data_var.attrs = data_var.attrs
-        updated_data_var.name = data_var.name
-
         return updated_data_var
 
     else:
@@ -184,6 +217,7 @@ def _split_loc_techs(data_var, as_='DataArray'):
 
 if __name__ == "__main__":
     plot_map(
+        path_to_shapes=snakemake.input.shapes,
         path_to_continental_shape=snakemake.input.continental_shape,
         path_to_national_shapes=snakemake.input.national_shapes,
         path_to_regional_shapes=snakemake.input.regional_shapes,

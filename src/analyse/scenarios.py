@@ -44,7 +44,7 @@ def plot_costs(paths_to_results, path_to_costs, scaling_factor_cost):
     sns.heatmap(
         cost_heatmap(results, "regional"),
         cmap=pal, ax=ax1, cbar_ax=ax4,
-        cbar_kws={"label": "total system costs [€/kWh]"},
+        cbar_kws={"label": "total system costs [€ct/kWh]"},
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
         annot=True
@@ -112,7 +112,7 @@ def read_results(paths_to_results, scaling_factor_cost):
         autarky_level = AUTARKY_LEVEL_MAP[autarky_level]
         total_system_cost = (xr.open_dataset(path_to_results)["total_levelised_cost"]
                                .squeeze(["costs", "carriers"])
-                               .item()) * scaling_factor_cost / 1e3 # scale from EUR/MWh to EUR/kWh
+                               .item()) * scaling_factor_cost / 1e1 # scale from €/MWh to €ct/kWh
         results.loc[autarky_layer, grid_size, autarky_level] = total_system_cost
     return results.reset_index()
 

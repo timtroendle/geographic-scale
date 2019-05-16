@@ -50,8 +50,11 @@ rule model:
         "build/model/{resolution}/link-all-neighbours.yaml",
         "build/model/{resolution}/import-restrictions.yaml",
         "build/model/{resolution}/grid-size-restrictions.yaml",
-        "build/model/{resolution}/electricity-demand.csv",
         "build/model/{resolution}/load-shedding.yaml",
+        "build/model/{resolution}/hydro-capacities.yaml",
+        "build/model/{resolution}/electricity-demand.csv",
+        "build/model/{resolution}/energy-generation-hydro-ror.csv",
+        "build/model/{resolution}/energy-inflow-hydro-reservoir.csv",
         expand(
             "build/model/{{resolution}}/capacityfactors-{technology}.csv",
             technology=["open-field-pv", "rooftop-pv", "wind-offshore", "wind-onshore"],

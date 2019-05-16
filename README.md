@@ -14,7 +14,9 @@ This repository contains the entire scientific project, including code and repor
 
 3. Make sure you have a Gurobi license, or install and configure another solver.
 
-4. Provide the input data for Euro-Calliope, as defined in "Getting Ready" in  `./euro-calliope/README.md`.
+4. You need an account at the Copernicus Climate Data Service and you need to create a `$HOME/.cdsapirc` file with your credentials, see their [How To](https://cds.climate.copernicus.eu/api-how-to) (you do not need to manually install the client).
+
+5. Provide the input data for Euro-Calliope, as defined in "Getting Ready" in  `./euro-calliope/README.md`.
 
 ## Run the analysis
 

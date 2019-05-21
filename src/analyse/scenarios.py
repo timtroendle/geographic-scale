@@ -8,6 +8,7 @@ from matplotlib import gridspec
 import xarray as xr
 
 GREEN = "#679436"
+RED = "#A01914"
 
 DATA_INDEX = """autarky_scale,grid_scale,net_exchange_potential,cost
 regional,regional,0%,
@@ -37,7 +38,7 @@ def plot_costs(paths_to_results, path_to_costs, scaling_factor_cost):
 
     sns.set_context("paper")
     fig = plt.figure(figsize=(8, 3))
-    pal = sns.light_palette(GREEN)
+    pal = sns.light_palette(RED)
     gs = gridspec.GridSpec(1, 4, width_ratios=[3, 2, 1, 0.2])
     ax4 = fig.add_subplot(gs[3])
     ax1 = fig.add_subplot(gs[0])

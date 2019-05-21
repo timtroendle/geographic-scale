@@ -52,9 +52,13 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     national["cost"] = national["cost"] / base_costs
     regional["cost"] = regional["cost"] / base_costs
 
-    _plot_layer(continental, "continental", norm, cmap, axes[0])
-    _plot_layer(national, "national", norm, cmap, axes[1])
-    _plot_layer(regional, "regional", norm, cmap, axes[2])
+    total_costs_continental = _read_total_system_costs(path_to_continental_result, scaling_factor_cost) / base_costs
+    total_costs_national = _read_total_system_costs(path_to_national_result, scaling_factor_cost) / base_costs
+    total_costs_regional = _read_total_system_costs(path_to_regional_result, scaling_factor_cost) / base_costs
+
+    _plot_layer(continental, total_costs_continental, "continental", norm, cmap, axes[0])
+    _plot_layer(national, total_costs_national, "national", norm, cmap, axes[1])
+    _plot_layer(regional, total_costs_regional, "regional", norm, cmap, axes[2])
     sns.despine(ax=axes[3], top=True, bottom=True, left=True, right=True)
     axes[3].set_xticks([])
     axes[3].set_yticks([])
@@ -63,7 +67,7 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     fig.savefig(path_to_plot, dpi=300, transparent=True)
 
 
-def _plot_layer(units, layer_name, norm, cmap, ax):
+def _plot_layer(units, total_cost, layer_name, norm, cmap, ax):
     ax.set_aspect('equal')
     units.plot(
         linewidth=0.1,
@@ -94,7 +98,7 @@ def _plot_layer(units, layer_name, norm, cmap, ax):
         color=sns.desaturate(RED, 0.85)
     )
     ax.annotate(layer_name, xy=[0.17, 0.90], xycoords='axes fraction')
-    ax.annotate(f"{units.cost.mean():.0f}", xy=[0.17, 0.85], xycoords='axes fraction')
+    ax.annotate(f"{total_cost:.1f}", xy=[0.17, 0.85], xycoords='axes fraction')
 
 
 def _plot_colorbar(fig, axes, norm, cmap):
@@ -135,6 +139,12 @@ def _read_cost(shapes, path_to_result, scaling_factor_cost, level):
         cost = cost.to_series()
         carrier_prod.to_series()
     return (cost / carrier_prod) * scaling_factor_cost / 1e1 # scale from €/MWh to €ct/kWh
+
+
+def _read_total_system_costs(path_to_results, scaling_factor_cost):
+    return (xr.open_dataset(path_to_results)["total_levelised_cost"]
+              .squeeze(["costs", "carriers"])
+              .item()) * scaling_factor_cost / 1e1 # scale from €/MWh to €ct/kWh
 
 
 def reorganise_xarray_dimensions(data):

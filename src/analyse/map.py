@@ -29,7 +29,7 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     np.random.seed(123456789)
     fig = plt.figure(figsize=(8, 8), constrained_layout=True)
     axes = fig.subplots(2, 2).flatten()
-    norm = matplotlib.colors.Normalize(vmin=0, vmax=25)
+    norm = matplotlib.colors.Normalize(vmin=0, vmax=6)
     cmap = sns.light_palette(sns.desaturate(RED, 0.85), reverse=False, as_cmap=True)
     shapes = (gpd.read_file(path_to_shapes)
                  .to_crs(EPSG_3035_PROJ4)
@@ -46,6 +46,11 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     continental["cost"] = _read_cost(shapes, path_to_continental_result, scaling_factor_cost, "continental")
     national["cost"] = _read_cost(shapes, path_to_national_result, scaling_factor_cost, "national")
     regional["cost"] = _read_cost(shapes, path_to_regional_result, scaling_factor_cost, "regional")
+
+    base_costs = continental["cost"].iloc[0]
+    continental["cost"] = continental["cost"] / base_costs
+    national["cost"] = national["cost"] / base_costs
+    regional["cost"] = regional["cost"] / base_costs
 
     _plot_layer(continental, "continental", norm, cmap, axes[0])
     _plot_layer(national, "national", norm, cmap, axes[1])
@@ -89,7 +94,7 @@ def _plot_layer(units, layer_name, norm, cmap, ax):
         color=sns.desaturate(RED, 0.85)
     )
     ax.annotate(layer_name, xy=[0.17, 0.90], xycoords='axes fraction')
-    ax.annotate(f"{units.cost.mean():.0f} €ct/kWh", xy=[0.17, 0.85], xycoords='axes fraction')
+    ax.annotate(f"{units.cost.mean():.0f}", xy=[0.17, 0.85], xycoords='axes fraction')
 
 
 def _plot_colorbar(fig, axes, norm, cmap):
@@ -97,7 +102,7 @@ def _plot_colorbar(fig, axes, norm, cmap):
     s_m.set_array([])
     cbar = fig.colorbar(s_m, ax=axes, fraction=1, aspect=35, shrink=0.65)
     cbar.set_ticks(cbar.get_ticks())
-    cbar.set_ticklabels(["{:.0f} €ct/kWh".format(tick)
+    cbar.set_ticklabels(["{:.0f}".format(tick)
                          for tick in cbar.get_ticks()])
     cbar.outline.set_linewidth(0)
 

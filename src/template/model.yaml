@@ -36,7 +36,7 @@ run:
     solver_io: python
     mode: plan
     solver_options:
-        Threads: 4
+        Threads: 6
         Method: 2 # use barrier, but do not run simplex in parallel
         Crossover: 0 # stop after barrier, do not perform crossover
         FeasibilityTol: 1e-3

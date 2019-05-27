@@ -1,4 +1,7 @@
-resolution: regional
-subset_time: "['2016-01-01', '2016-04-01']"
+resolution:
+    space: regional
+    time: 4H
+subset_time: "['2016-01-01', '2016-12-31']"
 uncertainty:
-    resolution: regional
+    resolution:
+        space: regional

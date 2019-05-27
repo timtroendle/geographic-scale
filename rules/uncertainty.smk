@@ -27,13 +27,13 @@ rule x:
 rule model_run:
     message:
         "Experiment {{wildcards.id}} using scenario {{wildcards.scenario}} and {} resolution.".format(
-            config["uncertainty"]["resolution"]
+            config["uncertainty"]["resolution"]["space"]
         )
     input:
-        model = "build/model/{}/model.yaml".format(config["uncertainty"]["resolution"]),
+        model = "build/model/{}/model.yaml".format(config["uncertainty"]["resolution"]["space"]),
         parameters = rules.x.output
     output: "build/uncertainty/{id}--{scenario}-results.nc"
-    params: resolution = config["uncertainty"]["resolution"]
+    params: resolution = config["uncertainty"]["resolution"]["space"]
     conda: "../envs/calliope.yaml"
     shell:
         """

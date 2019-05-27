@@ -2,13 +2,16 @@ rule run_national:
     message: "Run the model for scenario {wildcards.scenario} on national resolution."
     input:
         model = "build/model/national/model.yaml"
-    params: subset_time = config["subset_time"]
+    params:
+        subset_time = config["subset_time"],
+        time_resolution = config["resolution"]["time"]
     output: "build/output/national/{scenario}/results.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """
         calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario} \
-            --override_dict "{{model.subset_time: {params.subset_time}}}"
+            --override_dict "{{model.subset_time: {params.subset_time}, model.time.function: resample, \
+                               model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"
         """
 
 
@@ -16,13 +19,16 @@ rule run_regional: # this is a copy of run_national which is necessary to have d
     message: "Run the model for scenario {wildcards.scenario} on regional resolution."
     input:
         model = "build/model/regional/model.yaml"
-    params: subset_time = config["subset_time"]
+    params:
+        subset_time = config["subset_time"],
+        time_resolution = config["resolution"]["time"]
     output: "build/output/regional/{scenario}/results.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """
         calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario} \
-            --override_dict "{{model.subset_time: {params.subset_time}}}"
+            --override_dict "{{model.subset_time: {params.subset_time}, model.time.function: resample, \
+                               model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"
         """
 
 
@@ -32,7 +38,7 @@ rule test:
         "src/analyse/test_runner.py",
         "tests/test_feasibility.py",
         results = expand(
-            "build/output/{resolution}/{{scenario}}/results.nc".format(resolution=config["resolution"]),
+            "build/output/{resolution}/{{scenario}}/results.nc".format(resolution=config["resolution"]["space"]),
             scenario=config["scenarios"]
         )
     output: "build/logs/test-report.html"

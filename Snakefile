@@ -6,6 +6,9 @@ include: "./rules/analyse.smk"
 include: "./rules/uncertainty.smk"
 localrules: all, clean
 
+wildcard_constraints:
+        resolution = "((national)|(regional))" # can run on national or regional spatial resolution
+
 onstart:
     shell("mkdir -p build/logs")
 onsuccess:

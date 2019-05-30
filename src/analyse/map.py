@@ -57,11 +57,11 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     total_costs_regional = _read_total_system_costs(path_to_regional_result, scaling_factor_cost) / base_costs
 
     _plot_layer(continental, total_costs_continental, "continental", norm, cmap, axes[0])
-    _plot_layer(national, total_costs_national, "national", norm, cmap, axes[1])
-    _plot_layer(regional, total_costs_regional, "regional", norm, cmap, axes[2])
-    sns.despine(ax=axes[3], top=True, bottom=True, left=True, right=True)
-    axes[3].set_xticks([])
-    axes[3].set_yticks([])
+    _plot_layer(national, total_costs_national, "national", norm, cmap, axes[2])
+    _plot_layer(regional, total_costs_regional, "regional", norm, cmap, axes[3])
+    sns.despine(ax=axes[1], top=True, bottom=True, left=True, right=True)
+    axes[1].set_xticks([])
+    axes[1].set_yticks([])
 
     _plot_colorbar(fig, axes, norm, cmap)
     fig.savefig(path_to_plot, dpi=300, transparent=True)

@@ -1,6 +1,5 @@
 ---
 title: Geographical Scale
-subtitle: --Concept--
 author:
     - Tim Tröndle
     - Johan Lilliestam
@@ -20,5 +19,5 @@ bibliography:
     - 'literature.bib'
 csl: 'energy-policy.csl'
 link-citations: True
-date: 2019-02-18
+date: 2019-05-21-dev
 ---

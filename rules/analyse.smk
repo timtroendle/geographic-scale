@@ -74,3 +74,25 @@ rule plot_map:
     output: "build/output/{resolution}/map.png"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/map.py"
+
+
+rule overview_scenario_results:
+    message: "Create table of key outputs of scenarios."
+    input:
+        src = "src/analyse/scenario_overview.py",
+        results = expand("build/output/{{resolution}}/{scenario}/results.nc", scenario=config["scenarios"])
+    params: scaling_factors = config["scaling-factors"]
+    output: "build/output/{resolution}/overview-scenario-results.csv"
+    conda: "../envs/calliope.yaml"
+    script: "../src/analyse/scenario_overview.py"
+
+
+rule overview_cost_assumptions:
+    message: "Create table of key cost assumptions."
+    input:
+        src = "src/analyse/cost_assumptions.py",
+        model = "build/output/{resolution}/regional-autarky-70-continental-grid/results.nc"
+    params: scaling_factors = config["scaling-factors"]
+    output: "build/output/{resolution}/overview-cost-assumptions.csv"
+    conda: "../envs/calliope.yaml"
+    script: "../src/analyse/cost_assumptions.py"

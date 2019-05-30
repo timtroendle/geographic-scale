@@ -5,7 +5,8 @@ dependencies:
     - python=3.7
     - pytest=4.2.0
     - pytest-html=1.20.0
+    - panads=0.24.2
+    - calliope=0.6.4
     - pip=19.0.3
     - pip:
         - pytest-pythonpath # adds the root path "./" to PYTHONPATH
-        - git+git://github.com/calliope-project/calliope.git@fd9933d89141186604f57285fe860c9028b0f117 # FIXME install development version. Remove after release of 0.6.4

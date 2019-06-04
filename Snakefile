@@ -42,7 +42,7 @@ rule report:
         "report/concept.md",
         "report/pandoc-metadata.yml",
         "report/report.css",
-        "report/energy-policy.csl",
+        "report/pnas.csl",
         "report/fonts/KlinicSlabBook.otf",
         "report/fonts/KlinicSlabBookIt.otf",
         "report/fonts/KlinicSlabMedium.otf",

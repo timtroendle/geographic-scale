@@ -7,6 +7,7 @@ resolution:
     space: national
     time: 1H
 subset_time: "['2016-01-01', '2016-01-01']"
+year: 2016
 scenarios:
     - continental-autarky-100-continental-grid
     - national-autarky-100-continental-grid

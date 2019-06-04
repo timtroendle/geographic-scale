@@ -7,8 +7,8 @@ TECHS = {
     "wind_onshore_monopoly": "Onshore wind",
     "wind_offshore": "Offshore wind",
     "ac_transmission": "AC transmission^",
-    "battery": "Battery",
-    "hydrogen": "Hydrogen",
+    "battery": "Short term storage",
+    "hydrogen": "Long term storage",
     "load_shedding": "Load shedding"
 }
 

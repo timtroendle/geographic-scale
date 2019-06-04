@@ -17,7 +17,7 @@ abstract: |
     Analysis of the costs of electricity autarky and small scale grids.
 bibliography:
     - 'literature.bib'
-csl: 'energy-policy.csl'
+csl: pnas.csl
 link-citations: True
-date: 2019-05-21-dev
+date: draft-01
 ---

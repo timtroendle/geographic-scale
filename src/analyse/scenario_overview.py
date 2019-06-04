@@ -22,7 +22,7 @@ def main(paths_to_results, scaling_factors, path_to_output):
             "Storage capacity [GW]": [storage_capacity_power(result, scaling_factors) for result in scenario_results.values()],
             "Storage capacity [GWh]": [storage_capacity_energy(result, scaling_factors) for result in scenario_results.values()],
             "Transmission capacity [GW km]": [transmission_capacity(result, scaling_factors) for result in scenario_results.values()],
-            "Load shedded [GWh]": [shedded_load(result, scaling_factors) for result in scenario_results.values()]
+            "Load shed [GWh]": [shed_load(result, scaling_factors) for result in scenario_results.values()]
         }
     )
     data.index.name = "Scenario"
@@ -74,7 +74,7 @@ def transmission_capacity(result, scaling_factors):
         return 0
 
 
-def shedded_load(result, scaling_factors): # FIXME doesn't seem to work
+def shed_load(result, scaling_factors): # FIXME doesn't seem to work
     gen = result.get_formatted_array("carrier_prod") / scaling_factors["power"]
     if "load_shedding" in gen.techs:
         return gen.sel(techs="load_shedding").sum().item() * ENERGY_SCALING_FACTOR

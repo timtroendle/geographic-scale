@@ -5,7 +5,7 @@ dependencies:
     - python=3.7
     - pytest=4.2.0
     - pytest-html=1.20.0
-    - panads=0.24.2
+    - pandas=0.24.2
     - calliope=0.6.4
     - pip=19.0.3
     - pip:

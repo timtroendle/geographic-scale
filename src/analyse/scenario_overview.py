@@ -74,7 +74,7 @@ def transmission_capacity(result, scaling_factors):
         return 0
 
 
-def shed_load(result, scaling_factors): # FIXME doesn't seem to work
+def shed_load(result, scaling_factors):
     gen = result.get_formatted_array("carrier_prod") / scaling_factors["power"]
     if "load_shedding" in gen.techs:
         return gen.sel(techs="load_shedding").sum().item() * ENERGY_SCALING_FACTOR

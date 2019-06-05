@@ -11,5 +11,9 @@ run_regional:
     runtime: 2879
     cores: 6
     memory: 40000
+uncertainty_run:
+    runtime: 120
+    cores: 6
+    memory: 5000
 plot_map:
     runtime: 60

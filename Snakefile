@@ -33,24 +33,26 @@ rule copy_report_file:
     output: "build/output/report/{filename}.{suffix}"
     shell: "cp {input} {output}"
 
+REPORT_DEPENDENCIES = [
+    "report/report.md",
+    "report/literature.bib",
+    "report/concept.md",
+    "report/pandoc-metadata.yml",
+    "report/report.css",
+    "report/pnas.csl",
+    "report/fonts/KlinicSlabBook.otf",
+    "report/fonts/KlinicSlabBookIt.otf",
+    "report/fonts/KlinicSlabMedium.otf",
+    "report/fonts/KlinicSlabMediumIt.otf",
+    "build/output/report/scenario-space.png",
+    "build/output/report/map.png",
+    "build/output/report/overview-scenario-results.csv",
+    "build/output/report/overview-cost-assumptions.csv"
+]
 
 rule report:
     message: "Compile report."
-    input:
-        "report/report.md",
-        "report/literature.bib",
-        "report/concept.md",
-        "report/pandoc-metadata.yml",
-        "report/report.css",
-        "report/pnas.csl",
-        "report/fonts/KlinicSlabBook.otf",
-        "report/fonts/KlinicSlabBookIt.otf",
-        "report/fonts/KlinicSlabMedium.otf",
-        "report/fonts/KlinicSlabMediumIt.otf",
-        "build/output/report/scenario-space.png",
-        "build/output/report/map.png",
-        "build/output/report/overview-scenario-results.csv",
-        "build/output/report/overview-cost-assumptions.csv",
+    input: REPORT_DEPENDENCIES
     output:
         "build/report.html"
     conda: "envs/pdf.yaml"
@@ -66,10 +68,10 @@ rule report:
 
 rule pdf_report:
     message: "Compile PDF report."
-    input: rules.report.output # to avoid repeating all dependencies
+    input: REPORT_DEPENDENCIES
     output: "build/report.pdf"
     conda: "envs/pdf.yaml"
-    shadow: "full"
+    shadow: "minimal"
     shell:
         """
         cd report

@@ -25,6 +25,11 @@ uncertainty:
     experiment-design: ./config/uncertainty-experiment-design.tsv
     resolution:
         space: national
+        time: 1H
+    subset_time: "['2016-01-01', '2016-01-01']"
+    scenarios:
+        large-scale: continental-autarky-100-continental-grid
+        small-scale: national-autarky-100-national-grid
     parameters:
         installation-costs-battery-power:
             description: Costs for installing battery power capacity (inverter etc.).
@@ -105,4 +110,4 @@ uncertainty:
             unit: "%/yr"
             scaling-factor:
             inverse-scaling-factor:
-            calliope-param: # TODO several
+            calliope-param: tech_groups.supply.costs.monetary.interest_rate # TODO several

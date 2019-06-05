@@ -11,6 +11,7 @@ import pandas as pd
 
 experiment_design = pd.read_csv(config["uncertainty"]["experiment-design"], index_col=0, sep="\t")
 experiment_design.index = experiment_design.index.astype(str)
+localrules: x
 
 
 rule x:
@@ -24,7 +25,7 @@ rule x:
     script: "../src/uncertainty/x.py"
 
 
-rule model_run:
+rule uncertainty_run:
     message:
         "Experiment {{wildcards.id}} using scenario {{wildcards.scenario}} and {} resolution.".format(
             config["uncertainty"]["resolution"]["space"]
@@ -32,13 +33,19 @@ rule model_run:
     input:
         model = "build/model/{}/model.yaml".format(config["uncertainty"]["resolution"]["space"]),
         parameters = rules.x.output
+    params:
+        subset_time = config["uncertainty"]["subset_time"],
+        time_resolution = config["uncertainty"]["resolution"]["time"],
     output: "build/uncertainty/{id}--{scenario}-results.nc"
-    params: resolution = config["uncertainty"]["resolution"]["space"]
     conda: "../envs/calliope.yaml"
     shell:
-        """
+        """ # FIXME should fail when sub-optimal, but currently I cannot make it optimal
         calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario}\
-        --override_dict="{{import: [{input.parameters}] }}"
+        --no_fail_when_infeasible\
+        --override_dict="{{import: [{input.parameters}], \
+                           model.subset_time: {params.subset_time}, \
+                           model.time.function: resample, \
+                           model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"
         """
 
 
@@ -46,13 +53,13 @@ rule y:
     message: "Calculate y for experiment {wildcards.id}."
     input:
         src = "src/uncertainty/y.py",
-        large_scale = "build/uncertainty/{id}--continental-autarky-100-continental-grid-results.nc",
-        small_scale = "build/uncertainty/{id}--regional-autarky-100-continental-grid-results.nc"
+        large_scale = "build/uncertainty/{{id}}--{}-results.nc".format(config["uncertainty"]["scenarios"]["large-scale"]),
+        small_scale = "build/uncertainty/{{id}}--{}-results.nc".format(config["uncertainty"]["scenarios"]["small-scale"])
     output: "build/uncertainty/{id}-y.tsv"
     params:
         scaling_factors = config["scaling-factors"],
         experiment_id = lambda wildcards: wildcards.id
-    conda: "../envs/default.yaml"
+    conda: "../envs/calliope.yaml"
     script: "../src/uncertainty/y.py"
 
 

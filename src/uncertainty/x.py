@@ -15,8 +15,10 @@ def _map_name(name, parameter_definitions):
 
 def _scale_value(name, value, parameter_definitions, scaling_factors):
     parameter_definition = parameter_definitions[name]
-    scaling_factor = scaling_factors[parameter_definition["scaling-factor"]]
-    inverse_scaling_factor = scaling_factors[parameter_definition["inverse-scaling-factor"]]
+    assert value >= parameter_definition["min"], name
+    assert value <= parameter_definition["max"], name
+    scaling_factor = scaling_factors.get(parameter_definition["scaling-factor"], 1)
+    inverse_scaling_factor = scaling_factors.get(parameter_definition["inverse-scaling-factor"], 1)
     return value * scaling_factor / inverse_scaling_factor
 
 

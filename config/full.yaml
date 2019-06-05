@@ -4,4 +4,6 @@ resolution:
 subset_time: "['2016-01-01', '2016-12-31']"
 uncertainty:
     resolution:
-        space: regional
+        space: national
+        time: 3H
+    subset_time: "['2016-01-01', '2016-12-31']"

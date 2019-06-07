@@ -4,7 +4,7 @@ include: "./rules/sync.smk"
 include: "./rules/construct.smk"
 include: "./rules/analyse.smk"
 include: "./rules/uncertainty.smk"
-localrules: all, clean, copy_report_file, report, pdf_report
+localrules: all, clean, copy_report_file, report, pdf_report, docx_report
 
 wildcard_constraints:
         resolution = "((national)|(regional))" # can run on national or regional spatial resolution
@@ -80,6 +80,19 @@ rule pdf_report:
         -o ../build/report.pdf
         """
 
+
+rule docx_report:
+    message: "Compile DOCX report."
+    input: REPORT_DEPENDENCIES
+    output: "build/report.docx"
+    conda: "envs/pdf.yaml"
+    shadow: "minimal"
+    shell:
+        """
+        cd report
+        ln -s ../build .
+        {PANDOC} report.md pandoc-metadata.yml -o ../build/report.docx
+        """
 
 rule clean: # removes all generated results
     shell:

@@ -1,15 +1,10 @@
 # Introduction
 
-There is a strive for local electricity generation.
+100% renewable electricity provision through solar, wind, and hydro power is technically possible and financially viable in Europe: technologies are largely available and mature, land and water provide enough surfaces, costs are expected to be in a similar range as today [@Rasmussen:2012; @Bussar:2014; @Connolly:2016; @Gils:2017; @Plessmann:2017; @Jacobson:2017; @Brown:2018; @Zappa:2019; @Trondle:2019; @Child:2019]. However, generation of renewable sources fluctuates with the resource: weather regimes and seasons create fluctuations from days to seasons. These fluctuations can be balanced locally and temporally through generation mixes, demand flexibility, or storage. Additionally they can be balanced spatially, using a grid spanning large parts or all of Europe and institutions supporting international trade of electricity.
 
-Opponents mention additional costs through these mechanisms:
+Relying on spatial balancing requires cooperation between regions and nations within Europe: the current electricity grid would need to be extended significantly [@Rodriguez:2014; @Schlachtberger:2017; @Child:2019] with some regions being more impacted by grid infrastructure than others (SOURCES), and institutions enabling electricity trade would need to be installed [@EuropeanCommission:2016; @Patt:2018]. However, many studies estimated lower costs for the entire electricity system when fluctuations are balanced spatially through the grid, rather than locally [@Rodriguez:2014; @Steinke:2013; @Schmid:2015, @Czisch:2005; @Schlachtberger:2017; @Child:2019]. In addition, a large grid may enable access to better resources, for example X and Y (SOURCES), decreasing system costs further [@Czisch:2005; @Schmid:2015].
 
-* access to better resources,
-* balancing through grid reduces storage needs.
-
-Examples of quantifications are THIS AND THAT. However, they focus on grid structures and not on administrative division and they do not consider the idea of self-sufficiency.
-
-How much does renewable electricity autarky cost in Europe?
+Here we assess the trade-off between necessary grid infrastructure for larger electricity systems in Europe and higher costs of smaller electricity systems in detail. We quantify these impacts for electricity system sizes ranging from 502 regional systems to one continental system, and for shares of local electricity generation from 70--100%. We find that ...
 
 ## Model overview
 
@@ -64,6 +59,8 @@ DEEP DIVE 2: Country/region Y with low costs. What are the drivers?
 
 # Discussion
 
+Large grid comes needs institutional support, and cooperation can fail.
+
 ## Short comings
 
 1. no explicit modelling of flexibility and demand from heat sector
@@ -72,6 +69,7 @@ DEEP DIVE 2: Country/region Y with low costs. What are the drivers?
 4. ignoring status quo and transition paths (including cost dynamics _on_ the transition path)
 5. ignoring distribution grid and grid services
 6. ignoring correlation of technology deployment and its costs (Europe is a large market)
+7. optimistic renewable potentials (technical-potential?) in here, less optimistic ones make small scales systems impossible or more expensive
 
 # Conclusion
 Autarky can be expensive. Using the grid for balancing can bring costs down significantly. Access to better resources is not as important.

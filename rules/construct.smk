@@ -20,7 +20,7 @@ rule import_restrictions:
     message: "Create import restriction overrides for {wildcards.resolution} resolution."
     input:
         src = "src/construct/import_restrictions.py",
-        units = "euro-calliope/data/{resolution}/units.geojson"
+        units = eurocalliope("build/data/{resolution}/units.geojson")
     params:
         restrictions = [0, 15, 30]
     conda: "../envs/geo.yaml"
@@ -33,7 +33,7 @@ rule grid_size_restrictions:
     input:
         src = "src/construct/grid_size_restrictions.py",
         links = "build/model/{resolution}/link-all-neighbours.yaml",
-        units = "euro-calliope/data/{resolution}/units.geojson"
+        units = eurocalliope("build/data/{resolution}/units.geojson")
     conda: "../envs/geo.yaml"
     output: "build/model/{resolution}/grid-size-restrictions.yaml"
     script: "../src/construct/grid_size_restrictions.py"

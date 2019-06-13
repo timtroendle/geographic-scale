@@ -62,10 +62,10 @@ rule plot_map:
     message: "Create map of results."
     input:
         src = "src/analyse/map.py",
-        shapes = "data/{resolution}/units.geojson",
-        continental_shape = "data/continental/units.geojson",
-        national_shapes = "data/national/units.geojson",
-        regional_shapes = "data/regional/units.geojson",
+        shapes = eurocalliope("build/data/{resolution}/units.geojson"),
+        continental_shape = eurocalliope("build/data/continental/units.geojson"),
+        national_shapes = eurocalliope("build/data/national/units.geojson"),
+        regional_shapes = eurocalliope("build/data/regional/units.geojson"),
         continental_result = "build/output/{resolution}/continental-autarky-100-continental-grid/results.nc",
         national_result = "build/output/{resolution}/national-autarky-100-national-grid/results.nc",
         regional_result = "build/output/{resolution}/regional-autarky-100-regional-grid/results.nc"

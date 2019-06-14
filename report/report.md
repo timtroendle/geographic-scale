@@ -86,7 +86,7 @@ We call a set of supply capacities at each node, storage capacities at each node
 
 We model electrical load as being inflexible, i.e. following a predefined profile. We determine profiles for each regional administrative unit following a method described in @Trondle:2019. First, we derive the location and annual demand of industrial facilities with highest electricity demand in Europe from emission data of the European Emission Trading Scheme [@EuropeanEnvironmentAgency:2018]. We assume industrial load to be nearly constant and thus derive flat industry profiles for each regional administrative unit.
 
-Second, we use measured national load profiles of 2016 [@Muehlenpfordt:2019] and subtract industrial demand to retrieve national profiles of residential and commercial load. We then assume residential and commercial load to be spatially distributed proportional to population counts and use the Global Human Settlement Population Grid with a resolution of 250 m [@JRC:2015] to allocate residential and commercial load to regional administrative units.
+Second, we use measured national load profiles of 2016 [@Muehlenpfordt:2019] (for Albania no data of 2016 is available and thus we use data of 2017) and subtract industrial demand to retrieve national profiles of residential and commercial load. We then assume residential and commercial load to be spatially distributed proportional to population counts and use the Global Human Settlement Population Grid with a resolution of 250 m [@JRC:2015] to allocate residential and commercial load to regional administrative units.
 
 Finally, we sum the two time series to retrieve electricity load profiles at each network node.
 
@@ -176,7 +176,3 @@ When we limit net imports into continental, national, or regional areas leading 
 ...
 
 # Bibliography
-
-
- 
-

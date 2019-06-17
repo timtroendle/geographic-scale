@@ -39,9 +39,8 @@ rule uncertainty_run:
     output: "build/uncertainty/{id}--{scenario}-results.nc"
     conda: "../envs/calliope.yaml"
     shell:
-        """ # FIXME should fail when sub-optimal, but currently I cannot make it optimal
+        """
         calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario}\
-        --no_fail_when_infeasible\
         --override_dict="{{import: [{input.parameters}], \
                            model.subset_time: {params.subset_time}, \
                            model.time.function: resample, \

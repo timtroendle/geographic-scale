@@ -6,6 +6,8 @@ import pandas as pd
 ENERGY_SCALING_FACTOR = 1 / 1e3 # from MW(h) to GW(h)
 PV_TECHS = ["open_field_pv", "roof_mounted_pv"]
 WIND_TECHS = ["wind_offshore", "wind_onshore_monopoly", "wind_onshore_competing"]
+HYDRO_TECHS = ["hydro_run_of_river"]
+RE_TECHS = PV_TECHS + WIND_TECHS + HYDRO_TECHS
 
 
 def main(paths_to_results, scaling_factors, path_to_output):
@@ -22,6 +24,7 @@ def main(paths_to_results, scaling_factors, path_to_output):
             "Storage capacity [GW]": [storage_capacity_power(result, scaling_factors) for result in scenario_results.values()],
             "Storage capacity [GWh]": [storage_capacity_energy(result, scaling_factors) for result in scenario_results.values()],
             "Transmission capacity [GW km]": [transmission_capacity(result, scaling_factors) for result in scenario_results.values()],
+            "Curtailment [%]": [relative_curtailment(result, scaling_factors) for result in scenario_results.values()],
             "Load shed [GWh]": [shed_load(result, scaling_factors) for result in scenario_results.values()]
         }
     )
@@ -72,6 +75,16 @@ def transmission_capacity(result, scaling_factors):
     else:
         assert trans_cap_mw.sum() == 0
         return 0
+
+
+def relative_curtailment(data, scaling_factors):
+    resource = data.get_formatted_array("resource").sel(techs=RE_TECHS)
+    capacity = data.get_formatted_array("energy_cap").sel(techs=RE_TECHS) / scaling_factors["power"]
+    potential = (resource * capacity).sum(dim=["timesteps", "techs", "locs"])
+    generated = (data.get_formatted_array("carrier_prod")
+                     .sel(techs=RE_TECHS)
+                     .sum(dim=["timesteps", "techs", "locs"])) / scaling_factors["power"]
+    return ((potential - generated) / potential).to_pandas().electricity * 100
 
 
 def shed_load(result, scaling_factors):

@@ -1,14 +1,16 @@
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import geopandas as gpd
 import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
 import xarray as xr
+import networkx as nx
+import shapely
 
 RED = "#A01914"
+BLUE = "#4F6DB8"
 
 EPSG_3035_PROJ4 = "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs "
 
@@ -26,7 +28,6 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
              path_to_continental_result, path_to_national_result, path_to_regional_result,
              path_to_shapes, path_to_plot, scaling_factor_cost):
     """Plot maps of results."""
-    np.random.seed(123456789)
     fig = plt.figure(figsize=(8, 8), constrained_layout=True)
     axes = fig.subplots(2, 2).flatten()
     norm = matplotlib.colors.Normalize(vmin=0, vmax=6)
@@ -56,9 +57,13 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     total_costs_national = _read_total_system_costs(path_to_national_result, scaling_factor_cost) / base_costs
     total_costs_regional = _read_total_system_costs(path_to_regional_result, scaling_factor_cost) / base_costs
 
-    _plot_layer(continental, total_costs_continental, "continental", norm, cmap, axes[0])
-    _plot_layer(national, total_costs_national, "national", norm, cmap, axes[2])
-    _plot_layer(regional, total_costs_regional, "regional", norm, cmap, axes[3])
+    network_continental = _read_network_graph(shapes, path_to_continental_result)
+    network_national = _read_network_graph(shapes, path_to_national_result)
+    network_regional = _read_network_graph(shapes, path_to_regional_result)
+
+    _plot_layer(continental, network_continental, total_costs_continental, "continental", norm, cmap, axes[0])
+    _plot_layer(national, network_national, total_costs_national, "national", norm, cmap, axes[2])
+    _plot_layer(regional, network_regional, total_costs_regional, "regional", norm, cmap, axes[3])
     sns.despine(ax=axes[1], top=True, bottom=True, left=True, right=True)
     axes[1].set_xticks([])
     axes[1].set_yticks([])
@@ -67,7 +72,7 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     fig.savefig(path_to_plot, dpi=300, transparent=True)
 
 
-def _plot_layer(units, total_cost, layer_name, norm, cmap, ax):
+def _plot_layer(units, network_graph, total_cost, layer_name, norm, cmap, ax):
     ax.set_aspect('equal')
     units.plot(
         linewidth=0.1,
@@ -77,6 +82,10 @@ def _plot_layer(units, total_cost, layer_name, norm, cmap, ax):
         cmap=cmap,
         ax=ax
     )
+    gpd.GeoSeries([
+        network_graph.edges[region, neighbour]["line"]
+        for region, neighbour in network_graph.edges
+    ], crs=units.crs).plot(ax=ax, linewidth=0.25, color=BLUE)
     ax.set_xlim(MAP_MIN_X, MAP_MAX_X)
     ax.set_ylim(MAP_MIN_Y, MAP_MAX_Y)
     ax.set_xticks([])
@@ -145,6 +154,21 @@ def _read_total_system_costs(path_to_results, scaling_factor_cost):
     return (xr.open_dataset(path_to_results)["total_levelised_cost"]
               .squeeze(["costs", "carriers"])
               .item()) * scaling_factor_cost / 1e1 # scale from €/MWh to €ct/kWh
+
+
+def _read_network_graph(shapes, path_to_results):
+    g = nx.Graph()
+    g.add_nodes_from((k, {"centroid": v}) for (k, v) in shapes.centroid.to_dict().items())
+
+    model = xr.open_dataset(path_to_results)
+    try:
+        lines = [(line.split(":")[0], line.split(":")[-1]) for line in model.loc_techs_transmission.values]
+        lines = [(a, b, {"line": shapely.geometry.LineString([g.nodes[a]["centroid"], g.nodes[b]["centroid"]])})
+                 for a, b in lines]
+        g.add_edges_from(lines)
+    except AttributeError:
+        pass # there are no lines
+    return g
 
 
 def reorganise_xarray_dimensions(data):

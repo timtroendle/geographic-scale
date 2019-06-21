@@ -36,6 +36,7 @@ rule copy_report_file:
 REPORT_DEPENDENCIES = [
     "report/report.md",
     "report/literature.bib",
+    "report/biofuel-feedstocks.csv",
     "report/concept.md",
     "report/pandoc-metadata.yml",
     "report/report.css",

@@ -7,7 +7,8 @@ ENERGY_SCALING_FACTOR = 1 / 1e3 # from MW(h) to GW(h)
 PV_TECHS = ["open_field_pv", "roof_mounted_pv"]
 WIND_TECHS = ["wind_offshore", "wind_onshore_monopoly", "wind_onshore_competing"]
 HYDRO_TECHS = ["hydro_run_of_river"]
-RE_TECHS = PV_TECHS + WIND_TECHS + HYDRO_TECHS
+BIOMASS_TECHS = ["biofuel"]
+CURTAILABLE_RE_TECHS = PV_TECHS + WIND_TECHS + HYDRO_TECHS
 
 
 def main(paths_to_results, scaling_factors, path_to_output):
@@ -21,6 +22,7 @@ def main(paths_to_results, scaling_factors, path_to_output):
         data={
             "PV capacity [GW]": [pv_capacity(result, scaling_factors) for result in scenario_results.values()],
             "Wind capacity [GW]": [wind_capacity(result, scaling_factors) for result in scenario_results.values()],
+            "Biomass capacity [GW]": [biomass_capacity(result, scaling_factors) for result in scenario_results.values()],
             "Storage capacity [GW]": [storage_capacity_power(result, scaling_factors) for result in scenario_results.values()],
             "Storage capacity [GWh]": [storage_capacity_energy(result, scaling_factors) for result in scenario_results.values()],
             "Transmission capacity [GW km]": [transmission_capacity(result, scaling_factors) for result in scenario_results.values()],
@@ -38,15 +40,20 @@ def main(paths_to_results, scaling_factors, path_to_output):
 
 
 def pv_capacity(result, scaling_factors):
-    return (result.get_formatted_array("energy_cap")
-                  .sel(techs=PV_TECHS)
-                  .sum()
-                  .item() / scaling_factors["power"] * ENERGY_SCALING_FACTOR)
+    return capacity(result, PV_TECHS, scaling_factors)
 
 
 def wind_capacity(result, scaling_factors):
+    return capacity(result, WIND_TECHS, scaling_factors)
+
+
+def biomass_capacity(result, scaling_factors):
+    return capacity(result, BIOMASS_TECHS, scaling_factors)
+
+
+def capacity(result, techs, scaling_factors):
     return (result.get_formatted_array("energy_cap")
-                  .sel(techs=WIND_TECHS)
+                  .sel(techs=techs)
                   .sum()
                   .item() / scaling_factors["power"] * ENERGY_SCALING_FACTOR)
 
@@ -78,11 +85,11 @@ def transmission_capacity(result, scaling_factors):
 
 
 def relative_curtailment(data, scaling_factors):
-    resource = data.get_formatted_array("resource").sel(techs=RE_TECHS)
-    capacity = data.get_formatted_array("energy_cap").sel(techs=RE_TECHS) / scaling_factors["power"]
+    resource = data.get_formatted_array("resource").sel(techs=CURTAILABLE_RE_TECHS)
+    capacity = data.get_formatted_array("energy_cap").sel(techs=CURTAILABLE_RE_TECHS) / scaling_factors["power"]
     potential = (resource * capacity).sum(dim=["timesteps", "techs", "locs"])
     generated = (data.get_formatted_array("carrier_prod")
-                     .sel(techs=RE_TECHS)
+                     .sel(techs=CURTAILABLE_RE_TECHS)
                      .sum(dim=["timesteps", "techs", "locs"])) / scaling_factors["power"]
     return ((potential - generated) / potential).to_pandas().electricity * 100
 

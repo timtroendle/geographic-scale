@@ -35,7 +35,7 @@ on each regional node which are connected through ac lines. Hourly resolution, o
 ```table
 ---
 caption: 'Overview over scenario results. {#tbl:overview-scenario-results}'
-alignment: LRRRR
+alignment: LRRRRRRRR
 include: build/output/report/overview-scenario-results.csv
 markdown: True
 ---
@@ -67,7 +67,7 @@ Large grid comes needs institutional support, and cooperation can fail.
 2. no explicit modelling of flexibility and demand from transport sector
 3. no explicit modelling of flexibility from demand side management
 4. ignoring status quo and transition paths (including cost dynamics _on_ the transition path)
-5. ignoring distribution grid and grid services
+5. ignoring distribution grid and grid services [@Brown:2018]
 6. ignoring correlation of technology deployment and its costs (Europe is a large market)
 7. optimistic renewable potentials (technical-potential?) in here, less optimistic ones make small scales systems impossible or more expensive
 
@@ -130,14 +130,25 @@ We derive the location and installed power and storage capacities of hydro stati
 
 To derive water inflow time series for each station, we use an approach based on ERA5 runoff data (ADD source) and hydrological basins (ADD source) described in [@Liu:2019]. We use Atlite (ADD  citation) to first determine all basins upstream of the hydro power station to be able to sum all upstream runoff while assuming a water flow speed of 1 m/s. For China, this method has shown to be able to replicate the temporal dynamics of water inflow accurately [@Liu:2019]. However, without correction factor, the method could not replicate the actual magnitude of the inflow.
 
-To overcome this issue, and to generate power time series, we use annual national generation data from IRENA (ADD source). For hydro run of river plants we assume constant annual capacity factors within each country, which allows us to estimate the annual generation per plant. We use this estimation to derive electricity generation time series for each plant by scaling and capping the water inflow time series in such a way, that they sum to the annual generation without ever exceeding power capacities of the stations. For hydro reservoirs, we additionally assume they never need to spill water, i.e. their storage capacity is sufficient to use all inflowing water. We then simply scale the water inflow time series in such a way they they sum to the annual generation of the stations.
+To overcome this issue, and to generate power time series, we use annual national generation data from IRENA (ADD source). For hydro run of river plants we assume constant annual capacity factors within each country, which allows us to estimate the annual generation per plant. We use this estimation to derive electricity generation time series for each plant by scaling and capping the water inflow time series in such a way, that they sum to the annual generation without ever exceeding power capacities of the stations. For hydro reservoirs, we additionally assume they never need to spill water, i.e. their storage capacity is sufficient to use all inflowing water. We then simply scale the water inflow time series in such a way that they sum to the annual generation of the stations.
 
 Finally, using the location data of each plant, we sum all time series and power and storage capacities per regional administrative unit to form hydro run of river and hydro reservoir capacities.
 
-## Biomass
+## Biofuels
 
-* determination of max installable capacity
-* costs, see Table @tbl:overview-cost-assumptions TODO add
+We use estimations of biofuel potentials for the year 2020 and reference assumptions taken from @RuizCastello:2015, but we assume no dedicated farming for energy crops and thus consider residuals and wastes only. The data is given as national aggregates, and we use national shares of farmland [@EuropeanSpaceAgency:2010], national shares of forests [@EuropeanSpaceAgency:2010], and national shares of population [@JRC:2015] as proxies to derive regional potentials by allocating proportionally based on the proxy. Table @tbl:biofuel-feedstocks lists all feedstocks we consider together with the proxy we use. 
+
+We assume an efficiency of 40% for the combustion of all biofuels. Further, we use fuel costs of the same source [@RuizCastello:2015], which we weigh and aggregate to reach a single value for all Europe and all feedstocks, as given in Table @tbl:overview-cost-assumptions.
+
+```table
+---
+caption: 'Biofuel feedstocks we consider, together with the proxy we use to derive regional values from national values. {#tbl:biofuel-feedstocks}'
+alignment: LR
+include: biofuel-feedstocks.csv
+include-encoding: UTF-8
+markdown: True
+---
+```
 
 ## Pumped hydro
 

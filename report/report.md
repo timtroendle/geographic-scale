@@ -22,6 +22,8 @@ Model consists of
 
 on each regional node which are connected through ac lines. Hourly resolution, one year operation, greenfield, cost optimisation.
 
+We are assessing long term (steady state) cost of electricity supply. We are neither aiming at determining costs of a transition to such states nor are we aiming at considering developments on the global market for supply and storage technologies. Thus, we assume cost for technologies at a late stage within their learning curves, i.e. costs manifesting when technologies are deployed at large scales, as in our study.
+
 # Results
 
 ## Continental perspective

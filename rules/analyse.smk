@@ -25,8 +25,9 @@ rule run_regional: # this is a copy of run_national which is necessary to have d
     output: "build/output/regional/{scenario}/results.nc"
     conda: "../envs/calliope.yaml"
     shell:
-        """
+        """ # because runs take a lot of computation time, don't fail when suboptimal
         calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario} \
+            --no_fail_when_infeasible\
             --override_dict "{{model.subset_time: {params.subset_time}, model.time.function: resample, \
                                model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"
         """

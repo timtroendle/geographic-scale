@@ -43,6 +43,8 @@ markdown: True
 ---
 ```
 
+![Share of total electricity flow between all countries for each interconnection, divided into net annual and inter-annual flows. Net annual flows cancel out imports and exports on the same interconnection and thus represent the net electricity imported and exported on any interconnection within one year. Inter-annual flows show the total amount of electricity flowing over the interconnection within one year, reduced by the net annual flows to pronounce the inter-annual effects. Both panels show the total electricity flow on all interconnections.](build/output/report/flows.png){#fig:flows .class}
+
 ## Local perspective
 
 ![Costs of renewable electricity autarky within Europe, for all Europe, all countries, and all regions. Net transfer capacities shown as blue lines connecting regions.](build/output/report/map.png){#fig:map .class}

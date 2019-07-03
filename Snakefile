@@ -47,6 +47,7 @@ REPORT_DEPENDENCIES = [
     "report/fonts/KlinicSlabMediumIt.otf",
     "build/output/report/scenario-space.png",
     "build/output/report/map.png",
+    "build/output/report/flows.png",
     "build/output/report/overview-scenario-results.csv",
     "build/output/report/overview-cost-assumptions.csv"
 ]

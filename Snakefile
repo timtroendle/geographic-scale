@@ -7,7 +7,7 @@ include: "./rules/uncertainty.smk"
 localrules: all, clean, copy_report_file, report, pdf_report, docx_report
 
 wildcard_constraints:
-        resolution = "((national)|(regional))" # can run on national or regional spatial resolution
+        resolution = "((continental)|(national)|(regional))" # supported spatial resolutions
 
 onstart:
     shell("mkdir -p build/logs")

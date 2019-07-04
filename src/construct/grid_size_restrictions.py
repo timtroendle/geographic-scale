@@ -61,7 +61,10 @@ def _continental_grid_size(units, links):
 
 def _read_links(path_to_links):
     with open(path_to_links, "r") as f_links:
-        links = yaml.safe_load(f_links)["links"].keys()
+        try:
+            links = yaml.safe_load(f_links)["links"].keys()
+        except AttributeError:
+            return [] # on continental scale, no links exist
     return [Link(location_A=location_pair[0], location_B=location_pair[1])
             for location_pair in (link.split(",") for link in links)]
 

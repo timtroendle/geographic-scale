@@ -38,9 +38,13 @@ rule test:
     input:
         "src/analyse/test_runner.py",
         "tests/test_feasibility.py",
+        "tests/test_constraints.py",
         results = expand(
             "build/output/{resolution}/{{scenario}}/results.nc".format(resolution=config["resolution"]["space"]),
             scenario=config["scenarios"]
+        ),
+        biofuel_potentials = eurocalliope("build/data/{resolution}/biofuel-potential-mwh-per-year.csv".format(
+            resolution=config["resolution"]["space"])
         )
     output: "build/logs/test-report.html"
     conda: "../envs/test.yaml"

@@ -12,6 +12,7 @@ dependencies:
     - gdal=2.4
     - fiona=1.8.6
     - geopandas=0.5.0
+    - descartes=1.1.0
     - mapclassify=2.1.1
     - jinja2=2.10.1
     - xarray=0.12.2

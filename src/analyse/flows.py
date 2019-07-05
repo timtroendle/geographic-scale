@@ -17,6 +17,8 @@ MAP_MIN_Y = 1400000
 MAP_MAX_X = 6600000
 MAP_MAX_Y = 5500000
 
+MWH_TO_TWH = 1e-6
+
 PATH_TO_FONT_AWESOME = Path(__file__).parent.parent / 'fonts' / 'fa-solid-900.ttf'
 LAYER_UNICODE = "\uf073"
 VALUE_UNICODE = "\uf1e6"
@@ -133,6 +135,7 @@ def plot_balancing(graph, countries, ax):
 
 def plot_line_use(countries, line_use, plot_name, ax):
     countries.plot(ax=ax, facecolor=GREY, edgecolor="w", linewidth=0.1)
+    total_line_use_twh = line_use[0].sum().item() * MWH_TO_TWH
     line_use[0] = line_use[0] / line_use[0].sum() * 100
     line_use.plot(
         ax=ax,
@@ -158,7 +161,6 @@ def plot_line_use(countries, line_use, plot_name, ax):
         color="black"
     )
     ax.annotate(plot_name, xy=[0.17, 0.90], xycoords='axes fraction')
-    total_line_use_twh = line_use.sum().item() / 1e6
     ax.annotate(f"{total_line_use_twh:.0f} TWh", xy=[0.17, 0.85], xycoords='axes fraction')
 
 

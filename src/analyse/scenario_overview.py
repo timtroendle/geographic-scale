@@ -9,6 +9,9 @@ WIND_TECHS = ["wind_offshore", "wind_onshore_monopoly", "wind_onshore_competing"
 HYDRO_TECHS = ["hydro_run_of_river"]
 BIOMASS_TECHS = ["biofuel"]
 CURTAILABLE_RE_TECHS = PV_TECHS + WIND_TECHS + HYDRO_TECHS
+ALL_STORAGE_TECHS = ["battery", "biofuel", "hydro_reservoir", "hydrogen", "pumped_hydro"]
+DEPLOYABLE_STORAGE_TECHS = ["battery", "hydrogen"]
+DEMAND_TECH = "demand_elec"
 
 
 def main(paths_to_results, scaling_factors, path_to_output):
@@ -27,7 +30,7 @@ def main(paths_to_results, scaling_factors, path_to_output):
             "Storage capacity [GWh]": [storage_capacity_energy(result, scaling_factors) for result in scenario_results.values()],
             "Transmission capacity [GW km]": [transmission_capacity(result, scaling_factors) for result in scenario_results.values()],
             "Curtailment [%]": [relative_curtailment(result, scaling_factors) for result in scenario_results.values()],
-            "Load shed [GWh]": [shed_load(result, scaling_factors) for result in scenario_results.values()]
+            "Load shed [‰]": [shed_load(result, scaling_factors) for result in scenario_results.values()]
         }
     )
     data.index.name = "Scenario"
@@ -51,6 +54,10 @@ def biomass_capacity(result, scaling_factors):
     return capacity(result, BIOMASS_TECHS, scaling_factors)
 
 
+def storage_capacity_power(result, scaling_factors):
+    return capacity(result, DEPLOYABLE_STORAGE_TECHS, scaling_factors)
+
+
 def capacity(result, techs, scaling_factors):
     return (result.get_formatted_array("energy_cap")
                   .sel(techs=techs)
@@ -58,19 +65,12 @@ def capacity(result, techs, scaling_factors):
                   .item() / scaling_factors["power"] * ENERGY_SCALING_FACTOR)
 
 
-def storage_capacity_power(result, scaling_factors):
-    return (result.results
-                  .energy_cap
-                  .sel(loc_techs=result.inputs.loc_techs_store)
-                  .sum()
-                  .item() / scaling_factors["power"] * ENERGY_SCALING_FACTOR)
-
-
 def storage_capacity_energy(result, scaling_factors):
-    return (result.results
-                  .storage_cap
-                  .sum()
-                  .item() / scaling_factors["power"] * ENERGY_SCALING_FACTOR)
+    storage_cap = result.get_formatted_array("storage_cap")
+    assert set(storage_cap.techs.values) == set(ALL_STORAGE_TECHS)
+    return (storage_cap.sel(techs=DEPLOYABLE_STORAGE_TECHS)
+                       .sum(["techs", "locs"])
+                       .item() / scaling_factors["power"] * ENERGY_SCALING_FACTOR)
 
 
 def transmission_capacity(result, scaling_factors):
@@ -95,9 +95,11 @@ def relative_curtailment(data, scaling_factors):
 
 
 def shed_load(result, scaling_factors):
-    gen = result.get_formatted_array("carrier_prod") / scaling_factors["power"]
+    gen = result.get_formatted_array("carrier_prod")
     if "load_shedding" in gen.techs:
-        return gen.sel(techs="load_shedding").sum().item() * ENERGY_SCALING_FACTOR
+        shed = gen.sel(techs="load_shedding").sum().item()
+        demand = result.get_formatted_array("carrier_con").sel(techs=DEMAND_TECH).sum().item() * -1
+        return (shed / demand * 1000)
     else:
         return 0
 

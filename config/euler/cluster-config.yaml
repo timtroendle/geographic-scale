@@ -17,3 +17,7 @@ uncertainty_run:
     memory: 5000
 plot_map:
     runtime: 60
+test:
+    runtime: 60
+overview_cost_assumptions:
+    runtime: 60

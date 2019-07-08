@@ -37,7 +37,8 @@ def _create_config_plugin(scenario_results, path_to_biofuel_potentials):
 
         @pytest.fixture(scope="session")
         def biofuel_potentials(self):
-            return pd.read_csv(path_to_biofuel_potentials, index_col=0)
+            return (pd.read_csv(path_to_biofuel_potentials, index_col=0)
+                      .rename(index=lambda loc: loc.replace(".", "-")))
 
         @pytest.fixture()
         def biofuel_potential(self, biofuel_potentials, location):

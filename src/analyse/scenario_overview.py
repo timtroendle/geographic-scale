@@ -12,11 +12,14 @@ CURTAILABLE_RE_TECHS = PV_TECHS + WIND_TECHS + HYDRO_TECHS
 ALL_STORAGE_TECHS = ["battery", "biofuel", "hydro_reservoir", "hydrogen", "pumped_hydro"]
 DEPLOYABLE_STORAGE_TECHS = ["battery", "hydrogen"]
 DEMAND_TECH = "demand_elec"
+AUTARKY_SCALE = '<i class="fas fa-layer-group"></i>'
+AUTARKY_LEVEL = '<i class="fas fa-shield-alt"></i>'
+GRID_SCALE = '<i class="fab fa-connectdevelop"></i>'
 
 
 def main(paths_to_results, scaling_factors, path_to_output):
     scenario_results = {
-        Path(path_to_results).parent.name: calliope.read_netcdf(path_to_results)
+        scenario_name(path_to_results): calliope.read_netcdf(path_to_results)
         for path_to_results in paths_to_results
     }
 
@@ -40,6 +43,14 @@ def main(paths_to_results, scaling_factors, path_to_output):
         header=True,
         float_format="%.0f"
     )
+
+
+def scenario_name(path_to_result):
+    autarky_scale, _, autarky_level, grid_scale, _ = Path(path_to_result).parent.name.split("-")
+    return f"""{AUTARKY_SCALE}: {autarky_scale}<br>
+    {AUTARKY_LEVEL}: {autarky_level}%<br>
+    {GRID_SCALE}: {grid_scale}<br>
+    """
 
 
 def pv_capacity(result, scaling_factors):

@@ -22,6 +22,6 @@ test:
     memory: 128000
 overview_cost_assumptions:
     runtime: 60
-overview_scenario_results:
+aggregated_results:
     runtime: 60
-    memory: 32000
+    memory: 128000

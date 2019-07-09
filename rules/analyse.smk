@@ -54,6 +54,18 @@ rule test:
     script: "../src/analyse/test_runner.py"
 
 
+rule aggregated_results:
+    message: "Create csv overview over all results."
+    input:
+        src = "src/analyse/aggregation.py",
+        scenarios = expand("build/output/{{resolution}}/{scenario}/results.nc", scenario=config["scenarios"]),
+        units = eurocalliope("build/data/{resolution}/units.geojson")
+    params: scaling_factors = config["scaling-factors"]
+    conda: "../envs/geo.yaml"
+    output: "build/output/{resolution}/aggregation.csv"
+    script: "../src/analyse/aggregation.py"
+
+
 rule plot_scenario_space:
     message: "Plot scenario space and results."
     input:
@@ -102,9 +114,7 @@ rule overview_scenario_results:
     message: "Create table of key outputs of scenarios."
     input:
         src = "src/analyse/scenario_overview.py",
-        results = expand("build/output/{{resolution}}/{scenario}/results.nc", scenario=config["scenarios"]),
-        units = eurocalliope("build/data/{resolution}/units.geojson")
-    params: scaling_factors = config["scaling-factors"]
+        results = rules.aggregated_results.output[0],
     output: "build/output/{resolution}/overview-scenario-results.csv"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/scenario_overview.py"

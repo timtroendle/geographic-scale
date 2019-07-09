@@ -8,7 +8,7 @@ dependencies:
     - pandas=0.24.2
     - calliope=0.6.4
     - xarray=0.12.2
-    - geopandas=0.5.0
+    - geopandas=0.4.1 # somehow conda on Euler works only with 0.4.1
     - pip=19.0.3
     - pip:
         - pytest-pythonpath # adds the root path "./" to PYTHONPATH

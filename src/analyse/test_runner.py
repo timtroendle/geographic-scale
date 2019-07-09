@@ -3,20 +3,25 @@ import sys
 import pytest
 import calliope
 import pandas as pd
+import geopandas as gpd
 
 
-def run_test(scenario_results, path_to_biofuel_potentials, path_to_output):
+def run_test(scenario_results, path_to_biofuel_potentials, scaling_factors, path_to_output, path_to_units):
     exit_code = pytest.main(
         [
             f"--html={path_to_output}",
             f"--self-contained-html",
         ],
-        plugins=[_create_config_plugin(scenario_results, path_to_biofuel_potentials)]
+        plugins=[_create_config_plugin(
+            scenario_results=scenario_results,
+            scaling_factors=scaling_factors,
+            path_to_biofuel_potentials=path_to_biofuel_potentials,
+            path_to_units=path_to_units)]
     )
     sys.exit(exit_code)
 
 
-def _create_config_plugin(scenario_results, path_to_biofuel_potentials):
+def _create_config_plugin(scenario_results, scaling_factors, path_to_biofuel_potentials, path_to_units):
     """Creates fixtures from Snakemake configuration."""
 
     class SnakemakeConfigPlugin():
@@ -25,6 +30,14 @@ def _create_config_plugin(scenario_results, path_to_biofuel_potentials):
         def model(self, request):
             return calliope.read_netcdf(request.param)
 
+        @pytest.fixture(scope="session")
+        def scaling_factors(self):
+            return scaling_factors
+
+        @pytest.fixture(scope="session")
+        def units(self):
+            return gpd.read_file(path_to_units).set_index("id")
+
         @pytest.fixture(
             params=calliope.read_netcdf(scenario_results[0]).inputs.locs.values
         )
@@ -32,8 +45,12 @@ def _create_config_plugin(scenario_results, path_to_biofuel_potentials):
             return request.param
 
         @pytest.fixture(scope="session")
-        def carrier_prod(self, model):
-            return model.get_formatted_array("carrier_prod").squeeze("carriers")
+        def carrier_prod(self, model, scaling_factors):
+            return model.get_formatted_array("carrier_prod").squeeze("carriers") / scaling_factors["power"]
+
+        @pytest.fixture(scope="session")
+        def carrier_con(self, model, scaling_factors):
+            return model.get_formatted_array("carrier_con").squeeze("carriers") / scaling_factors["power"]
 
         @pytest.fixture(scope="session")
         def biofuel_potentials(self):
@@ -50,6 +67,8 @@ def _create_config_plugin(scenario_results, path_to_biofuel_potentials):
 if __name__ == "__main__":
     run_test(
         scenario_results=snakemake.input.results,
+        path_to_units=snakemake.input.units,
         path_to_biofuel_potentials=snakemake.input.biofuel_potentials,
+        scaling_factors=snakemake.params.scaling_factors,
         path_to_output=snakemake.output[0]
     )

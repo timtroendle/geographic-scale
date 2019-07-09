@@ -19,5 +19,6 @@ plot_map:
     runtime: 60
 test:
     runtime: 60
+    memory: 128000
 overview_cost_assumptions:
     runtime: 60

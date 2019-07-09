@@ -9,18 +9,18 @@ import:
     - './grid-size-restrictions.yaml'
     - './load-shedding.yaml'
 scenarios:
-    continental-autarky-100-continental-grid: ["continental-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    national-autarky-100-continental-grid: ["national-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    national-autarky-100-national-grid: ["national-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    national-autarky-85-continental-grid: ["national-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    national-autarky-70-continental-grid: ["national-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-100-continental-grid: ["load-shedding", "regional-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-100-national-grid: ["load-shedding", "regional-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-100-regional-grid: ["load-shedding", "regional-autarky-100-percent", "regional-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-85-continental-grid: ["load-shedding", "regional-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-85-national-grid: ["load-shedding", "regional-autarky-85-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-70-continental-grid: ["load-shedding", "regional-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage"]
-    regional-autarky-70-national-grid: ["load-shedding", "regional-autarky-70-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage"]
+    continental-autarky-100-continental-grid: ["continental-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-autarky-100-continental-grid: ["national-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-autarky-100-national-grid: ["national-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-autarky-85-continental-grid: ["national-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-autarky-70-continental-grid: ["national-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-autarky-100-continental-grid: ["load-shedding", "regional-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-autarky-100-national-grid: ["load-shedding", "regional-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-autarky-100-regional-grid: ["load-shedding", "regional-autarky-100-percent", "regional-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-autarky-85-continental-grid: ["load-shedding", "regional-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-autarky-85-national-grid: ["load-shedding", "regional-autarky-85-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-autarky-70-continental-grid: ["load-shedding", "regional-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-autarky-70-national-grid: ["load-shedding", "regional-autarky-70-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
 model:
     name: 'Geographic Scale'
     calliope_version: 0.6.4
@@ -55,7 +55,25 @@ overrides:
         # the problem and reach a better numeric range.
         techs.battery.costs.monetary.om_prod: 0
         techs.hydrogen.costs.monetary.om_prod: 0
+    no-hydro-costs:
+        # Because we force all hydro to current levels, there
+        # should be no costs for it.
+        techs.pumped_hydro.costs.monetary.storage_cap: 0
+        techs.pumped_hydro.costs.monetary.energy_cap: 0
+        techs.pumped_hydro.costs.monetary.om_annual: 0
         techs.pumped_hydro.costs.monetary.om_prod: 0
+        techs.hydro_run_of_river.costs.monetary.energy_cap: 0
+        techs.hydro_run_of_river.costs.monetary.om_annual: 0
+        techs.hydro_run_of_river.costs.monetary.om_prod: 0
+        techs.hydro_run_of_river.costs.monetary.om_con: 0
+        techs.hydro_reservoir.costs.monetary.storage_cap: 0
+        techs.hydro_reservoir.costs.monetary.energy_cap: 0
+        techs.hydro_reservoir.costs.monetary.om_annual: 0
+        techs.hydro_reservoir.costs.monetary.om_prod: 0
+        techs.hydro_reservoir.costs.monetary.om_con: 0
+        techs.pumped_hydro.constraints.lifetime: 1
+        techs.hydro_run_of_river.constraints.lifetime: 1
+        techs.hydro_reservoir.constraints.lifetime: 1
     stylised-storage:
         # Transform battery and hydrogen to stylised short term
         # and long term storage solutions.

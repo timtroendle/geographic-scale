@@ -39,6 +39,7 @@ rule test:
         "src/analyse/test_runner.py",
         "tests/test_feasibility.py",
         "tests/test_constraints.py",
+        "tests/test_assumptions.py",
         results = expand(
             "build/output/{resolution}/{{scenario}}/results.nc".format(resolution=config["resolution"]["space"]),
             scenario=config["scenarios"]

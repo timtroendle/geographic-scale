@@ -101,10 +101,11 @@ rule overview_scenario_results:
     message: "Create table of key outputs of scenarios."
     input:
         src = "src/analyse/scenario_overview.py",
-        results = expand("build/output/{{resolution}}/{scenario}/results.nc", scenario=config["scenarios"])
+        results = expand("build/output/{{resolution}}/{scenario}/results.nc", scenario=config["scenarios"]),
+        units = eurocalliope("build/data/{resolution}/units.geojson")
     params: scaling_factors = config["scaling-factors"]
     output: "build/output/{resolution}/overview-scenario-results.csv"
-    conda: "../envs/calliope.yaml"
+    conda: "../envs/geo.yaml"
     script: "../src/analyse/scenario_overview.py"
 
 

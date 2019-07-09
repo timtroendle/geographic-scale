@@ -37,8 +37,9 @@ We are assessing long term (steady state) cost of electricity supply. We are nei
 ```table
 ---
 caption: 'Overview over scenario results. {#tbl:overview-scenario-results}'
-alignment: LRRRRRRRR
+alignment: LRRRRRRRRRR
 include: build/output/report/overview-scenario-results.csv
+include-encoding: utf-8
 markdown: True
 ---
 ```

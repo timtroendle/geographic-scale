@@ -1,0 +1,76 @@
+import:
+    - '../interest-rate.yaml'
+    - '../renewable-techs.yaml'
+    - '../storage-techs.yaml'
+    - '../link-techs.yaml'
+    - './locations.yaml'
+scenarios:
+    single-location: ["no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+model:
+    name: 'Geographic Scale -- Single Location'
+    calliope_version: 0.6.4
+    timeseries_data_path: './'
+    subset_time: ['2016-01-01', '2016-12-31']
+run:
+    objective_options: {
+        'cost_class': {'monetary': 1},
+        'sense': 'minimize'
+    }
+    solver: gurobi
+    solver_io: python
+    mode: plan
+    solver_options:
+        Threads: 1
+        Method: -1 # automatic
+        Crossover: 0 # stop after barrier, do not perform crossover
+        FeasibilityTol: 1e-3
+        OptimalityTol: 1e-4
+techs:
+    demand_elec:
+        essentials:
+            name: 'Electricity demand'
+            parent: demand
+            carrier: electricity
+        constraints:
+            resource: file=electricity-demand.csv
+overrides:
+    no-variable-storage-costs:
+        # These costs are speculative, especially for batteries.
+        # Not applying them furthermore allows to easier scale
+        # the problem and reach a better numeric range.
+        techs.battery.costs.monetary.om_prod: 0
+        techs.hydrogen.costs.monetary.om_prod: 0
+    no-hydro-costs:
+        # Because we force all hydro to current levels, there
+        # should be no costs for it.
+        techs.pumped_hydro.costs.monetary.storage_cap: 0
+        techs.pumped_hydro.costs.monetary.energy_cap: 0
+        techs.pumped_hydro.costs.monetary.om_annual: 0
+        techs.pumped_hydro.costs.monetary.om_prod: 0
+        techs.hydro_run_of_river.costs.monetary.energy_cap: 0
+        techs.hydro_run_of_river.costs.monetary.om_annual: 0
+        techs.hydro_run_of_river.costs.monetary.om_prod: 0
+        techs.hydro_run_of_river.costs.monetary.om_con: 0
+        techs.hydro_reservoir.costs.monetary.storage_cap: 0
+        techs.hydro_reservoir.costs.monetary.energy_cap: 0
+        techs.hydro_reservoir.costs.monetary.om_annual: 0
+        techs.hydro_reservoir.costs.monetary.om_prod: 0
+        techs.hydro_reservoir.costs.monetary.om_con: 0
+        techs.pumped_hydro.constraints.lifetime: 1
+        techs.hydro_run_of_river.constraints.lifetime: 1
+        techs.hydro_reservoir.constraints.lifetime: 1
+    stylised-storage:
+        # Transform battery and hydrogen to stylised short term
+        # and long term storage solutions.
+        techs:
+            battery:
+                essentials:
+                    name: Stylised short-term (e.g. battery) storage
+                constraints:
+                    energy_cap_per_storage_cap_min: 0.25 # max 4h full-power discharge
+            hydrogen:
+                essentials:
+                    name: Stylised long-term (e.g. hydrogen) storage
+                constraints:
+                    energy_cap_per_storage_cap_max: 0.25 # min 4h full-power discharge
+                    # TODO add upper restriction? energy_cap_per_storage_cap_min: ??

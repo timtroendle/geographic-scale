@@ -5,8 +5,10 @@ subworkflow eurocalliope:
 
 configfile: "./config/default.yaml"
 
-localrules: copy_euro_calliope, model
-ruleorder: model > import_restrictions > grid_size_restrictions > copy_euro_calliope
+localrules: copy_euro_calliope, load_shedding, model
+ruleorder: model > import_restrictions > grid_size_restrictions > load_shedding > copy_euro_calliope
+
+LOCATIONS_WITH_LOAD_SHEDDING = "data/{resolution}/locations-with-loadshedding.txt"
 
 
 rule copy_euro_calliope:
@@ -37,6 +39,24 @@ rule grid_size_restrictions:
     conda: "../envs/geo.yaml"
     output: "build/model/{resolution}/grid-size-restrictions.yaml"
     script: "../src/construct/grid_size_restrictions.py"
+
+
+def load_shedding_locations(wildcards):
+    locations = config["load-shedding"][wildcards["resolution"]]
+    if locations:
+        return locations
+    else:
+        return []
+
+
+rule load_shedding:
+    message: "Create load shedding override."
+    input:
+        src = "src/construct/load_shedding.py"
+    params: locations = load_shedding_locations
+    conda: "../envs/default.yaml"
+    output: "build/model/{resolution}/load-shedding.yaml"
+    script: "../src/construct/load_shedding.py"
 
 
 rule model:

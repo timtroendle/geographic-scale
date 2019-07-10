@@ -23,6 +23,15 @@ scenarios:
     - regional-autarky-85-national-grid
     - regional-autarky-70-continental-grid
     - regional-autarky-70-national-grid
+load-shedding:
+    continental:
+    national:
+    regional:
+        - AUT-9_1
+        - BEL-1_1
+        - DEU-3_1
+        - NOR-12_1
+        - CHE-5_1
 uncertainty:
     experiment-design: ./config/uncertainty-experiment-design.tsv
     resolution:

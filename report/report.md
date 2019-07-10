@@ -44,7 +44,8 @@ markdown: True
 ---
 ```
 
-![Share of total electricity flow between all countries for each interconnection, divided into net annual and inter-annual flows. Net annual flows cancel out imports and exports on the same interconnection and thus represent the net electricity imported and exported on any interconnection within one year. Inter-annual flows show the total amount of electricity flowing over the interconnection within one year, reduced by the net annual flows to pronounce the inter-annual effects. Both panels show the total electricity flow on all interconnections.](build/output/report/flows.png){#fig:flows .class}
+
+![Share of total electricity flow between all countries for each interconnection for the unrestricted case with continental autarky, divided into net annual and inter-annual flows. Net annual flows cancel out imports and exports on the same interconnection and thus represent the net electricity imported and exported on any interconnection within one year. Inter-annual flows show the total amount of electricity flowing over the interconnection within one year, reduced by the net annual flows to pronounce the inter-annual effects. Both panels show the total electricity flow on all interconnections.](build/output/report/flows.png){#fig:flows .class}
 
 ## Local perspective
 
@@ -171,7 +172,7 @@ Additionally, we assume that power and storage capacities can be expanded indepe
 
 ## Load shedding
 
-In some regions, the local renewable electricity generation potential is not high enough to satisfy local electricity demand   [@Trondle:2019]. This is problematic in scenarios in which regions strive for electricity autarky. To be able to nonetheless reach a balance between demand and supply in these corner cases, we add the possibility to shed load. We assume costs for each kWh shed, see Table @tbl:overview-cost-assumptions, and we allow load shedding only in scenarios with regional autarky.
+In some regions, the local technical renewable electricity generation potential is not high enough to satisfy local electricity demand  [@Trondle:2019]. This is problematic in scenarios in which regions strive for electricity autarky. To be able to nonetheless reach a balance between demand and supply in these corner cases, we add the possibility to shed load. We assume high costs for each kWh shed so that load shedding is used as a last resort only, see Table @tbl:overview-cost-assumptions, and we allow load shedding only in scenarios with regional autarky and only in regions that could otherwise not be autarkic: Vienna, Brussels, Berlin, Oslo, and Basel.
 
 ## Financial
 

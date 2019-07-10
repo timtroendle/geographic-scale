@@ -3,11 +3,13 @@ PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablen
 include: "./rules/sync.smk"
 include: "./rules/construct.smk"
 include: "./rules/analyse.smk"
+include: "./rules/loadshedding.smk"
 include: "./rules/uncertainty.smk"
 localrules: all, clean, copy_report_file, report, pdf_report, docx_report
 
 wildcard_constraints:
-        resolution = "((continental)|(national)|(regional))" # supported spatial resolutions
+        resolution = "((continental)|(national)|(regional))", # supported spatial resolutions
+        scenario = "({})".format("|".join([f"({scenario})" for scenario in config["scenarios"]]))
 
 onstart:
     shell("mkdir -p build/logs")

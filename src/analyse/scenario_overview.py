@@ -5,18 +5,26 @@ import pandas as pd
 AUTARKY_SCALE = '<i class="fas fa-layer-group"></i>'
 AUTARKY_LEVEL = '<i class="fas fa-shield-alt"></i>'
 GRID_SCALE = '<i class="fab fa-connectdevelop"></i>'
+SOLAR = '<i class="fas fa-sun"></i>'
+WIND = '<i class="fas fa-wind"></i>'
+BIOFUEL = '<i class="fas fa-leaf"></i>'
+STORAGE = '<i class="fas fa-battery-three-quarters"></i>'
+TRANSMISSION = '<i class="fab fa-connectdevelop"></i>'
+IMPORT = '<i class="fas fa-shopping-cart"></i>'
+CURTAILMENT = '<i class="fas fa-traffic-light"></i>'
+LOAD_SHED = '<i class="fas fa-truck-loading"></i>'
 
 VARIABLE_MAP = OrderedDict([
-    ("Capacity|Solar PV", "PV capacity [GW]"),
-    ("Capacity|Wind", "Wind capacity [GW]"),
-    ("Capacity|Bioenergy", "Biomass capacity [GW]"),
-    ("Capacity|Storage|Short and long term|Power", "Storage capacity [GW]"),
-    ("Capacity|Storage|Short and long term|Energy", "Storage capacity [GWh]"),
-    ("Capacity|Transmission", "Transmission capacity [GW km]"),
-    ("Energy|Gross import national level", "Gross imports [TWh]"),
-    ("Energy|Net import national level", "Net imports [TWh]"),
-    ("Energy|Renewable curtailment|Relative", "Curtailment [%]"),
-    ("Energy|Load shedding|Relative", "Load shed [‰]")
+    ("Capacity|Solar PV", f"{SOLAR} [GW]"),
+    ("Capacity|Wind", f"{WIND} [GW]"),
+    ("Capacity|Bioenergy", f"{BIOFUEL} [GW]"),
+    ("Capacity|Storage|Short and long term|Power", f"{STORAGE} [GW]"),
+    ("Capacity|Storage|Short and long term|Energy", f"{STORAGE} [GWh]"),
+    ("Capacity|Transmission", f"{TRANSMISSION} [TW km]"),
+    ("Energy|Gross import national level", f"{IMPORT} gross [TWh]"),
+    ("Energy|Net import national level", f"{IMPORT} net [TWh]"),
+    ("Energy|Renewable curtailment|Relative", f"{CURTAILMENT} [%]"),
+    ("Energy|Load shedding|Relative", f"{LOAD_SHED} [‰]")
 ])
 
 

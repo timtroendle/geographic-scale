@@ -57,6 +57,12 @@ def _create_config_plugin(scenario_results, scaling_factors, path_to_biofuel_pot
             return model.get_formatted_array("cost").squeeze("costs") / scaling_factors["monetary"]
 
         @pytest.fixture(scope="session")
+        def resource(self, model):
+            resource = model.get_formatted_array("resource")
+            timestep_resolution = model.inputs.timestep_resolution
+            return resource / timestep_resolution
+
+        @pytest.fixture(scope="session")
         def biofuel_potentials(self):
             return (pd.read_csv(path_to_biofuel_potentials, index_col=0)
                       .rename(index=lambda loc: loc.replace(".", "-")))

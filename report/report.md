@@ -144,7 +144,7 @@ Finally, using the location data of each plant, we sum all time series and power
 
 We use estimations of biofuel potentials for the year 2020 and reference assumptions taken from @RuizCastello:2015, but we assume no dedicated farming for energy crops and thus consider residuals and wastes only. The data is given as national aggregates, and we use national shares of farmland [@EuropeanSpaceAgency:2010], national shares of forests [@EuropeanSpaceAgency:2010], and national shares of population [@JRC:2015] as proxies to derive regional potentials by allocating proportionally based on the proxy. Table @tbl:biofuel-feedstocks lists all feedstocks we consider together with the proxy we use.
 
-We assume an efficiency of 40% for the combustion of all biofuels. Further, we use fuel costs of the same source [@RuizCastello:2015], which we weigh and aggregate to reach a single value for all Europe and all feedstocks, as given in Table @tbl:overview-cost-assumptions.
+We assume an efficiency of 45% for the combustion of all biofuels. Further, we use fuel costs of the same source [@RuizCastello:2015], which we weigh and aggregate to reach a single value for all Europe and all feedstocks, as given in Table @tbl:overview-cost-assumptions.
 
 ```table
 ---

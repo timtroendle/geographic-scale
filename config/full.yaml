@@ -2,6 +2,11 @@ resolution:
     space: regional
     time: 4H
 subset_time: "['2016-01-01', '2016-12-31']"
+weather-uncertainty:
+    start-year: 2007
+    resolution:
+        space: national
+        time: 4H
 uncertainty:
     resolution:
         space: national

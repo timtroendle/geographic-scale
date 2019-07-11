@@ -48,6 +48,33 @@ rule uncertainty_run:
         """
 
 
+rule weather_run:
+    message:
+        "Run weather sensitivity using scenario {wildcards.scenario} and {wildcards.resolution} resolution."
+    input:
+        model = "build/model/{resolution}/model.yaml",
+        elec_ts = "build/model/{resolution}/uncertainty/electricity-demand.csv",
+        ror_ts = "build/model/{resolution}/uncertainty/capacityfactors-hydro-ror.csv",
+        reservoir_ts = "build/model/{resolution}/uncertainty/capacityfactors-hydro-reservoir-inflow.csv"
+    params:
+        start_year = config["weather-uncertainty"]["start-year"],
+        final_year = config["year"],
+        time_resolution = config["weather-uncertainty"]["resolution"]["time"],
+    output: "build/output/{resolution}/uncertainty/weather-{scenario}.nc"
+    conda: "../envs/calliope.yaml"
+    shell:
+        """
+        calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario}\
+        --override_dict="{{model.subset_time: [{params.start_year}-01-01, {params.final_year}-12-31], \
+                           model.time.function: resample, \
+                           model.time.function_options: {{'resolution': '{params.time_resolution}'}}, \
+                           techs.demand_elec.constraints.resource: file=./uncertainty/electricity-demand.csv, \
+                           techs.hydro_run_of_river.constraints.resource: file=./uncertainty/capacityfactors-hydro-ror.csv, \
+                           techs.hydro_reservoir.constraints.resource: file=./uncertainty/capacityfactors-hydro-reservoir-inflow.csv, \
+                           }}"
+        """
+
+
 rule y:
     message: "Calculate y for experiment {wildcards.id}."
     input:
@@ -85,5 +112,24 @@ rule xy:
         )
 
 
+rule repeat_timeseries:
+    message: "Take single year timeseries {wildcards.timeseries} and repeat it from {params.start} onwards."
+    input:
+        src = "src/uncertainty/repeat.py",
+        timeseries = "build/model/{resolution}/{timeseries}.csv"
+    params: start = config["weather-uncertainty"]["start-year"]
+    output: "build/model/{resolution}/uncertainty/{timeseries}.csv"
+    conda: "../envs/default.yaml"
+    script: "../src/uncertainty/repeat.py"
 
+
+rule weather_cost_diff:
+    message: "Determine cost difference between large scale and small scale system."
+    input:
+        src = "src/uncertainty/weather_diff.py",
+        large_scale = "build/output/{{resolution}}/uncertainty/weather-{}.nc".format(config["weather-uncertainty"]["scenarios"]["large-scale"]),
+        small_scale = "build/output/{{resolution}}/uncertainty/weather-{}.nc".format(config["weather-uncertainty"]["scenarios"]["small-scale"])
+    output: "build/output/uncertainty/{resolution}/weather-diff.txt"
+    conda: "../envs/default.yaml"
+    script: "../src/uncertainty/weather_diff.py"
 

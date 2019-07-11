@@ -2,8 +2,8 @@ PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablen
 
 configfile: "./config/default.yaml"
 wildcard_constraints:
-        resolution = "((continental)|(national)|(regional))", # supported spatial resolutions
-        scenario = "({})".format("|".join([f"({scenario})" for scenario in config["scenarios"]]))
+    resolution = "((continental)|(national)|(regional))", # supported spatial resolutions
+    scenario = "({})".format("|".join([f"({scenario})" for scenario in config["scenarios"]]))
 onstart:
     shell("mkdir -p build/logs")
 onsuccess:
@@ -25,7 +25,8 @@ rule all:
     message: "Run entire analysis and compile report."
     input:
         "build/logs/{resolution}/test-report.html".format(resolution=config["resolution"]["space"]),
-        "build/output/{resolution}/report.html".format(resolution=config["resolution"]["space"])
+        "build/output/{resolution}/report.html".format(resolution=config["resolution"]["space"]),
+        "build/output/uncertainty/{resolution}/weather-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"])
 
 
 rule copy_report_file:

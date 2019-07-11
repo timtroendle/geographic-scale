@@ -3,16 +3,26 @@ subworkflow eurocalliope:
     snakefile: "./euro-calliope/Snakefile"
     configfile: "./config/default.yaml"
 
-localrules: copy_euro_calliope, load_shedding, model
-ruleorder: model > import_restrictions > grid_size_restrictions > load_shedding > copy_euro_calliope
+localrules: copy_euro_calliope, copy_resolution_specific_euro_calliope, load_shedding, model
+ruleorder: model > import_restrictions > grid_size_restrictions > load_shedding > copy_euro_calliope > copy_resolution_specific_euro_calliope
+wildcard_constraints:
+    definition_file = "[^\/]*" # must not travers into directories
+
 
 LOCATIONS_WITH_LOAD_SHEDDING = "data/{resolution}/locations-with-loadshedding.txt"
 
 
 rule copy_euro_calliope:
-    message: "Copy file ./build/model/{wildcards.definition_file}.{wildcards.suffix} from euro-calliope."
+    message: "Copy file {input[0]} from euro-calliope."
     input: eurocalliope("build/model/{definition_file}.{suffix}"),
     output: "build/model/{definition_file}.{suffix}"
+    shell: "cp {input} {output}"
+
+
+rule copy_resolution_specific_euro_calliope:
+    message: "Copy file {input[0]} from euro-calliope."
+    input: eurocalliope("build/model/{resolution}/{definition_file}.{suffix}"),
+    output: "build/model/{resolution}/{definition_file}.{suffix}"
     shell: "cp {input} {output}"
 
 

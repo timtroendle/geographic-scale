@@ -1,7 +1,7 @@
 # generated files
 build/
 build-by-euler/
-report/build
+report/report
 
 # input data
 data/

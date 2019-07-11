@@ -41,15 +41,13 @@ rule test:
         "tests/test_constraints.py",
         "tests/test_assumptions.py",
         results = expand(
-            "build/output/{resolution}/{{scenario}}/results.nc".format(resolution=config["resolution"]["space"]),
+            "build/output/{{resolution}}/{scenario}/results.nc",
             scenario=config["scenarios"]
         ),
-        biofuel_potentials = eurocalliope("build/data/{resolution}/biofuel-potential-mwh-per-year.csv".format(
-            resolution=config["resolution"]["space"])
-        ),
-        units = eurocalliope("build/data/{resolution}/units.geojson".format(resolution=config["resolution"]["space"]))
+        biofuel_potentials = eurocalliope("build/data/{resolution}/biofuel-potential-mwh-per-year.csv"),
+        units = eurocalliope("build/data/{resolution}/units.geojson")
     params: scaling_factors = config["scaling-factors"]
-    output: "build/logs/test-report.html"
+    output: "build/logs/{resolution}/test-report.html"
     conda: "../envs/test.yaml"
     script: "../src/analyse/test_runner.py"
 

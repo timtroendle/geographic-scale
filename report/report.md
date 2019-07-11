@@ -28,7 +28,7 @@ We are assessing long term (steady state) cost of electricity supply. We are nei
 
 ## Continental perspective
 
-![Total system costs of renewable electricity autarky within Europe.](build/output/report/scenario-space.png){#fig:scenario-space .class}
+![Total system costs of renewable electricity autarky within Europe.](report/scenario-space.png){#fig:scenario-space .class}
 
 * costs higher for national + regional autarky by factors 1.5/3
 * using grid for balancing reduces costs significantly
@@ -38,18 +38,18 @@ We are assessing long term (steady state) cost of electricity supply. We are nei
 ---
 caption: 'Overview over scenario results. {#tbl:overview-scenario-results}'
 alignment: LRRRRRRRRRR
-include: build/output/report/overview-scenario-results.csv
+include: report/overview-scenario-results.csv
 include-encoding: utf-8
 markdown: True
 ---
 ```
 
 
-![Share of total electricity flow between all countries for each interconnection for the unrestricted case with continental autarky, divided into net annual and inter-annual flows. Net annual flows cancel out imports and exports on the same interconnection and thus represent the net electricity imported and exported on any interconnection within one year. Inter-annual flows show the total amount of electricity flowing over the interconnection within one year, reduced by the net annual flows to pronounce the inter-annual effects. Both panels show the total electricity flow on all interconnections.](build/output/report/flows.png){#fig:flows .class}
+![Share of total electricity flow between all countries for each interconnection for the unrestricted case with continental autarky, divided into net annual and inter-annual flows. Net annual flows cancel out imports and exports on the same interconnection and thus represent the net electricity imported and exported on any interconnection within one year. Inter-annual flows show the total amount of electricity flowing over the interconnection within one year, reduced by the net annual flows to pronounce the inter-annual effects. Both panels show the total electricity flow on all interconnections.](report/flows.png){#fig:flows .class}
 
 ## Local perspective
 
-![Costs of renewable electricity autarky within Europe, for all Europe, all countries, and all regions. Net transfer capacities shown as blue lines connecting regions.](build/output/report/map.png){#fig:map .class}
+![Costs of renewable electricity autarky within Europe, for all Europe, all countries, and all regions. Net transfer capacities shown as blue lines connecting regions.](report/map.png){#fig:map .class}
 
 Costs are generally higher in those countries/regions that ...
 
@@ -114,7 +114,7 @@ PV generation capacities come with fixed costs for installation and maintenance,
 ---
 caption: 'Economic assumptions of technologies. ^AC transmission installation costs are given in [€/kW/1000km] {#tbl:overview-cost-assumptions}'
 alignment: LRRRRRR
-include: build/output/report/overview-cost-assumptions.csv
+include: report/overview-cost-assumptions.csv
 include-encoding: UTF-8
 markdown: True
 ---

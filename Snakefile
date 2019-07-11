@@ -1,16 +1,9 @@
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablenos --filter pandoc-citeproc"
 
-include: "./rules/sync.smk"
-include: "./rules/construct.smk"
-include: "./rules/analyse.smk"
-include: "./rules/loadshedding.smk"
-include: "./rules/uncertainty.smk"
-localrules: all, clean, copy_report_file, report, pdf_report, docx_report
-
+configfile: "./config/default.yaml"
 wildcard_constraints:
         resolution = "((continental)|(national)|(regional))", # supported spatial resolutions
         scenario = "({})".format("|".join([f"({scenario})" for scenario in config["scenarios"]]))
-
 onstart:
     shell("mkdir -p build/logs")
 onsuccess:
@@ -19,21 +12,29 @@ onsuccess:
 onerror:
     if "email" in config.keys():
         shell("echo "" | mail -s 'geographical-scale crashed' {config[email]}")
+localrules: all, clean, copy_report_file, report
+
+include: "./rules/sync.smk"
+include: "./rules/construct.smk"
+include: "./rules/analyse.smk"
+include: "./rules/loadshedding.smk"
+include: "./rules/uncertainty.smk"
 
 
 rule all:
     message: "Run entire analysis and compile report."
     input:
-        "build/logs/test-report.html",
-        "build/report.html"
+        "build/logs/{resolution}/test-report.html".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/report.html".format(resolution=config["resolution"]["space"])
 
 
 rule copy_report_file:
     message: "Copy file {input[0]} into dedicated report folder."
-    input: "build/output/{}/{{filename}}.{{suffix}}".format(config["resolution"]["space"])
+    input: "build/output/{resolution}/{filename}.{suffix}"
     wildcard_constraints: suffix = "((csv)|(png))"
-    output: "build/output/report/{filename}.{suffix}"
+    output: "build/output/{resolution}/report/{filename}.{suffix}"
     shell: "cp {input} {output}"
+
 
 REPORT_DEPENDENCIES = [
     "report/report.md",
@@ -47,56 +48,41 @@ REPORT_DEPENDENCIES = [
     "report/fonts/KlinicSlabBookIt.otf",
     "report/fonts/KlinicSlabMedium.otf",
     "report/fonts/KlinicSlabMediumIt.otf",
-    "build/output/report/scenario-space.png",
-    "build/output/report/map.png",
-    "build/output/report/flows.png",
-    "build/output/report/overview-scenario-results.csv",
-    "build/output/report/overview-cost-assumptions.csv"
+    "build/output/{resolution}/report/scenario-space.png",
+    "build/output/{resolution}/report/map.png",
+    "build/output/{resolution}/report/flows.png",
+    "build/output/{resolution}/report/overview-scenario-results.csv",
+    "build/output/{resolution}/report/overview-cost-assumptions.csv"
 ]
 
+
+def pandoc_options(wildcards):
+    suffix = wildcards["suffix"]
+    if suffix == "html":
+        return "--self-contained --css=report.css --to html5"
+    elif suffix == "pdf":
+        return "--css=report.css --pdf-engine weasyprint"
+    elif suffix == "docx":
+        return []
+    else:
+        raise ValueError(f"Cannot create report with suffix {suffix}.")
+
+
 rule report:
-    message: "Compile report."
+    message: "Compile report.{wildcards.suffix}."
     input: REPORT_DEPENDENCIES
-    output:
-        "build/report.html"
+    output: "build/output/{resolution}/report.{suffix}"
+    params: options = pandoc_options
     conda: "envs/pdf.yaml"
     shadow: "minimal"
     shell:
         """
         cd report
-        ln -s ../build .
-        {PANDOC} --self-contained --css=report.css report.md pandoc-metadata.yml \
-        --to html5 -o ../build/report.html
+        ln -s ../build/output/{wildcards.resolution}/report .
+        {PANDOC} report.md pandoc-metadata.yml {params.options} \
+        -o ../build/output/{wildcards.resolution}/report.{wildcards.suffix}
         """
 
-
-rule pdf_report:
-    message: "Compile PDF report."
-    input: REPORT_DEPENDENCIES
-    output: "build/report.pdf"
-    conda: "envs/pdf.yaml"
-    shadow: "minimal"
-    shell:
-        """
-        cd report
-        ln -s ../build .
-        {PANDOC} --css=report.css report.md pandoc-metadata.yml --pdf-engine weasyprint \
-        -o ../build/report.pdf
-        """
-
-
-rule docx_report:
-    message: "Compile DOCX report."
-    input: REPORT_DEPENDENCIES
-    output: "build/report.docx"
-    conda: "envs/pdf.yaml"
-    shadow: "minimal"
-    shell:
-        """
-        cd report
-        ln -s ../build .
-        {PANDOC} report.md pandoc-metadata.yml -o ../build/report.docx
-        """
 
 rule clean: # removes all generated results
     shell:

@@ -3,8 +3,6 @@ subworkflow eurocalliope:
     snakefile: "./euro-calliope/Snakefile"
     configfile: "./config/default.yaml"
 
-configfile: "./config/default.yaml"
-
 localrules: copy_euro_calliope, load_shedding, model
 ruleorder: model > import_restrictions > grid_size_restrictions > load_shedding > copy_euro_calliope
 

@@ -1,14 +1,14 @@
 import pytest
 
 HYDRO_TECHS = ["pumped_hydro", "hydro_reservoir", "hydro_run_of_river"]
-CAPACITY_FACTORS = [# depends on maximal-capacity-factor and minimal-capacity-factor configuration value
-    ('hydro_run_of_river', 0.001, 1.0),
-    ('hydro_reservoir', 0.001, 10.0),
-    ('open_field_pv', 0.001, 1.0),
-    ('roof_mounted_pv', 0.001, 1.0),
-    ('wind_offshore', 0.001, 1.0),
-    ('wind_onshore_competing', 0.001, 1.0),
-    ('wind_onshore_monopoly', 0.001, 1.0),
+CAPACITY_FACTORS = [# depends on maximal/minimal-capacity-factor and time resolution configuration value
+    ('hydro_run_of_river', 0.001 / 4, 1.0),
+    ('hydro_reservoir', 0.001 / 4, 10.0),
+    ('open_field_pv', 0.001 / 4, 1.0),
+    ('roof_mounted_pv', 0.001 / 4, 1.0),
+    ('wind_offshore', 0.001 / 4, 1.0),
+    ('wind_onshore_competing', 0.001 / 4, 1.0),
+    ('wind_onshore_monopoly', 0.001 / 4, 1.0),
 ]
 
 

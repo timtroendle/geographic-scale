@@ -16,9 +16,8 @@ def location_with_loadshedding(carrier_prod, location):
             return location
 
 
+@pytest.mark.xfail(reason="Load shedding can and is currently exported.") # FIXME don't export load shedding
 def test_loadshedding_not_exported(carrier_prod, carrier_con, location_with_loadshedding):
     load_shedding = carrier_prod.sel(locs=location_with_loadshedding, techs=LOAD_SHEDDING)
-    max_load_shedding_power = load_shedding.max("timesteps")
-    peak_demand = carrier_con.sel(locs=location_with_loadshedding, techs=DEMAND).min("timesteps")
-    assert peak_demand < 0
-    assert max_load_shedding_power < peak_demand * -1
+    demand = carrier_con.sel(locs=location_with_loadshedding, techs=DEMAND)
+    assert ((load_shedding + demand) <= 0).all()

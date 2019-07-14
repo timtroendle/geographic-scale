@@ -52,7 +52,8 @@ REPORT_DEPENDENCIES = [
     "build/output/{resolution}/report/scenario-space.png",
     "build/output/{resolution}/report/map.png",
     "build/output/{resolution}/report/flows.png",
-    "build/output/{resolution}/report/overview-scenario-results.csv",
+    "build/output/{resolution}/report/overview-scenario-results-1.csv",
+    "build/output/{resolution}/report/overview-scenario-results-2.csv",
     "build/output/{resolution}/report/overview-cost-assumptions.csv"
 ]
 

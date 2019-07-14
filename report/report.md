@@ -4,64 +4,65 @@
 
 Relying on spatial balancing requires cooperation between regions and nations within Europe: the current electricity grid would need to be extended significantly [@Rodriguez:2014; @Schlachtberger:2017; @Child:2019] with some regions being more impacted by grid infrastructure than others (SOURCES), and institutions enabling electricity trade would need to be installed [@EuropeanCommission:2016; @Patt:2018]. However, many studies estimated lower costs for the entire electricity system when fluctuations are balanced spatially through the grid, rather than locally [@Rodriguez:2014; @Steinke:2013; @Schmid:2015, @Czisch:2005; @Schlachtberger:2017; @Child:2019]. In addition, a large grid may enable access to better resources, for example X and Y (SOURCES), decreasing system costs further [@Czisch:2005; @Schmid:2015].
 
-Here we assess the trade-off between necessary grid infrastructure for larger electricity systems in Europe and higher costs of smaller electricity systems in detail. We quantify these impacts for electricity system sizes ranging from 502 regional systems to one continental system, and for shares of local electricity generation from 70--100%. We find that ...
-
-## Model overview
-
-Definition of model and scenarios here (only overview necessary to understand what we did, details in "methods section")
-
-Model of the European power system with these scenarios:
-
-* autarky on continental/national/regional levels, using different autarky levels (70--100% autarkic)
-* continental/national/regional grid scale
-
-Model consists of
-
-* pv, wind, hydro, biomass on the supply side,
-* pumped hydro, stylised short term and stylised long term on the storage side,
-
-on each regional node which are connected through ac lines. Hourly resolution, one year operation, greenfield, cost optimisation.
-
-We are assessing long term (steady state) cost of electricity supply. We are neither aiming at determining costs of a transition to such states nor are we aiming at considering developments on the global market for supply and storage technologies. Thus, we assume cost for technologies at a late stage within their learning curves, i.e. costs manifesting when technologies are deployed at large scales, as in our study.
-
 # Results
 
-## Continental perspective
+## An adequate mix of balancing options
 
-![Total system costs of renewable electricity autarky within Europe.](report/scenario-space.png){#fig:scenario-space .class}
+Here we assess the trade-off between necessary grid infrastructure for larger electricity systems in Europe and higher costs of smaller electricity systems in detail. We quantify these impacts for a fully renewable electricity system based on solar, wind, and hydro power, and biofuels from residuals on the supply side, and pumped hydro power, short-term, and long-term electricity storage options. We consider different scales of autarky to form electricity systems on different geographical scales: First we consider a fully connected, continental system layout without any imports from outside as a large scale system with continental autarky. Second, we consider a European system in which all countries are strictly autarkic, i.e. self-sufficient, not importing or even exchanging electricity between countries as medium scale systems with national autarky. Lastly, we do the same for all regions in Europe to form small scale systems with regional autarky.
 
-* costs higher for national + regional autarky by factors 1.5/3
-* using grid for balancing reduces costs significantly
-* allowing net import reduces costs slightly, but in cases with load shedding can change quite a bit
+We find that total system costs can differ by more than factor 2 among these three options. Taking the fully connected continental system as a base, strict national autarky within Europe has 40% higher total system costs and the additional costs rise to 150% for a layout with strict autarky on the regional level. We additionally consider weaker autarky forms and allow for grid connections to balance renewable fluctuations within a year with and without net imports into autarkic units. We find that using the grid to balance renewable fluctuations has large impacts on total system costs, while net imports are less effective, see Figure @fig:scenario-space for the relative costs of all twelve system layouts we consider.
+
+![Total system costs of twelve electricity system layouts in Europe, relative to a fully connected layout with continental autarky. Each layout is defined by three aspects related to autarky: first the autarky layer which defines whether the entire continent is autarkic as a whole, or whether countries or regions within Europe are autarkic each on their own. Second, the maximum level of net electricity imports which determines the strictness of autarky: strict when none of local electricity demand can be satisfied by net imports, or weak when up to 15% or 30% of demand can be satisfied by imports. Lastly, grid size defines up to which spatial scale autarkic units are connected through the electricity grid.](report/scenario-space.png){#fig:scenario-space .class}
+
+Net imports can lower costs by generating electricity in regions with very good resources. In fact, this option is used extensively in the unrestricted case of continental autarky. Here, 45% of electricity demand is satisfied by electricity imported from abroad, with some countries relying almost entirely on imports. However, these imports are only sightly less costly than domestic electricity: when we restrict imports to 30% on the national autarky level -- reducing imports by a third -- costs rise by less than 3%. If we disallow net imports completely, costs rise to 6% above the unrestricted case. Thus, of the 40% total system cost difference between the cases of strict national autarky and unrestricted continental autarky, only 6% are related to net imports, although almost every second unit of electricity is generated abroad. For regional autarky, net imports show a more pronounced, yet still less important, effect. (WHICH is related to load shedding and shouldn't exist in my opinion -- but what can _I_ do about it?).
+
+The differences in costs are thus mainly driven by the available options to balance renewable fluctuations and their respective costs. In the large scale system layout, all balancing options are available: renewable over-capacities with curtailed peaks, flexible biofuel combustion, short- and long-term electricity storage, pumped hydro storage, hydro reservoirs, and spatial balancing of renewable generation. Consequently, all of these options are used to form a least cost mix, typically with lowest contribution per option compared to system layouts with smaller scale grid, see Table @tbl:overview-scenario-results-1. Apart from hydro electricity which we fix to current levels (see Methods), there is almost 1 TW of generation capacity from wind and solar --- roughly two times European peak demand --- in the large scale system which is curtailed by 5%. Other layouts on smaller scales demand up to 1.5 TW of solar and wind capacities of which up to 10% are curtailed. Relatively expensive biofuel capacity completes the generation mix on the continental scale with less than 15 GW, while the smallest scale layout comprises more than 10 times this amount. To balance daily and seasonal fluctuations, the electricity system of the large scale layout includes 0.2 TWh of short-term, and 3.6 TWh of long-term storage capacity. For smaller scale systems with limited balancing options, this rises to almost 1 TWh and 16 TWh respectively. The availability of all balancing options on layouts with continental scale grid allows to choose most adequate solutions for all possible situations and thus allows to find a cost optimal mix, in contrast to layouts with smaller grids, where the range of options is limited.
 
 ```table
 ---
-caption: 'Overview over scenario results. {#tbl:overview-scenario-results}'
-alignment: LRRRRRRRRRR
-include: report/overview-scenario-results.csv
+caption: 'Installed capacities of solar (<i class="fas fa-sun"></i>), wind (<i class="fas fa-wind"></i>), biofuel (<i class="fas fa-leaf"></i>), short-term (<i class="fas fa-battery-three-quarters"></i> short) and long-term storage (<i class="fas fa-battery-three-quarters"></i> long) and relative curtailment of solar, wind, and hydro power (<i class="fas fa-traffic-light"></i>) for all electricity system layouts without net imports into autarkic units. Each layout is characterised by the autarky scale (<i class="fas fa-layer-group"></i>), the maximum level of annual net imports into autarkic units (<i class="fas fa-shield-alt"></i>), and the size of the electricity grid surrounding autarkic units (<i class="fab fa-connectdevelop"></i>). {#tbl:overview-scenario-results-1}'
+alignment: LRRRRRRRR
+include: report/overview-scenario-results-1.csv
 include-encoding: utf-8
 markdown: True
 ---
 ```
 
+Contrary to all other balancing options, we of course find the highest reliance on the transmission grid in all system layouts with continental grid size, see Table @tbl:overview-scenario-results-2. This is the case for transmission capacity, as well as for the usage of that capacity. The largest scale system layout contains high voltage transmission capacity of nearly 400 TW km, which is roughly 4 times current capacity [@ENTSO-E:2019] (CURRENT NUMBER CORRECT?). Using this capacity, about 3600 TWh electricity are crossing country borders, which, again, is roughly 4 times current international electricity flows [@ENTSO-E:2019]. Of those 3600 TWh, 1500 TWh remain as net imports within countries, which is more than 7 times the amount of today [@ENTSO-E:2019]. All these numbers are smaller for national and regional autarky with continental grid size, but their transmission capacity and international electricity flows are still 2-3 times today's values. The cost benefits promised by layouts with continental grid size thus require a significant  increase of transmission grid infrastructure and, even more so, a strong increase of international trade.
+
+```table
+---
+caption: 'Installed transmission grid capacity (<i class="fab fa-connectdevelop"></i>), gross physical electricity flow crossing country borders (<i class="fas fa-shopping-cart"></i> gross), net electricity flow imported by all countries (<i class="fas fa-shopping-cart"></i> net), and the relative amount of electricity demand that is shed, i.e. remains unserved (<i class="fas fa-truck-loading"></i>) for all electricity system layouts without net imports into autarkic units. Each layout is characterised by the autarky scale (<i class="fas fa-layer-group"></i>), the maximum level of annual net imports into autarkic units (<i class="fas fa-shield-alt"></i>), and the size of the electricity grid surrounding autarkic units (<i class="fab fa-connectdevelop"></i>). {#tbl:overview-scenario-results-2}'
+alignment: LRRRR
+include: report/overview-scenario-results-2.csv
+include-encoding: utf-8
+markdown: True
+---
+```
+
+Generally, there is a trend in the generation capacity composition shifting from wind to solar capacities when moving along the axis of grid size towards smaller electricity grids, see Table @tbl:overview-scenario-results-1. In the case of continental autarky, the share of solar to wind capacities is 1 to 3 despite the higher installation costs and the higher levelised costs of wind capacities. The reason is that wind generation in all Europe is less correlated than that of solar and thus wind generation can be balanced to large parts using a sufficient transmission grid only; an effect that has been shown in extant literature [@Grams:2017]. In electricity system layouts with disconnected, or insufficient transmission grids this characteristic of wind generation cannot be exploited and thus more balanced, but also more expensive generation capacities compositions are reached --- with solar capacities being even slightly higher than wind capacities in the case of strict regional autarky.
+
+Autarkic units can have very different levelised cost of electricity, depending on the renewable resources they have available, and depending on magnitude and shape of their electricity demand, see Figure @fig:map for the relative cost compared to the baseline of continental autarky. On the regional level, there are five regions with levelised costs 10 times above the baseline. These regions are urban areas with high population density and renewable potentials insufficient for autarky: Brussels, the Swiss canton Basel-Stadt, Berlin, Vienna, and Oslo. Their very high levelised costs stem from the fact that they have to shed load, an option that we allow only in these five regions and for which we consider high costs (see Methods). Four other urban regions --- Geneva, Prague, Budapest, and Bucharest --- have very high levelised costs of 4-6 times the baseline despite having sufficient potentials. Their potential is however almost exclusive limited to roof mounted photovoltaics, whose generation has strong seasonalities. To balance the fluctuations locally within the region, the cities need to build up large stocks of long-term storage capacities which drive up their electricity costs.
+
+Roughly 50% of the remaining regions has levelised costs in the range of 2-3 times that of the baseline. The regions in this group fall in one of two categories: on one hand urban regions, whose costs are driven by similar effects as described above, yet less pronounced. On the other hand regions with often large potentials and vast amounts of available land, but whose electricity profile does not fit well to the solar and wind generation profiles and where consequently more investments into balancing options need to be made. Their costs are often dominated by rather expensive biofuel combustion capacities. Several baltic and Scandinavian regions fall into this category. Those regions with costs below the baseline all have significant amounts of hydro electricity generation or pumped hydro storage for which we do not consider costs (see Methods).
+
+![Levelised costs of renewable electricity for strict continental autarky, strict national autarky, and strict regional autarky in relation to the baseline of continental autarky. Strict autarky does not allow for any form of exchange of electricity between autarkic units. Each panel shows the autarky level and the relative total system costs. Blue lines visualise net transfer capacities connecting regions in the cases of continental and national autarky.](report/map.png){#fig:map .class}
+
+And what about Figure @fig:flows? Why is it here, and what does it tell us?
+
+No one knows.
 
 ![Share of total electricity flow between all countries for each interconnection for the unrestricted case with continental autarky, divided into net annual and inter-annual flows. Net annual flows cancel out imports and exports on the same interconnection and thus represent the net electricity imported and exported on any interconnection within one year. Inter-annual flows show the total amount of electricity flowing over the interconnection within one year, reduced by the net annual flows to pronounce the inter-annual effects. Both panels show the total electricity flow on all interconnections.](report/flows.png){#fig:flows .class}
 
-## Local perspective
-
-![Costs of renewable electricity autarky within Europe, for all Europe, all countries, and all regions. Net transfer capacities shown as blue lines connecting regions.](report/map.png){#fig:map .class}
-
-Costs are generally higher in those countries/regions that ...
-
-Costs are generally lower in those countries/regions that ...
-
-DEEP DIVE 1: Country/region X with high costs. What are the drivers?
-
-DEEP DIVE 2: Country/region Y with low costs. What are the drivers?
-
 ## Uncertainty Quantification
 
-...
+Because small scale systems are restricted versions of large scale systems, they can only be equally or more expensive. Above, we show the mechanics driving cost differences: mainly, it is the ability of large grids to balance fluctuating generation of renewables. However, this mechanism, but also the exact cost difference of layouts of electricity systems may be sensitive to a range of parameters, for which exact values are not known. Thus, we assess the uncertainty of our results based on input uncertainty of two important groups of inputs: meteorological conditions, and assumptions on costs of technologies. Because this analysis is computationally heavy, we perform it with a reduced version of our model by running it on national instead of regional resolution on which results deviate up to 7% (MAY BE LOWER, need to rerun regional resolution) compared to the full resolution.
+
+Any supply system based on 100% renewable electricity is largely dependent on meteorological conditions: when, where, and how strong the sun shines and the wind blows impacts the suitability of electricity system layouts. On top of that, the conditions vary between years and can thus impact annual performance (CITE Stefan). To understand whether our main result --- the cost difference between large and small scale system layouts --- depends on meteorological conditions, we use meteorological data of ten instead of only one year (see Methods). We find that the additional cost of national autarky compared to continental autarky is unaffected: the difference to the case with only one year is negligible (< 1‰). This is not to say that the electricity system layout is not sensitive to meteorological conditions. In fact, we find that total system costs are generally slightly higher, and more wind and biofuel capacities are deployed in exchange of solar capacities. However, large scale and small scale system layouts are impacted similarly and so the difference between both is unaffected by the longer time duration of considered meteorological conditions.
+
+We furthermore assess the uncertainty of our result stemming from uncertainty of technology costs. While we do know current costs and we do know that costs are likely to fall with deployment due to learning effects, we do not know exact future costs with certainty. This is mainly because it is unknown exactly how much technologies are deployed, and exactly how much costs will fall with deployment. Because in our analysis we are assuming technologies are deployed at large scale, the first aspect does not lead to much uncertainty. Uncertainty of technology costs in our analysis thus stems largely from the uncertain relationship of deployment and cost decreases. Being a cost optimisation, the absolute total system costs of any assessed electricity system layout is sensitive to costs of technologies (SOURCE). Here, we assess the sensitivity of the cost difference between large and small scale system layouts.
+
+We consider ten technology cost parameters and the weighted cost of capital as uncertain and describe their uncertainty by an uniform distribution over ranges taken from literature (see Methods). We perform a global sensitivity analysis of the additional costs of national autarky compared to continental autarky in this eleven dimensional space. We find that national autarky is 20%--60% (FAKE RESULT) more expensive and that this range is largely driven by parameters X, Y, and Z. Higher values of X lead to higher relative costs of national autarky, while higher values of Y lead to lower relative costs of national autarky. High values of Z lead to higher relative costs of national autarky, but only if X is high as well.
 
 # Discussion
 
@@ -199,6 +200,16 @@ We assess the sensitivity of relative total system costs of national autarky wit
 
 Ignore correlation of uncertain inputs because "end of learning" type of costs are assumed, so the link between cost parameters based on political decisions can be ignored. There is still a link through developments on markets of raw material for example, but we ignore that.
 
-...
+* interest rate [i]: 1.9—13.5% max and min for PV and wind between 2009 and 2017 (Steffen, 2019)
+* installation costs of PV [c_pv]: 280—580 €/kW (JRC, 2014) (Table 7)
+* installation costs wind onshore [c_wind]: 800-1700 €/kW (Fraunhofer ISE, 2015)(JRC, 2014) (Table 4)
+* installation costs wind offshore [c_offshore]: 1790–3270 €/kW (JRC, 2014) (Table 5)
+* installation costs short term storage power [c_sts_p]: 110-160 €/kW (JRC, 2014) (Table 61)
+* installation costs short term storage energy [c_sts_e]: 128.37–336.72 €/kWh (Schmidt et al., 2017) (JRC, 2014) (Table 61)  (could be correlated with power)
+* installation costs long term storage power [c_lts_p]: 238—363 €/kW (Schmidt et al., 2017)
+* installation costs long term storage energy [c_lts_e]: €/kWh::(REMOVE? NO SOURCES)::
+* installation costs net transfer capacities [c_ntc]: 700—1080 € / kW / km (JRC, 2014)
+* installation costs biofuel [c_bio]: 1380—3450 €/kW (JRC, 2014) (Table 48)
+* fuel costs biofuel [c_biofuel]: 25.02–30.58 €/MWh (Ruiz Castello et al., 2015)
 
 # Bibliography

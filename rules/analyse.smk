@@ -1,3 +1,6 @@
+localrules: overview_scenario_results
+
+
 rule run_national:
     message: "Run the model for scenario {wildcards.scenario} on national resolution."
     input:
@@ -87,8 +90,6 @@ rule plot_map:
         continental_result = "build/output/{resolution}/continental-autarky-100-continental-grid/results.nc",
         national_result = "build/output/{resolution}/national-autarky-100-national-grid/results.nc",
         regional_result = "build/output/{resolution}/regional-autarky-100-regional-grid/results.nc"
-    params:
-        scaling_factor_cost = config["scaling-factors"]["power"] / config["scaling-factors"]["monetary"]
     output: "build/output/{resolution}/map.png"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/map.py"
@@ -113,7 +114,9 @@ rule overview_scenario_results:
     input:
         src = "src/analyse/scenario_overview.py",
         results = rules.aggregated_results.output[0],
-    output: "build/output/{resolution}/overview-scenario-results.csv"
+    output:
+        table1 = "build/output/{resolution}/overview-scenario-results-1.csv",
+        table2 = "build/output/{resolution}/overview-scenario-results-2.csv"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/scenario_overview.py"
 

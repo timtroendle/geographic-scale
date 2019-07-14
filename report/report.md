@@ -76,6 +76,7 @@ Large grid comes needs institutional support, and cooperation can fail.
 5. ignoring distribution grid and grid services [@Brown:2018]
 6. ignoring correlation of technology deployment and its costs (Europe is a large market)
 7. optimistic renewable potentials (technical-potential?) in here, less optimistic ones make small scales systems impossible or more expensive
+8. uncertainty analysis on national resolution
 
 # Conclusion
 Autarky can be expensive. Using the grid for balancing can bring costs down significantly. Access to better resources is not as important.
@@ -188,7 +189,15 @@ We use two types of political constraints forming the basis of our scenarios: co
 
 When we limit net imports into continental, national, or regional areas leading to full or partial autarky, we force all or parts of the electricity demand on the continent, in the country, or in the region to be satisfied with local electricity generation from wind, sun, biomass, and water. In contrast to the constraint on the grid scale, the grid can still be used to balance fluctuations, as long as net annual imports stay below the required threshold.
 
-## Uncertainty Analysis
+## Sensitivity to meteorological conditions
+
+We assess the sensitivity of our main result to meteorological conditions impacting generation from wind and solar power. While we use only a single year of meteorological conditions, 2016, in the scenario analysis, we use ten years, 2007--2016, in this sensitivity analysis. In this way, we are not assessing the variability between meteorological years, but we are assessing how much the result changes when considering a long duration of meteorological conditions. In this way, we find electricity system layouts that are optimal for the entire range of years, not only for single years.
+
+We assess the sensitivity of relative total system costs of national autarky with continental autarky as a baseline. Because computational requirements to solve a model with regional spatial resolution and temporal resolution of 4h for ten years are very high, we perform this sensitivity analysis using a model with national spatial resolution while keeping temporal resolution the same. Comparing the results between national and regional resolution for the case with only one year of meteorological conditions, we find a difference of 7% for the relative costs of national autarky.
+
+## Sensitivity to technology costs
+
+Ignore correlation of uncertain inputs because "end of learning" type of costs are assumed, so the link between cost parameters based on political decisions can be ignored. There is still a link through developments on markets of raw material for example, but we ignore that.
 
 ...
 

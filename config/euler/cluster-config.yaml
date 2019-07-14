@@ -16,9 +16,9 @@ uncertainty_run:
     cores: 6
     memory: 5000
 weather_run:
-    runtime: 2879
+    runtime: 1439
     cores: 6
-    memory: 40000
+    memory: 30000
 run_single_location:
     runtime: 60
 plot_map:

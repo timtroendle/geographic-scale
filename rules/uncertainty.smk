@@ -11,7 +11,7 @@ import pandas as pd
 
 experiment_design = pd.read_csv(config["uncertainty"]["experiment-design"], index_col=0, sep="\t")
 experiment_design.index = experiment_design.index.astype(str)
-localrules: x
+localrules: x, weather_diff, normal_diff, weather_diff_diff
 
 
 rule x:
@@ -123,8 +123,8 @@ rule repeat_timeseries:
     script: "../src/uncertainty/repeat.py"
 
 
-rule weather_cost_diff:
-    message: "Determine cost difference between large scale and small scale system."
+rule weather_diff:
+    message: "Determine cost difference between large scale and small scale system for long weather."
     input:
         src = "src/uncertainty/weather_diff.py",
         large_scale = "build/output/{{resolution}}/uncertainty/weather-{}.nc".format(config["weather-uncertainty"]["scenarios"]["large-scale"]),
@@ -133,3 +133,29 @@ rule weather_cost_diff:
     conda: "../envs/default.yaml"
     script: "../src/uncertainty/weather_diff.py"
 
+
+rule normal_diff:
+    message: "Determine cost difference between large scale and small scale system for resolution {wildcards.resolution}."
+    input:
+        src = "src/uncertainty/weather_diff.py",
+        large_scale = "build/output/{{resolution}}/{}/results.nc".format(config["weather-uncertainty"]["scenarios"]["large-scale"]),
+        small_scale = "build/output/{{resolution}}/{}/results.nc".format(config["weather-uncertainty"]["scenarios"]["small-scale"])
+    output: "build/output/uncertainty/{resolution}/normal-diff.txt"
+    conda: "../envs/default.yaml"
+    script: "../src/uncertainty/weather_diff.py"
+
+
+rule weather_diff_diff:
+    message: "Determine the diff of weather runs to normal runs."
+    input:
+        normal = rules.normal_diff.output[0],
+        weather = rules.weather_diff.output[0]
+    output: "build/output/uncertainty/{resolution}/weather-diff-diff.txt"
+    run:
+        with open(input.normal, "r") as f_normal:
+            normal_diff = float(f_normal.readline())
+        with open(input.weather, "r") as f_weather:
+            weather_diff = float(f_weather.readline())
+        diff_diff = abs(normal_diff - weather_diff) / normal_diff
+        with open(output[0], "w") as f_output:
+            f_output.write(str(diff_diff))

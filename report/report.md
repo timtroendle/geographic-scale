@@ -142,7 +142,7 @@ We assume hydro run of river and hydro reservoir potentials to be largely tapped
 
 We derive the location and installed power and storage capacities of hydro stations in Europe today from the JRC Hydro Power Database [@MatteoDeFelice:2019]. Where no storage capacity of hydro reservoirs is available, we use the median national ratio of power to storage capacity, and if that is not available, we use the median Europe-wide ratio of power to storage capacity.
 
-To create power generation time series for each station, we use a two-stage approach. First, we derive water inflow time series for each station using an approach based on ERA5 runoff data [@Dee:2011] and hydrological basins [@Lehner:2013] described and validated for China in [@Liu:2019]. We use Atlite [@Andresen:2015] to first determine all basins upstream of the hydro power station to be able to sum all upstream runoff while assuming a water flow speed of 1 m/s. 
+To create power generation time series for each station, we use a two-stage approach. First, we derive water inflow time series for each station using an approach based on ERA5 runoff data [@Dee:2011] and hydrological basins [@Lehner:2013] described and validated for China in [@Liu:2019]. We use Atlite [@Andresen:2015] to first determine all basins upstream of the hydro power station to be able to sum all upstream runoff while assuming a water flow speed of 1 m/s.
 
 Second, we are applying bias correction factors based on annual generation necessary for this method to represent the actual magnitude of the inflow and thus accurately model power generation. As we do not have data per station, we use national generation data from IRENA [@IRENA:2018a]. For hydro run of river plants we assume constant annual capacity factors within each country, which allows us to estimate the annual generation per plant. We use this estimation to derive electricity generation time series for each plant by scaling and capping the water inflow time series in such a way, that they sum to the annual generation without ever exceeding power capacities of the stations. For hydro reservoirs, we additionally assume they never need to spill water, i.e. their storage capacity is sufficient to use all inflowing water. We then scale the water inflow time series in such a way that they sum to the annual generation of the stations.
 
@@ -180,9 +180,9 @@ Additionally, we assume that power and storage capacities can be expanded indepe
 
 ## Load shedding
 
-In some regions, local technical renewable electricity generation potential is not high enough to satisfy local electricity demand  [@Trondle:2019]. This is problematic in scenarios in which regions strive for electricity autarky.
+In some regions, local technical renewable electricity generation potential is not high enough to satisfy local electricity demand  [@Trondle:2019]. This is problematic in system layouts in which regions strive for electricity autarky.
 
-For the model to remain feasible in these corner cases, we permit load shedding with high cost per kWh shed (see Table @tbl:overview-cost-assumptions), and we allow load shedding only in scenarios with regional autarky and only in regions that could otherwise not be autarkic: Vienna, Brussels, Berlin, Oslo, and Basel.
+For the model to remain feasible in these corner cases, we permit load shedding with high cost per kWh shed (see Table @tbl:overview-cost-assumptions), and we allow load shedding only in system layouts with regional autarky and only in regions that could otherwise not be autarkic: Vienna, Brussels, Berlin, Oslo, and Basel.
 
 ## Technology costs
 
@@ -204,13 +204,13 @@ markdown: True
 
 ## Political constraints
 
-We use two types of political constraints as the basis for our scenarios: constraints on the scale of the electricity grid, and constraints on net electricity imports. When we limit the scale of the grid to continental, national, or regional sizes, we force transmission capacities between continents, countries, or regions to be zero. For the continental scale this is given inherently by the scope of our study area.
+We use two types of political constraints as the basis for our system layouts: constraints on the scale of the electricity grid, and constraints on net electricity imports. When we limit the scale of the grid to continental, national, or regional sizes, we force transmission capacities between continents, countries, or regions to be zero. For the continental scale this is given inherently by the scope of our study area.
 
 When we limit net imports into continental, national, or regional areas leading to full or partial autarky, we force all or parts of the electricity demand on the continent, in the country, or in the region to be satisfied with local electricity generation from wind, sun, biomass, and water. In contrast to the constraint on the grid scale, the grid can still be used to balance fluctuations, as long as net annual imports stay below the required threshold.
 
 ## Sensitivity to meteorological conditions
 
-We assess the sensitivity of our main result to meteorological conditions impacting generation from wind and solar power. While we use only a single year of meteorological conditions, 2016, in the scenario analysis, we use ten years, 2007--2016, in this sensitivity analysis. In this way, we are not assessing the variability between meteorological years, but we are assessing how much the result changes when considering a long duration of meteorological conditions. In this way, we find electricity system layouts that are optimal for the entire range of years, not only for single years.
+We assess the sensitivity of our main result to meteorological conditions impacting generation from wind and solar power. While we use only a single year of meteorological conditions, 2016, in the  analysis of system layouts, we use ten years, 2007--2016, in this sensitivity analysis. In this way, we are not assessing the variability between meteorological years, but we are assessing how much the result changes when considering a long duration of meteorological conditions. In this way, we find electricity system layouts that are optimal for the entire range of years, not only for single years.
 
 We assess the sensitivity of relative total system costs of national autarky with continental autarky as a baseline. Because computational requirements to solve a model with regional spatial resolution and temporal resolution of 4h for ten years are very high, we perform this sensitivity analysis using a model with national spatial resolution while keeping temporal resolution the same. Comparing the results between national and regional resolution for the case with only one year of meteorological conditions, we find a difference of 7% for the relative costs of national autarky.
 

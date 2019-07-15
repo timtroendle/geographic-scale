@@ -51,6 +51,7 @@ def main(path_to_aggregated_results, path_to_output_table1, path_to_output_table
               .pivot(index="Scenario", columns="Variable", values="Value")
               .loc[SCENARIOS, list(VARIABLES_TABLE_1.values())]
               .rename(index=nice_scenario_name)
+              .rename_axis(index="Layout")
               .to_csv(path_to_output_table1, index=True, header=True, float_format="%.0f"))
     results_2 = results.sel(Variable=list(VARIABLES_TABLE_2.keys()))
     (results_2.assign_coords(Variable=[VARIABLES_TABLE_2[old] for old in results_2.Variable.values])
@@ -61,6 +62,7 @@ def main(path_to_aggregated_results, path_to_output_table1, path_to_output_table
               .pivot(index="Scenario", columns="Variable", values="Value")
               .loc[SCENARIOS, list(VARIABLES_TABLE_2.values())]
               .rename(index=nice_scenario_name)
+              .rename_axis(index="Layout")
               .to_csv(path_to_output_table2, index=True, header=True, float_format="%.0f"))
 
 

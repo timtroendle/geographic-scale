@@ -16,7 +16,7 @@ We find that total system costs can differ by more than factor 2 among these thr
 
 Net imports can lower costs by generating electricity in regions with very good resources. In fact, this option is used extensively in the unrestricted case of continental autarky. Here, 45% of electricity demand is satisfied by electricity imported from abroad, with some countries relying almost entirely on imports. However, these imports are only sightly less costly than domestic electricity: when we restrict imports to 30% on the national autarky level -- reducing imports by a third -- costs rise by less than 3%. If we disallow net imports completely, costs rise to 6% above the unrestricted case. Thus, of the 40% total system cost difference between the cases of strict national autarky and unrestricted continental autarky, only 6% are related to net imports, although almost every second unit of electricity is generated abroad. For regional autarky, net imports show a more pronounced, yet still less important, effect. (WHICH is related to load shedding and shouldn't exist in my opinion -- but what can _I_ do about it?).
 
-The differences in costs are thus mainly driven by the available options to balance renewable fluctuations and their respective costs. In the large scale system layout, all balancing options are available: renewable over-capacities with curtailed peaks, flexible biofuel combustion, short- and long-term electricity storage, pumped hydro storage, hydro reservoirs, and spatial balancing of renewable generation. Consequently, all of these options are used to form a least cost mix, typically with lowest contribution per option compared to system layouts with smaller scale grid, see Table @tbl:overview-scenario-results-1. Apart from hydro electricity which we fix to current levels (see Methods), there is almost 1 TW of generation capacity from wind and solar --- roughly two times European peak demand --- in the large scale system which is curtailed by 5%. Other layouts on smaller scales demand up to 1.5 TW of solar and wind capacities of which up to 10% are curtailed. Relatively expensive biofuel capacity completes the generation mix on the continental scale with less than 15 GW, while the smallest scale layout comprises more than 10 times this amount. To balance daily and seasonal fluctuations, the electricity system of the large scale layout includes 0.2 TWh of short-term, and 3.6 TWh of long-term storage capacity. For smaller scale systems with limited balancing options, this rises to almost 1 TWh and 16 TWh respectively. The availability of all balancing options on layouts with continental scale grid allows to choose most adequate solutions for all possible situations and thus allows to find a cost optimal mix, in contrast to layouts with smaller grids, where the range of options is limited.
+The differences in costs are thus mainly driven by the available options to balance renewable fluctuations and their respective costs. In the large scale system layout, all balancing options are available everywhere: renewable over-capacities with curtailed peaks, flexible biofuel combustion, short- and long-term electricity storage, pumped hydro storage, hydro reservoirs, and spatial balancing of renewable generation and electricity demand. Consequently, all of these options are used to form a least cost mix, typically with lowest contribution per option compared to system layouts with smaller scale grid, see Table @tbl:overview-scenario-results-1. Apart from hydro electricity which we fix to current levels (see Methods), there is almost 1 TW of generation capacity from wind and solar --- roughly two times European peak demand --- in the large scale system which is curtailed by 5%. Other layouts on smaller scales demand up to 1.5 TW of solar and wind capacities of which up to 10% are curtailed. Relatively expensive biofuel capacity completes the generation mix on the continental scale with less than 15 GW, while the smallest scale layout comprises more than 10 times this amount. To balance daily and seasonal fluctuations, the electricity system of the large scale layout includes 0.2 TWh of short-term, and 3.6 TWh of long-term storage capacity. For smaller scale systems with limited balancing options, this rises to almost 1 TWh and 16 TWh respectively. The availability of all balancing options on layouts with continental scale grid allows to choose most adequate solutions for all possible situations and thus allows to find a cost optimal mix, in contrast to layouts with smaller grids, where the range of options is limited.
 
 ```table
 ---
@@ -66,21 +66,35 @@ We consider ten technology cost parameters and the weighted cost of capital as u
 
 # Discussion
 
-Large grid comes needs institutional support, and cooperation can fail.
+## Findings
+
+1. Regional or national scale grids come with significantly higher costs than one that spans the continent.
+
+2. (net) Autarky must not be much more expensive, as long as a sufficient transmission grid exists for balancing.
+
+3. The scale of the grid defines the cost optimal composition of supply and support infrastructure: large grids come with wind, some storage, and some flexible biofuel. Small grids come with less wind, more solar, more storage and more flexible biofuel. (I would like to say: benefit of grid can be tapped only if the other infrastructure fits, but we do not know how much worse 'non-fitting' mixes are, see conclusions.)
 
 ## Short comings
 
 1. no explicit modelling of flexibility and demand from heat sector
 2. no explicit modelling of flexibility and demand from transport sector
 3. no explicit modelling of flexibility from demand side management
-4. ignoring status quo and transition paths (including cost dynamics _on_ the transition path)
+4. ignoring status quo and transition paths
 5. ignoring distribution grid and grid services [@Brown:2018]
-6. ignoring correlation of technology deployment and its costs (Europe is a large market)
-7. optimistic renewable potentials (technical-potential?) in here, less optimistic ones make small scales systems impossible or more expensive
-8. uncertainty analysis on national resolution
+6. optimistic renewable potentials (technical-potential?) in here, less optimistic ones make small scales systems impossible or more expensive
+7. uncertainty analysis on national resolution
+8. We did not investigate the necessary transmission grid capacities, see paragraph below.
 
-# Conclusion
-Autarky can be expensive. Using the grid for balancing can bring costs down significantly. Access to better resources is not as important.
+For a trade off between costs and transmission grid, not only the scale of the grid must be taken into account, but also the "strength" / capacity (a fourth dimension in our scenario space, we do not do that). While we did not investigate that we speculate that costs (and necessary infrastructure of course) lie between those layouts we looked at. Others have shown favourable non linear relationships between transmission capacity and benefits: large parts of the benefits can be reached with fractions of the capacity [@Rodriguez:2014; @Schlachtberger:2017]. (Should we investigate this? Or is this [FRIN](https://en.wikipedia.org/wiki/Further_research_is_needed)?)
+
+## (Policy) Conclusion
+
+Large grids offer cost reductions but are much larger than today, need infrastructure  expansion and institutional support; with risks of cooperation failing.
+
+A sensible compromise between costs and grid infrastructure seem to be a system layout without large net imports but with intra-annual exchange.
+
+A long term strategy (and cooperation) for Europe can reduce costs and help achieve adequate compositions of supply and support infrastructure: large wind infrastructure unfolds its economic potential with a strong grid; while large solar infrastructure would not benefit from a strong grid as much.
+(BUT we do not know how much worse a large grid with dominant solar, or a small grid with dominant wind is. Should we investigate this? Or is this [FRIN](https://en.wikipedia.org/wiki/Further_research_is_needed)?)
 
 # Methods
 

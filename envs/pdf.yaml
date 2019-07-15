@@ -11,4 +11,4 @@ dependencies:
         - pandoc-fignos
         - pantable
         - cairocffi==1.0.1
-        - weasyprint==44
+        - weasyprint==48

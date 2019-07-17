@@ -27,9 +27,7 @@ def determine_y(path_to_results_of_large_scale, path_to_results_of_small_scale,
             "y-large-scale-storage-gwh": [storage_capacity_energy(large_scale, scaling_factors)],
             "y-small-scale-storage-gwh": [storage_capacity_energy(small_scale, scaling_factors)],
             "y-large-scale-transmission-gwkm": [transmission_capacity(large_scale, scaling_factors)],
-            "y-small-scale-transmission-gwkm": [transmission_capacity(small_scale, scaling_factors)],
-            "y-large-scale-shed-load-gwh": [shed_load(large_scale, scaling_factors)],
-            "y-small-scale-shed-load-gwh": [shed_load(small_scale, scaling_factors)]
+            "y-small-scale-transmission-gwkm": [transmission_capacity(small_scale, scaling_factors)]
         },
         index=[experiment_id]
     ).to_csv(path_to_output, sep="\t", index=True, header=True)
@@ -79,14 +77,6 @@ def transmission_capacity(result, scaling_factors):
         return (trans_cap_mw * distance_km).sum().item() * ENERGY_SCALING_FACTOR / 2 # counting each line twice
     else:
         assert trans_cap_mw.sum() == 0
-        return 0
-
-
-def shed_load(result, scaling_factors):
-    gen = result.get_formatted_array("carrier_prod") / scaling_factors["power"]
-    if "load_shedding" in gen.techs:
-        return gen.sel(techs="load_shedding").sum().item() * ENERGY_SCALING_FACTOR
-    else:
         return 0
 
 

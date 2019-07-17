@@ -34,8 +34,8 @@ Contrary to all other balancing options, we of course find the highest reliance 
 
 ```table
 ---
-caption: 'Installed transmission grid capacity (<i class="fab fa-connectdevelop"></i>), gross physical electricity flow crossing country borders (<i class="fas fa-shopping-cart"></i> gross), net electricity flow imported by all countries (<i class="fas fa-shopping-cart"></i> net), and the relative amount of electricity demand that is shed, i.e. remains unserved (<i class="fas fa-truck-loading"></i>) for all electricity system layouts without net imports into autarkic units. Each layout is characterised by the autarky scale (<i class="fas fa-layer-group"></i>), the maximum level of annual net imports into autarkic units (<i class="fas fa-shield-alt"></i>), and the size of the electricity grid surrounding autarkic units (<i class="fab fa-connectdevelop"></i>). {#tbl:overview-scenario-results-2}'
-alignment: LRRRR
+caption: 'Installed transmission grid capacity (<i class="fab fa-connectdevelop"></i>), gross physical electricity flow crossing country borders (<i class="fas fa-shopping-cart"></i> gross), and net electricity flow imported by all countries (<i class="fas fa-shopping-cart"></i> net) for all electricity system layouts without net imports into autarkic units. Each layout is characterised by the autarky scale (<i class="fas fa-layer-group"></i>), the maximum level of annual net imports into autarkic units (<i class="fas fa-shield-alt"></i>), and the size of the electricity grid surrounding autarkic units (<i class="fab fa-connectdevelop"></i>). {#tbl:overview-scenario-results-2}'
+alignment: LRRR
 include: report/overview-scenario-results-2.csv
 include-encoding: utf-8
 markdown: True
@@ -180,11 +180,9 @@ We model both classes models with two technical parameters: the ratio between po
 
 Additionally, we assume that power and storage capacities can be expanded independently, only limited by the above mentioned minimum/maximum storage capacities.
 
-## Load shedding
+## Insufficient potentials
 
-In some regions, local technical renewable electricity generation potential is not high enough to satisfy local electricity demand  [@Trondle:2019]. This is problematic in system layouts in which regions strive for electricity autarky.
-
-For the model to remain feasible in these corner cases, we permit load shedding with high cost per kWh shed (see Table @tbl:overview-cost-assumptions), and we allow load shedding only in system layouts with regional autarky and only in regions that could otherwise not be autarkic: Vienna, Brussels, Berlin, Oslo, and Basel.
+In some regions, local technical potential for renewable electricity is not high enough to satisfy local electricity demand [@Trondle:2019]. This is problematic in system layouts in which regions strive for electricity autarky. To provide sufficient electricity supply in these regions, we connect them with a neighbouring or the encompassing region: Vienna with Lower Austria, Brussels with Flanders, Berlin with Brandenburg, Oslo with Akershus, and the canton of Basel-City with the canton of Basel-Country. So when we require regional autarky, we actually require autarky of each combined region in these five corner cases.
 
 ## Technology costs
 

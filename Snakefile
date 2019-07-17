@@ -17,7 +17,7 @@ localrules: all, clean, copy_report_file, report
 include: "./rules/sync.smk"
 include: "./rules/construct.smk"
 include: "./rules/analyse.smk"
-include: "./rules/loadshedding.smk"
+include: "./rules/impossible.smk"
 include: "./rules/uncertainty.smk"
 
 

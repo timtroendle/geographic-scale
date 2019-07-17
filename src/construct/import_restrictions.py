@@ -13,9 +13,20 @@ overrides:
     {% for autarky_level, location_groups in autarky_levels.items() %}
     {{ autarky_level }}-{{ 100 - restriction }}-percent:
         {% for location_group, sublocations in location_groups.items() %}
-        group_constraints.import_restriction_{{ restriction }}_percent_{{ location_group | replace(".", "-") }}:
-            locs: [{{ sublocations | map("replace", ".", "-") | join(",") }}]
-            techs: ["open_field_pv", "roof_mounted_pv", "wind_onshore_monopoly", "wind_onshore_competing", "wind_offshore", "load_shedding", "hydro_run_of_river", "hydro_reservoir", "biofuel"]
+        group_constraints.import_restriction_{{ restriction }}_percent_{{ location_group }}:
+            locs:
+            {%- for sublocation in sublocations %}
+            - {{ sublocation }}
+            {%- endfor %}
+            techs:
+                - open_field_pv
+                - roof_mounted_pv
+                - wind_onshore_monopoly
+                - wind_onshore_competing
+                - wind_offshore
+                - hydro_run_of_river
+                - hydro_reservoir
+                - biofuel
             demand_share_min:
                 electricity: {{ 1 - (restriction / 100) }}
         {% endfor %}
@@ -25,14 +36,15 @@ overrides:
 COUNTRY_CODE_COLUMN = "country_code"
 
 
-def import_restriction(path_to_units, restrictions_in_percent, path_to_result):
-    units = gpd.read_file(path_to_units).set_index("id", drop=True)
+def import_restriction(path_to_units, restrictions_in_percent, connected_regions, path_to_result):
+    units = gpd.read_file(path_to_units).set_index("id", drop=True).rename(index=lambda idx: idx.replace(".", "-"))
 
     autarky_levels = {
         "regional-autarky": _regional_autarky(units),
         "national-autarky": _national_autarky(units),
         "continental-autarky": _continental_autarky(units)
     }
+    autarky_levels["regional-autarky"] = _connect_regions(autarky_levels["regional-autarky"], connected_regions)
 
     restrictions = jinja2.Template(TEMPLATE).render(
         autarky_levels=autarky_levels,
@@ -60,9 +72,24 @@ def _continental_autarky(units):
     }
 
 
+def _connect_regions(autarky_dict, connected_regions):
+    if all([region in autarky_dict.keys() for region in connected_regions]):
+        # config is valid, and resolution is regional. apply config
+        for insufficient, neighbour in connected_regions.items():
+            autarky_dict[insufficient] = [insufficient, neighbour]
+            del autarky_dict[neighbour]
+        return autarky_dict
+    elif all([region not in autarky_dict.keys() for region in connected_regions]):
+        # config is valid, but resolution is not regional. do nothing
+        return autarky_dict
+    else:
+        raise ValueError("Config of connected regions is invalid.")
+
+
 if __name__ == "__main__":
     import_restriction(
         path_to_units=snakemake.input.units,
         restrictions_in_percent=snakemake.params.restrictions,
+        connected_regions=snakemake.params.connected_regions,
         path_to_result=snakemake.output[0]
     )

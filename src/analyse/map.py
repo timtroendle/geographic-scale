@@ -29,9 +29,9 @@ ALL_TECHS = ['wind_onshore_monopoly', 'demand_elec', 'load_shedding', 'biofuel',
              'wind_onshore_competing', 'battery', 'hydrogen', 'free_transmission',
              'ac_transmission', 'open_field_pv', 'hydro_run_of_river',
              'pumped_hydro']
-SUPPLY_TECHS_WITHOUT_LOAD_SHEDDING = ['wind_onshore_monopoly', 'biofuel',
-                                      'roof_mounted_pv', 'hydro_reservoir', 'wind_offshore',
-                                      'wind_onshore_competing', 'open_field_pv', 'hydro_run_of_river']
+SUPPLY_TECHS = ['wind_onshore_monopoly', 'biofuel',
+                'roof_mounted_pv', 'hydro_reservoir', 'wind_offshore',
+                'wind_onshore_competing', 'open_field_pv', 'hydro_run_of_river']
 
 
 def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regional_shapes,
@@ -141,7 +141,7 @@ def _read_cost(shapes, model, level):
                     .get_formatted_array('carrier_prod')
                     .squeeze(['carriers']))
     carrier_prod = (carrier_prod
-                    .sel(techs=_supply_techs(carrier_prod))
+                    .sel(techs=SUPPLY_TECHS)
                     .sum(dim=['techs', 'timesteps']))
     if level == "continental":
         cost = cost.sum(dim="locs").item()
@@ -157,13 +157,6 @@ def _read_cost(shapes, model, level):
         cost = cost.to_series()
         carrier_prod.to_series()
     return (cost / carrier_prod)
-
-
-def _supply_techs(carrier_prod):
-    if "load_shedding" in carrier_prod.techs:
-        return SUPPLY_TECHS_WITHOUT_LOAD_SHEDDING + ["load_shedding"]
-    else:
-        return SUPPLY_TECHS_WITHOUT_LOAD_SHEDDING
 
 
 def _read_total_system_costs(model):

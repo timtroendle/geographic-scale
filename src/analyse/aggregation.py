@@ -106,8 +106,6 @@ def _set_up_variables(units):
                  lambda model, sf: _capacity_for_tech(model, ["hydro_reservoir"], sf)),
         Variable("Capacity|Bioenergy", "GW",
                  lambda model, sf: _capacity_for_tech(model, ["biofuel"], sf)),
-        Variable("Capacity|Load shedding", "GW",
-                 lambda model, sf: _capacity_for_tech(model, ["load_shedding"], sf, optional=True)),
         Variable("Capacity|Storage|Short term|Power", "GW",
                  lambda model, sf: _capacity_for_tech(model, ["battery"], sf)),
         Variable("Capacity|Storage|Short term|Energy", "GWh",
@@ -142,10 +140,6 @@ def _set_up_variables(units):
                  lambda model, sf: _generation_for_tech(model, ["hydro_reservoir"], sf)),
         Variable("Energy|Bioenergy", "TWh",
                  lambda model, sf: _generation_for_tech(model, ["biofuel"], sf)),
-        Variable("Energy|Load shedding|Absolute", "TWh",
-                 lambda model, sf: _generation_for_tech(model, ["load_shedding"], sf, optional=True)),
-        Variable("Energy|Load shedding|Relative", "[‰]",
-                 _relative_load_shed),
         Variable("Energy|Renewable curtailment|Absolute", "TWh",
                  _absolute_curtailment),
         Variable("Energy|Renewable curtailment|Relative", "[%]",
@@ -297,18 +291,6 @@ def _net_import_national_level(model, units, scaling_factors):
     ]
     return abs(sum([national_exchange for national_exchange in national_exchanges
                     if national_exchange >= 0]))
-
-
-def _relative_load_shed(model, scaling_factors):
-    gen = _generation(model, scaling_factors["power"])
-    if "load_shedding" in gen.techs:
-        shed = gen.sel(techs="load_shedding").sum(["timesteps", "locs"]).item()
-        demand = (_consumption(model, scaling_factors["power"]).sel(techs=ELECTRICITY_DEMAND_TECH)
-                                                               .sum(["timesteps", "locs"])
-                                                               .item())
-        return (shed / demand * 1000)
-    else:
-        return 0
 
 
 def _relative_curtailment(model, scaling_factors):

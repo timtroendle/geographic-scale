@@ -3,13 +3,10 @@ subworkflow eurocalliope:
     snakefile: "./euro-calliope/Snakefile"
     configfile: "./config/default.yaml"
 
-localrules: copy_euro_calliope, copy_resolution_specific_euro_calliope, load_shedding, model
-ruleorder: model > import_restrictions > grid_size_restrictions > load_shedding > copy_euro_calliope > copy_resolution_specific_euro_calliope
+localrules: copy_euro_calliope, copy_resolution_specific_euro_calliope, model
+ruleorder: model > import_restrictions > grid_size_restrictions > copy_euro_calliope > copy_resolution_specific_euro_calliope
 wildcard_constraints:
     definition_file = "[^\/]*" # must not travers into directories
-
-
-LOCATIONS_WITH_LOAD_SHEDDING = "data/{resolution}/locations-with-loadshedding.txt"
 
 
 rule copy_euro_calliope:
@@ -32,7 +29,8 @@ rule import_restrictions:
         src = "src/construct/import_restrictions.py",
         units = eurocalliope("build/data/{resolution}/units.geojson")
     params:
-        restrictions = [0, 15, 30]
+        restrictions = [0, 15, 30],
+        connected_regions = config["connected-regions"]
     conda: "../envs/geo.yaml"
     output: "build/model/{resolution}/import-restrictions.yaml"
     script: "../src/construct/import_restrictions.py"
@@ -44,27 +42,11 @@ rule grid_size_restrictions:
         src = "src/construct/grid_size_restrictions.py",
         links = "build/model/{resolution}/link-all-neighbours.yaml",
         units = eurocalliope("build/data/{resolution}/units.geojson")
+    params:
+        connected_regions = config["connected-regions"]
     conda: "../envs/geo.yaml"
     output: "build/model/{resolution}/grid-size-restrictions.yaml"
     script: "../src/construct/grid_size_restrictions.py"
-
-
-def load_shedding_locations(wildcards):
-    locations = config["load-shedding"][wildcards["resolution"]]
-    if locations:
-        return locations
-    else:
-        return []
-
-
-rule load_shedding:
-    message: "Create load shedding override."
-    input:
-        src = "src/construct/load_shedding.py"
-    params: locations = load_shedding_locations
-    conda: "../envs/default.yaml"
-    output: "build/model/{resolution}/load-shedding.yaml"
-    script: "../src/construct/load_shedding.py"
 
 
 rule model:
@@ -78,7 +60,6 @@ rule model:
         "build/model/{resolution}/link-all-neighbours.yaml",
         "build/model/{resolution}/import-restrictions.yaml",
         "build/model/{resolution}/grid-size-restrictions.yaml",
-        "build/model/{resolution}/load-shedding.yaml",
         "build/model/{resolution}/electricity-demand.csv",
         expand(
             "build/model/{{resolution}}/capacityfactors-{technology}.csv",

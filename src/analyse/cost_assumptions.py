@@ -15,8 +15,7 @@ TECHS = {
     "biofuel": "Biofuel",
     "ac_transmission": "AC transmission^",
     "battery": "Short term storage",
-    "hydrogen": "Long term storage",
-    "load_shedding": "Load shedding"
+    "hydrogen": "Long term storage"
 }
 COST_SOURCES = {
     "open_field_pv": "[@JRC:2014] Table 7",
@@ -25,8 +24,7 @@ COST_SOURCES = {
     "biofuel": "[@JRC:2014] Table 48, [@RuizCastello:2015]",
     "ac_transmission": "[@JRC:2014] Table 39",
     "battery": "[@Schmidt:2019]",
-    "hydrogen": "[@Schmidt:2019]",
-    "load_shedding": ""
+    "hydrogen": "[@Schmidt:2019]"
 }
 
 

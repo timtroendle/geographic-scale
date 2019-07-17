@@ -12,7 +12,6 @@ STORAGE = '<i class="fas fa-battery-three-quarters"></i>'
 TRANSMISSION = '<i class="fab fa-connectdevelop"></i>'
 IMPORT = '<i class="fas fa-shopping-cart"></i>'
 CURTAILMENT = '<i class="fas fa-traffic-light"></i>'
-LOAD_SHED = '<i class="fas fa-truck-loading"></i>'
 
 SCENARIOS = [
     "continental-autarky-100-continental-grid",
@@ -35,8 +34,7 @@ VARIABLES_TABLE_1 = OrderedDict([
 VARIABLES_TABLE_2 = OrderedDict([
     ("Capacity|Transmission", f"{TRANSMISSION} [TW km]"),
     ("Energy|Gross import national level", f"{IMPORT} gross [TWh]"),
-    ("Energy|Net import national level", f"{IMPORT} net [TWh]"),
-    ("Energy|Load shedding|Relative", f"{LOAD_SHED} [‰]")
+    ("Energy|Net import national level", f"{IMPORT} net [TWh]")
 ])
 
 

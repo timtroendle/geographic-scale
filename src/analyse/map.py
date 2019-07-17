@@ -147,10 +147,10 @@ def _read_cost(shapes, model, level):
         cost = cost.sum(dim="locs").item()
         carrier_prod = carrier_prod.sum(dim="locs").item()
     elif level == "national":
-        cost = (cost.groupby(shapes.country_code.to_xarray())
+        cost = (cost.groupby(shapes.country_code.to_xarray().sortby(cost.locs))
                     .sum("locs")
                     .to_series())
-        carrier_prod = (carrier_prod.groupby(shapes.country_code.to_xarray())
+        carrier_prod = (carrier_prod.groupby(shapes.country_code.to_xarray().sortby(carrier_prod.locs))
                                     .sum("locs")
                                     .to_series())
     elif level == "regional":

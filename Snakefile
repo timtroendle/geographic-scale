@@ -26,6 +26,7 @@ rule all:
     input:
         "build/logs/{resolution}/test-report.html".format(resolution=config["resolution"]["space"]),
         "build/output/{resolution}/report.html".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/aggregation.nc".format(resolution=config["resolution"]["space"]),
         "build/output/uncertainty/{resolution}/weather-diff-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"])
 
 

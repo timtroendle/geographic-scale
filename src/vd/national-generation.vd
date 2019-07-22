@@ -1,0 +1,36 @@
+sheet	col	row	longname	input	keystrokes	comment
+			open-file	build-by-euler/output/regional/aggregation.nc	o	
+aggregation		2	dive-row		^J	
+carrier_prod	techs		freq-col		F	
+carrier_prod_techs_freq		キbiofuel	select-row		s	
+carrier_prod_techs_freq		キhydro_reservoir	select-row		s	
+carrier_prod_techs_freq		キhydro_run_of_river	select-row		s	
+carrier_prod_techs_freq		キopen_field_pv	select-row		s	
+carrier_prod_techs_freq		キroof_mounted_pv	select-row		s	
+carrier_prod_techs_freq		キwind_offshore	select-row		s	
+carrier_prod_techs_freq		キwind_onshore_competing	select-row		s	
+carrier_prod_techs_freq		キwind_onshore_monopoly	select-row		s	
+carrier_prod_techs_freq			quit-sheet		q	
+carrier_prod			dup-selected		"	
+carrier_prod_selectedref	carrier_prod		aggregate-col	sum	+	
+carrier_prod_selectedref	country_code		key-col		!	
+carrier_prod_selectedref	scenario		key-col		!	
+carrier_prod_selectedref			freq-keys		gF	
+carrier_prod_selectedref_scenario-country_code_freq			sheets		S	
+sheets		キaggregation	open-row		^J	
+aggregation		3	dive-row		^J	
+carrier_con	techs	2	select-equal-cell		,	
+carrier_con			dup-selected		"	
+carrier_con_selectedref	country_code		key-col		!	
+carrier_con_selectedref	scenario		key-col		!	
+carrier_con_selectedref			freq-keys		gF	
+carrier_con_selectedref_scenario-country_code_freq			quit-sheet		q	
+carrier_con_selectedref	carrier_con		aggregate-col	sum	+	
+carrier_con_selectedref			freq-keys		gF	
+carrier_con_selectedref_scenario-country_code_freq			sheets		S	
+sheets		キcarrier_con_selectedref_scenario-country_code_freq	select-row		s	
+sheets		キcarrier_prod_selectedref_scenario-country_code_freq	select-row		s	
+sheets			join-sheets	inner	&	
+carrier_con_selectedref_scenario-country_code_freq+carrier_prod_selectedref_scenario-country_code_freq	count		hide-col		-	
+carrier_con_selectedref_scenario-country_code_freq+carrier_prod_selectedref_scenario-country_code_freq	count		hide-col		-	
+carrier_con_selectedref_scenario-country_code_freq+carrier_prod_selectedref_scenario-country_code_freq	sum_carrier_prod		addcol-expr	sum_carrier_prod / (- sum_carrier_con)	=	

@@ -31,3 +31,6 @@ overview_cost_assumptions:
 aggregated_results:
     runtime: 60
     memory: 128000
+time_aggregated_results:
+    runtime: 30
+    memory: 48000

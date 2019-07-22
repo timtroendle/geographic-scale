@@ -39,18 +39,20 @@ def plot_costs(paths_to_results, path_to_costs, scaling_factor_cost):
     sns.set_context("paper")
     fig = plt.figure(figsize=(8, 3))
     pal = sns.light_palette(RED)
-    gs = gridspec.GridSpec(1, 4, width_ratios=[3, 2, 1, 0.2])
+    gs = gridspec.GridSpec(1, 4, width_ratios=[1, 2, 3, 0.2])
     ax4 = fig.add_subplot(gs[3])
     ax1 = fig.add_subplot(gs[0])
     sns.heatmap(
-        cost_heatmap(results, "regional"),
-        cmap=pal, ax=ax1, cbar_ax=ax4,
+        cost_heatmap(results, "continental"),
+        cmap=pal,
+        ax=ax1,
+        cbar=False,
         cbar_kws={"label": "total system costs [-]"},
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
         annot=True
     )
-    plt.title("REGIONAL AUTARKY")
+    plt.title("CONTINENTAL AUTARKY")
     ax2 = fig.add_subplot(gs[1])
     sns.heatmap(
         cost_heatmap(results, "national"),
@@ -66,17 +68,17 @@ def plot_costs(paths_to_results, path_to_costs, scaling_factor_cost):
     plt.title("NATIONAL AUTARKY")
     ax3 = fig.add_subplot(gs[2])
     sns.heatmap(
-        cost_heatmap(results, "continental"),
+        cost_heatmap(results, "regional"),
         cmap=pal,
         ax=ax3,
-        cbar=False,
+        cbar_ax=ax4,
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
         annot=True
     )
     plt.ylabel("")
     plt.yticks([])
-    plt.title("CONTINENTAL AUTARKY")
+    plt.title("REGIONAL AUTARKY")
     fig.autofmt_xdate()
     plt.tight_layout()
     fig.savefig(path_to_costs, dpi=300, transparent=True)
@@ -84,9 +86,9 @@ def plot_costs(paths_to_results, path_to_costs, scaling_factor_cost):
 
 def cost_heatmap(data, autarky_scale):
     if autarky_scale == "regional":
-        columns = ["regional", "national", "continental"]
+        columns = ["continental", "national", "regional"]
     elif autarky_scale == "national":
-        columns = ["national", "continental"]
+        columns = ["continental", "national"]
     elif autarky_scale == "continental":
         columns = ["continental"]
     else:

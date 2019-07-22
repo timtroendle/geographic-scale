@@ -67,6 +67,18 @@ rule aggregated_results:
     script: "../src/analyse/aggregation.py"
 
 
+rule time_aggregated_results:
+    message: "Create NetCDF overview over all results."
+    input:
+        src = "src/analyse/time_aggregation.py",
+        scenarios = expand("build/output/{{resolution}}/{scenario}/results.nc", scenario=config["scenarios"]),
+        units = eurocalliope("build/data/{resolution}/units.geojson")
+    params: scaling_factors = config["scaling-factors"]
+    conda: "../envs/geo.yaml"
+    output: "build/output/{resolution}/aggregation.nc"
+    script: "../src/analyse/time_aggregation.py"
+
+
 rule plot_scenario_space:
     message: "Plot scenario space and results."
     input:

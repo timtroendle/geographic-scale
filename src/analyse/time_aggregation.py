@@ -11,7 +11,8 @@ VARIABLE_SCALING_FACTOR = {
     "carrier_prod": lambda sf: 1 / sf["power"],
     "carrier_con": lambda sf: 1 / sf["power"],
     "total_levelised_cost": lambda sf: sf["power"] / sf["monetary"],
-    "capacity_factor": lambda sf: 1
+    "capacity_factor": lambda sf: 1,
+    "resource": lambda sf: 1
 }
 
 
@@ -32,6 +33,8 @@ def excavate_all_results(paths_to_scenarios, path_to_units, scaling_factors, pat
         for variable_name in VARIABLE_SCALING_FACTOR.keys()
     })
     ds.coords["country_code"] = units.country_code
+    ds.coords["tech_group"] = list(scenarios.values())[0].get_formatted_array("inheritance")
+    ds.coords["tech_group"].loc[:] = [parent.split('.')[-1] for parent in ds["tech_group"].values]
     ds.to_netcdf(path_to_output)
 
 
@@ -59,7 +62,9 @@ class CalliopeExporter:
         if "timesteps" in data.dims:
             data = data.sum("timesteps")
         if "techs" in data.dims:
-            data = data.sel(techs=[tech.item() for tech in data.techs if "transmission" not in tech.item()])
+            data = (data
+                    .sel(techs=[tech.item() for tech in data.techs if "transmission" not in tech.item()])
+                    .dropna(dim="techs", how="all"))
         return data * VARIABLE_SCALING_FACTOR[variable_name](self.__scaling_factors)
 
 

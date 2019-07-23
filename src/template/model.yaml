@@ -77,6 +77,7 @@ overrides:
         # Transform battery and hydrogen to stylised short term
         # and long term storage solutions.
         techs:
+            load_shedding.exists: False
             battery:
                 essentials:
                     name: Stylised short-term (e.g. battery) storage

@@ -24,7 +24,7 @@ PATH_TO_FONT_AWESOME = Path(__file__).parent.parent / 'fonts' / 'fa-solid-900.tt
 LAYER_UNICODE = "\uf5fd"
 MONEY_UNICODE = "\uf3d1"
 
-ALL_TECHS = ['wind_onshore_monopoly', 'demand_elec', 'load_shedding', 'biofuel',
+ALL_TECHS = ['wind_onshore_monopoly', 'demand_elec', 'biofuel',
              'roof_mounted_pv', 'hydro_reservoir', 'wind_offshore',
              'wind_onshore_competing', 'battery', 'hydrogen', 'free_transmission',
              'ac_transmission', 'open_field_pv', 'hydro_run_of_river',

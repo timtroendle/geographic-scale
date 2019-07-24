@@ -16,8 +16,8 @@ CAPACITY_FACTORS = [# depends on maximal/minimal-capacity-factor and time resolu
     "tech",
     HYDRO_TECHS
 )
-def test_no_hydro_costs(cost, tech):
-    assert cost.sel(techs=tech).sum("locs") == pytest.approx(0.0)
+def test_hydro_has_costs(cost, tech):
+    assert cost.sel(techs=tech).sum("locs") > 0.0
 
 
 @pytest.mark.parametrize(

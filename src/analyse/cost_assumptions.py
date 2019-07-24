@@ -13,18 +13,24 @@ TECHS = {
     "wind_onshore_monopoly": "Onshore wind",
     "wind_offshore": "Offshore wind",
     "biofuel": "Biofuel",
-    "ac_transmission": "AC transmission^",
+    "hydro_run_of_river": "Hydroelectricity run of river",
+    "hydro_reservoir": "Hydroelectricity with reservoir",
+    "pumped_hydro": "Pumped hydro storage",
     "battery": "Short term storage",
-    "hydrogen": "Long term storage"
+    "hydrogen": "Long term storage",
+    "ac_transmission": "AC transmission^",
 }
 COST_SOURCES = {
     "open_field_pv": "[@JRC:2014] Table 7",
     "wind_onshore_monopoly": "[@JRC:2014] Table 4",
     "wind_offshore": "[@JRC:2014] Table 5",
     "biofuel": "[@JRC:2014] Table 48, [@RuizCastello:2015]",
-    "ac_transmission": "[@JRC:2014] Table 39",
+    "hydro_run_of_river": "[@JRC:2014] Table 14",
+    "hydro_reservoir": "[@JRC:2014] Table 12",
+    "pumped_hydro": "[@Schmidt:2019]",
     "battery": "[@Schmidt:2019]",
-    "hydrogen": "[@Schmidt:2019]"
+    "hydrogen": "[@Schmidt:2019]",
+    "ac_transmission": "[@JRC:2014] Table 39",
 }
 
 

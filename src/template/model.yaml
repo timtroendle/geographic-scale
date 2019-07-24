@@ -70,23 +70,17 @@ overrides:
         techs.hydrogen.costs.monetary.om_prod: 0
     no-hydro-costs:
         # Because we force all hydro to current levels, there
-        # should be no costs for it.
+        # should be only annual O&M costs.
         techs.pumped_hydro.costs.monetary.storage_cap: 0
         techs.pumped_hydro.costs.monetary.energy_cap: 0
-        techs.pumped_hydro.costs.monetary.om_annual: 0
         techs.pumped_hydro.costs.monetary.om_prod: 0
         techs.hydro_run_of_river.costs.monetary.energy_cap: 0
-        techs.hydro_run_of_river.costs.monetary.om_annual: 0
         techs.hydro_run_of_river.costs.monetary.om_prod: 0
         techs.hydro_run_of_river.costs.monetary.om_con: 0
         techs.hydro_reservoir.costs.monetary.storage_cap: 0
         techs.hydro_reservoir.costs.monetary.energy_cap: 0
-        techs.hydro_reservoir.costs.monetary.om_annual: 0
         techs.hydro_reservoir.costs.monetary.om_prod: 0
         techs.hydro_reservoir.costs.monetary.om_con: 0
-        techs.pumped_hydro.constraints.lifetime: 1
-        techs.hydro_run_of_river.constraints.lifetime: 1
-        techs.hydro_reservoir.constraints.lifetime: 1
     stylised-storage:
         # Transform battery and hydrogen to stylised short term
         # and long term storage solutions.

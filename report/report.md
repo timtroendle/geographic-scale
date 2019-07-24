@@ -188,13 +188,13 @@ In some regions, local technical potential for renewable electricity is not high
 
 We assess long term (quasi steady state) cost of electricity supply. We aim neither to determine costs of a transition to such states nor to consider disruptive developments on the global market for supply and storage technologies. Thus, we assume expected learning-rate based costs once renewable supply and electricity storage are deployed at the large scales consistent with our study. Cost estimations for the year 2050 are primarily from [@JRC:2014] for supply and transmission technologies, from [@Schmidt:2019] for storage technologies, and from [@RuizCastello:2015] for fuel costs of biofuels.
 
-Technology costs are modelled as installed capacities costs, annual maintenance costs based on installed capacity, and, for biofuels only, variable costs per unit of generated electricity. We do not model variable operation and maintenance costs for technologies other than biofuels because it is the only fuel-burning technology we model, so annual per-capacity maintenance costs are sufficient for the other technologies. Technology lifetime and costs of capital are used to derive annuities for each technology. We do not consider costs for hydroelectricity. See Table @tbl:overview-cost-assumptions for an overview of all cost assumptions.
+Technology costs are modelled as installed capacities costs, annual maintenance costs based on installed capacity, and, for biofuels only, variable costs per unit of generated electricity. We do not model variable operation and maintenance costs for technologies other than biofuels because it is the only fuel-burning technology we model, so annual per-capacity maintenance costs are sufficient for the other technologies. Technology lifetime and costs of capital are used to derive annuities for each technology. We consider annual maintenance costs only for hydroelectricity as we assume capacities are already built and as costs of hydroelectricity have no impact on our results anyways. See Table @tbl:overview-cost-assumptions for an overview of all cost assumptions.
 
 We assume costs of capital to be 7.3% for all technologies and all locations based on historic average cost of capital for OECD countries [@Steffen:2019]. Some recent literature suggests costs of capital are likely specific to technology [@Egli:2018; @Steffen:2019] and location [@Ondraczek:2015; @Steffen:2019], but we consider the data available so far too sparse to provide a solid basis on which to model this.
 
 ```table
 ---
-caption: 'Assumptions on technology costs. Hydroelectricity has no cost. ^AC transmission installation costs are given in [€/kW/1000km] {#tbl:overview-cost-assumptions}'
+caption: 'Assumptions on technology costs. ^AC transmission installation costs are given in [€/kW/1000km] {#tbl:overview-cost-assumptions}'
 alignment: LRRRRRR
 include: report/overview-cost-assumptions.csv
 include-encoding: UTF-8

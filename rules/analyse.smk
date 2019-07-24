@@ -47,7 +47,9 @@ rule test:
             "build/output/{{resolution}}/{scenario}/results.nc",
             scenario=config["scenarios"]
         ),
-        biofuel_potentials = eurocalliope("build/data/{resolution}/biofuel-potential-mwh-per-year.csv"),
+        biofuel_potentials = eurocalliope("build/data/{{resolution}}/biofuel/{scenario}/potential-mwh-per-year.csv".format(
+            scenario=config["parameters"]["jrc-biofuel"]["scenario"]
+        )),
         units = eurocalliope("build/data/{resolution}/units.geojson")
     params: scaling_factors = config["scaling-factors"]
     output: "build/logs/{resolution}/test-report.html"

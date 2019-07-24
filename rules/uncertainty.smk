@@ -14,29 +14,48 @@ experiment_design.index = experiment_design.index.astype(str)
 localrules: x, weather_diff, normal_diff, weather_diff_diff
 
 
+rule biofuel_availability:
+    message: "Merge biofuel availability scenarios."
+    input:
+        low = eurocalliope("build/data/{resolution}/biofuel/low/potential-mwh-per-year.csv"),
+        medium = eurocalliope("build/data/{resolution}/biofuel/medium/potential-mwh-per-year.csv"),
+        high = eurocalliope("build/data/{resolution}/biofuel/high/potential-mwh-per-year.csv")
+    params: efficiency = config["parameters"]["biofuel-efficiency"]
+    output: "build/uncertainty/{resolution}/a_bio.csv"
+    run:
+        import pandas as pd
+
+        pd.DataFrame({
+            "low": pd.read_csv(input.low, index_col=0).iloc[:, 0],
+            "medium": pd.read_csv(input.medium, index_col=0).iloc[:, 0],
+            "high": pd.read_csv(input.high, index_col=0).iloc[:, 0],
+        }).mul(params.efficiency).to_csv(output[0], header=True, index=True)
+
+
 rule x:
     message: "Preprocess x {wildcards.id} to something usable by Calliope."
-    input: src = "src/uncertainty/x.py"
+    input:
+        src = "src/uncertainty/x.py",
+        biofuel = rules.biofuel_availability.output[0]
     params:
         x = lambda wildcards: experiment_design.loc[str(wildcards.id), :],
         parameter_definitions = config["uncertainty"]["parameters"],
         scaling_factors = config["scaling-factors"]
-    output: "build/uncertainty/{id}-x.yaml"
+    output: "build/uncertainty/{resolution}/{id}-x.yaml"
+    conda: "../envs/default.yaml"
     script: "../src/uncertainty/x.py"
 
 
 rule uncertainty_run:
     message:
-        "Experiment {{wildcards.id}} using scenario {{wildcards.scenario}} and {} resolution.".format(
-            config["uncertainty"]["resolution"]["space"]
-        )
+        "Experiment {wildcards.id} using scenario {wildcards.scenario} and {wildcards.resolution} resolution."
     input:
-        model = "build/model/{}/model.yaml".format(config["uncertainty"]["resolution"]["space"]),
+        model = "build/model/{resolution}/model.yaml",
         parameters = rules.x.output
     params:
         subset_time = config["uncertainty"]["subset_time"],
         time_resolution = config["uncertainty"]["resolution"]["time"],
-    output: "build/uncertainty/{id}--{scenario}-results.nc"
+    output: "build/output/{resolution}/uncertainty/{id}--{scenario}-results.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """
@@ -79,9 +98,9 @@ rule y:
     message: "Calculate y for experiment {wildcards.id}."
     input:
         src = "src/uncertainty/y.py",
-        large_scale = "build/uncertainty/{{id}}--{}-results.nc".format(config["uncertainty"]["scenarios"]["large-scale"]),
-        small_scale = "build/uncertainty/{{id}}--{}-results.nc".format(config["uncertainty"]["scenarios"]["small-scale"])
-    output: "build/uncertainty/{id}-y.tsv"
+        large_scale = "build/output/{{resolution}}/uncertainty/{{id}}--{}-results.nc".format(config["uncertainty"]["scenarios"]["large-scale"]),
+        small_scale = "build/output/{{resolution}}/uncertainty/{{id}}--{}-results.nc".format(config["uncertainty"]["scenarios"]["small-scale"])
+    output: "build/output/{resolution}/uncertainty/{id}-y.tsv"
     params:
         scaling_factors = config["scaling-factors"],
         experiment_id = lambda wildcards: wildcards.id
@@ -92,8 +111,8 @@ rule y:
 rule xy:
     message: "Gather all y and combine with x."
     input:
-        y = expand("build/uncertainty/{id}-y.tsv", id=experiment_design.index)
-    output: "build/uncertainty/xy.csv"
+        y = expand("build/output/{{resolution}}/uncertainty/{id}-y.tsv", id=experiment_design.index)
+    output: "build/output/{resolution}/uncertainty/xy.csv"
     params: x = experiment_design
     run:
         import pandas as pd
@@ -129,7 +148,7 @@ rule weather_diff:
         src = "src/uncertainty/weather_diff.py",
         large_scale = "build/output/{{resolution}}/uncertainty/weather-{}.nc".format(config["weather-uncertainty"]["scenarios"]["large-scale"]),
         small_scale = "build/output/{{resolution}}/uncertainty/weather-{}.nc".format(config["weather-uncertainty"]["scenarios"]["small-scale"])
-    output: "build/output/uncertainty/{resolution}/weather-diff.txt"
+    output: "build/output/{resolution}/uncertainty/weather-diff.txt"
     conda: "../envs/default.yaml"
     script: "../src/uncertainty/weather_diff.py"
 
@@ -140,7 +159,7 @@ rule normal_diff:
         src = "src/uncertainty/weather_diff.py",
         large_scale = "build/output/{{resolution}}/{}/results.nc".format(config["weather-uncertainty"]["scenarios"]["large-scale"]),
         small_scale = "build/output/{{resolution}}/{}/results.nc".format(config["weather-uncertainty"]["scenarios"]["small-scale"])
-    output: "build/output/uncertainty/{resolution}/normal-diff.txt"
+    output: "build/output/{resolution}/uncertainty/normal-diff.txt"
     conda: "../envs/default.yaml"
     script: "../src/uncertainty/weather_diff.py"
 
@@ -150,7 +169,7 @@ rule weather_diff_diff:
     input:
         normal = rules.normal_diff.output[0],
         weather = rules.weather_diff.output[0]
-    output: "build/output/uncertainty/{resolution}/weather-diff-diff.txt"
+    output: "build/output/{resolution}/uncertainty/weather-diff-diff.txt"
     run:
         with open(input.normal, "r") as f_normal:
             normal_diff = float(f_normal.readline())

@@ -142,7 +142,7 @@ We derive capacity factor time series for on- and offshore wind on the same 50 k
 
 ## Hydro run of river and reservoirs
 
-We assume hydro run of river and hydro reservoir potentials to be largely tapped today (ADD source) with almost no expansion potential. Thus, for hydro generation capacities we deviate from the greenfield approach and fix today's capacities. Similar to PV and wind generation, hydro generation can be curtailed.
+We assume hydro run of river and hydro reservoir potentials to be largely tapped today (ADD source maybe JRC Technology Map) with almost no expansion potential. Thus, for hydro generation capacities we deviate from the greenfield approach and fix today's capacities. Similar to PV and wind generation, hydro generation can be curtailed.
 
 We derive the location and installed power and storage capacities of hydro stations in Europe today from the JRC Hydro Power Database [@MatteoDeFelice:2019]. Where no storage capacity of hydro reservoirs is available, we use the median national ratio of power to storage capacity, and if that is not available, we use the median Europe-wide ratio of power to storage capacity.
 
@@ -170,7 +170,7 @@ markdown: True
 
 ## Pumped hydro
 
-Similar to hydro run of river and hydro reservoir capacities, we assume pumped hydro capacities in Europe to be largely tapped (ADD source) and do not allow for capacity expansion. Thus, we deploy today's pumped hydro power and storage capacities. We assume a round-trip electricity efficiency of 78% [@Schmidt:2019].
+Similar to hydro run of river and hydro reservoir capacities, we assume pumped hydro capacities in Europe to be largely tapped (ADD source, maybe JRC Technology Map) and do not allow for capacity expansion. Thus, we deploy today's pumped hydro power and storage capacities. We assume a round-trip electricity efficiency of 78% [@Schmidt:2019].
 
 To determine location, power and storage capacity of each pumped hydro station in Europe today, we also use the JRC Hydro Power Database [@MatteoDeFelice:2019]. Where storage capacities are missing, we employ the same method as for hydro reservoirs: we assume national median ratios of power to storage capacity for all stations with missing storage capacity; and where this is not available, we assume Europe-wide median ratios of power to storage capacity. Storage capacities within the JRC Hydro Power Database sum up to more than 10 TWh which is more than what other sources report (for example 1.3 TWh in [@Geth:2015]). We thus scale the storage capacities to match national data reported by @Geth:2015. Using location data of each station, we then sum all power and storage capacities within regional administrative units to form a single pumped hydro capacity per unit.
 

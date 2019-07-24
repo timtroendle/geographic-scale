@@ -5,6 +5,10 @@ scaling-factors:
 minimal-capacity-factor: 0.001 # consider smaller values to be 0; this helps numerics in the LP
 maximal-capacity-factor: 10 # for hydro reservoirs, value chosen so that numerical range is << 1e6
                             # considering a time resolution of 4 H (0.001 - 10*4=40)
+parameters:
+    biofuel-efficiency: 0.45
+    jrc-biofuel:
+        scenario: medium
 resolution:
     space: national
     time: 1M
@@ -38,92 +42,140 @@ weather-uncertainty:
         large-scale: continental-autarky-100-continental-grid
         small-scale: national-autarky-100-national-grid
 uncertainty:
-    experiment-design: ./config/uncertainty-experiment-design.tsv
+    experiment-design: ./config/uncertainty-experiment-design-small.tsv
     resolution:
         space: national
-        time: 1H
-    subset_time: "['2016-01-01', '2016-01-01']"
+        time: 1M
+    subset_time: "['2016-01-01', '2016-12-31']"
     scenarios:
         large-scale: continental-autarky-100-continental-grid
         small-scale: national-autarky-100-national-grid
     parameters:
-        installation-costs-battery-power:
-            description: Costs for installing battery power capacity (inverter etc.).
-            min: 30000
-            max: 150000
-            unit: EUR/MW
-            scaling-factor: monetary
-            inverse-scaling-factor: power
-            calliope-param: techs.battery.costs.monetary.energy_cap
-        installation-costs-battery-energy:
-            description: Costs for installing battery energy capacity.
-            min: 50000
-            max: 350000
-            unit: EUR/MWh
-            scaling-factor: monetary
-            inverse-scaling-factor: power
-            calliope-param: techs.battery.costs.monetary.storage_cap
-        lifetime-battery:
-            description: (Technical) Lifetime of battery capacity.
-            min: 5
-            max: 30
-            unit: yr
+        depreciation-rate:
+            short-name: d_r
+            description: System- and sector-wide depreciation rate of investments.
+            min: 0.016
+            max: 0.138
+            unit: "-/yr"
             scaling-factor:
             inverse-scaling-factor:
-            calliope-param: techs.battery.constraints.lifetime
-        installation-costs-hydrogen-power:
-            description: Costs for installing hydrogen power capacity (fuel cell etc.).
-            min: 250000
-            max: 1708060
-            unit: EUR/MW
-            scaling-factor: monetary
-            inverse-scaling-factor: power
-            calliope-param: techs.hydrogen.costs.monetary.energy_cap
-        installation-costs-hydrogen-energy:
-            description: Costs for installing hydrogen energy capacity.
-            min: 5000
-            max: 28520
-            unit: EUR/MWh
-            scaling-factor: monetary
-            inverse-scaling-factor: power
-            calliope-param: techs.hydrogen.costs.monetary.storage_cap
-        lifetime-hydrogen:
-            description: (Technical) Lifetime of hydrogen capacity.
-            min: 10
-            max: 30
-            unit: yr
-            scaling-factor:
-            inverse-scaling-factor:
-            calliope-param: techs.hydrogen.constraints.lifetime
-        installation-costs-pv:
+            calliope-params:
+                tech_groups.conversion.costs.monetary.interest_rate: 1
+                tech_groups.conversion_plus.costs.monetary.interest_rate: 1
+                tech_groups.storage.costs.monetary.interest_rate: 1
+                tech_groups.supply.costs.monetary.interest_rate: 1
+                tech_groups.supply_plus.costs.monetary.interest_rate: 1
+                tech_groups.transmission.costs.monetary.interest_rate: 1
+        installation-cost-pv:
+            short-name: c_pv
             description: Costs for installing photovoltaics capacity.
-            min: 100000
-            max: 1500000
+            min: 280_000
+            max: 580_000
             unit: EUR/MW
             scaling-factor: monetary
             inverse-scaling-factor: power
-            calliope-param: tech_groups.pv.costs.monetary.energy_cap
-        installation-costs-wind-onshore: # offshore directly dependent?
+            calliope-params:
+                tech_groups.pv.costs.monetary.energy_cap: 1
+                tech_groups.pv.costs.monetary.om_annual: 0.017
+        installation-cost-wind-onshore:
+            short-name: c_wind
             description: Costs for installing onshore wind capacity.
-            min: 100000
-            max: 1400000
+            min: 800_000
+            max: 1_700_000
             unit: EUR/MW
             scaling-factor: monetary
             inverse-scaling-factor: power
-            calliope-param: tech_groups.wind_onshore.costs.monetary.energy_cap
-        installation-costs-ntc:
+            calliope-params:
+                tech_groups.wind_onshore.costs.monetary.energy_cap: 1
+                tech_groups.wind_onshore.costs.monetary.om_annual: 0.017
+        installation-cost-wind-offshore:
+            short-name: c_offshore
+            description: Costs for installing offshore wind capacity.
+            min: 1_790_000
+            max: 3_270_000
+            unit: EUR/MW
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-params:
+                techs.wind_offshore.costs.monetary.energy_cap: 1
+                techs.wind_offshore.costs.monetary.om_annual: 0.023
+        installation-cost-short-term-storage-power:
+            short-name: c_sts_p
+            description: Costs for installing battery power capacity (inverter etc.).
+            min: 31_000
+            max: 141_000
+            unit: EUR/MW
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-params:
+                techs.battery.costs.monetary.energy_cap: 1
+        installation-cost-short-term-storage-energy:
+            short-name: c_sts_e
+            description: Costs for installing battery energy capacity.
+            min: 36_000
+            max: 166_000
+            unit: EUR/MWh
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-params:
+                techs.battery.costs.monetary.storage_cap: 1
+        installation-cost-long-term-storage-power:
+            short-name: c_lts_p
+            description: Costs for installing hydrogen power capacity (fuel cell etc.).
+            min: 1_123_000
+            max: 2_100_000
+            unit: EUR/MW
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-params:
+                techs.hydrogen.costs.monetary.energy_cap: 1
+        installation-cost-long-term-storage-energy:
+            short-name: c_lts_e
+            description: Costs for installing hydrogen energy capacity.
+            min: 6_000
+            max: 12_000
+            unit: EUR/MWh
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-params:
+                techs.hydrogen.costs.monetary.storage_cap: 1
+        installation-cost-ntc:
+            short-name: c_ntc
             description: Costs for installing net transfer capacity (high voltage ac transmission).
-            min: 0.1
-            max: 3.8
+            min: 0.7
+            max: 1.08
             unit: EUR/MW/m
             scaling-factor: monetary
             inverse-scaling-factor: power
-            calliope-param: techs.ac_transmission.costs.monetary.energy_cap_per_distance
-        interest-rate:
-            description: System- and sector-wide interest rate of investments.
-            min: 2
-            max: 10
-            unit: "%/yr"
+            calliope-params:
+                techs.ac_transmission.costs.monetary.energy_cap_per_distance: 1
+        installation-cost-biofuel:
+            short-name: c_bio
+            description: Costs for installing biofuel capacities.
+            min: 1_380_000
+            max: 3_450_000
+            unit: EUR/MW
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-params:
+                techs.biofuel.costs.monetary.energy_cap: 1
+                techs.biofuel.costs.monetary.om_annual: 0.041
+        fuel-cost-biofuel: # FIXME actually not independent, but varies together with `availability-biofuel`.
+            short-name: c_fuel
+            description: Fuel costs biofuel (includes combustion efficiency and variable generation costs).
+            min: 28.12 # includes 3.1 om_gen costs
+            max: 33.68 # includes 3.1 om_gen costs
+            unit: EUR/MWh
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-params:
+                techs.biofuel.costs.monetary.om_con: 1
+        availability-biofuel:
+            short-name: a_bio
+            description: Biofuel potential based on scenarios from (Ruiz Castello et al., 2015).
+            min: 0 # represents low availability scenario
+            max: 1 # represents high availability scenario
+            unit: "-"
             scaling-factor:
             inverse-scaling-factor:
-            calliope-param: tech_groups.supply.costs.monetary.interest_rate # TODO several
+            calliope-params: # handled as special case in code

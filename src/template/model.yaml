@@ -8,21 +8,35 @@ import:
     - './import-restrictions.yaml'
     - './grid-size-restrictions.yaml'
 scenarios:
-    continental-autarky-100-continental-grid: ["continental-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    national-autarky-100-continental-grid: ["national-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    national-autarky-100-national-grid: ["national-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    national-autarky-85-continental-grid: ["national-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    national-autarky-70-continental-grid: ["national-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    regional-autarky-100-continental-grid: ["regional-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    regional-autarky-100-national-grid: ["regional-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    regional-autarky-100-regional-grid: ["regional-autarky-100-percent", "regional-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    regional-autarky-85-continental-grid: ["regional-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    regional-autarky-85-national-grid: ["regional-autarky-85-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    regional-autarky-70-continental-grid: ["regional-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
-    regional-autarky-70-national-grid: ["regional-autarky-70-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    # regional resolution (no import restrictions when grid regional)
+    regional-continental-autarky-100-continental-grid: ["continental-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-national-autarky-100-continental-grid: ["national-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-national-autarky-85-continental-grid: ["national-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-national-autarky-70-continental-grid: ["national-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-regional-autarky-100-continental-grid: ["regional-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-regional-autarky-85-continental-grid: ["regional-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-regional-autarky-70-continental-grid: ["regional-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-national-autarky-100-national-grid: ["national-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-regional-autarky-100-national-grid: ["regional-autarky-100-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-regional-autarky-85-national-grid: ["regional-autarky-85-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-regional-autarky-70-national-grid: ["regional-autarky-70-percent", "national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    regional-regional-autarky-100-regional-grid: ["regional-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    # national resolution (no import restrictions when grid national or regional)
+    national-continental-autarky-100-continental-grid: ["continental-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-national-autarky-100-continental-grid: ["national-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-national-autarky-85-continental-grid: ["national-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-national-autarky-70-continental-grid: ["national-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-regional-autarky-100-continental-grid: ["regional-autarky-100-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-regional-autarky-85-continental-grid: ["regional-autarky-85-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-regional-autarky-70-continental-grid: ["regional-autarky-70-percent", "continental-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-national-autarky-100-national-grid: ["national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-regional-autarky-100-national-grid: ["national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-regional-autarky-85-national-grid: ["national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-regional-autarky-70-national-grid: ["national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
+    national-regional-autarky-100-regional-grid: ["national-grid-size", "no-variable-storage-costs", "stylised-storage", "no-hydro-costs"]
 model:
     name: 'Geographic Scale'
-    calliope_version: 0.6.4
+    calliope_version: 0.6.5-dev
     timeseries_data_path: './'
     subset_time: ['2016-01-01', '2016-12-31']
 run:

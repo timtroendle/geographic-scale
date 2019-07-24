@@ -18,3 +18,6 @@ dependencies:
     - xarray=0.12.2
     - netcdf4=1.5.0.1
     - networkx=2.3
+    - pip=19.0.3
+    - pip:
+        - git+git://github.com/timtroendle/calliope.git@5f6a2068857301f0ec1b406815b9beb053036e98 # FIXME install development version. Remove after release of 0.6.5

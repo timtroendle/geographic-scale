@@ -12,7 +12,7 @@ rule run_national:
     conda: "../envs/calliope.yaml"
     shell:
         """
-        calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario} \
+        calliope run {input.model} --save_netcdf {output} --scenario=national-{wildcards.scenario} \
             --override_dict "{{model.subset_time: {params.subset_time}, model.time.function: resample, \
                                model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"
         """
@@ -29,7 +29,7 @@ rule run_regional: # this is a copy of run_national which is necessary to have d
     conda: "../envs/calliope.yaml"
     shell:
         """ # because runs take a lot of computation time, don't fail when suboptimal
-        calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario} \
+        calliope run {input.model} --save_netcdf {output} --scenario=regional-{wildcards.scenario} \
             --no_fail_when_infeasible\
             --override_dict "{{model.subset_time: {params.subset_time}, model.time.function: resample, \
                                model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"

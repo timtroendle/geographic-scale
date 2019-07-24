@@ -1,37 +1,22 @@
 import jinja2
 import geopandas as gpd
 
-# FIXME The implementation of net imports limits as demand share min of local supply techs
-# is largely correct, but partly wrong. It's wrong because this approach does not consider
-# local losses, and so these local losses can be fed by net imports. There does not seem
-# to exist a solution in Calliope at the moment. The issue isn't huge -- it's ~5% of demand --
-# but should nevertheless be fixed.
-
 TEMPLATE = """
 overrides:
-    {% for restriction in restriction_levels %}
-    {% for autarky_level, location_groups in autarky_levels.items() %}
+    {%- for restriction in restriction_levels %}
+    {%- for autarky_level, location_groups in autarky_levels.items() %}
     {{ autarky_level }}-{{ 100 - restriction }}-percent:
-        {% for location_group, sublocations in location_groups.items() %}
+        {%- for location_group, sublocations in location_groups.items() %}
         group_constraints.import_restriction_{{ restriction }}_percent_{{ location_group }}:
             locs:
             {%- for sublocation in sublocations %}
             - {{ sublocation }}
             {%- endfor %}
-            techs:
-                - open_field_pv
-                - roof_mounted_pv
-                - wind_onshore_monopoly
-                - wind_onshore_competing
-                - wind_offshore
-                - hydro_run_of_river
-                - hydro_reservoir
-                - biofuel
-            demand_share_min:
-                electricity: {{ 1 - (restriction / 100) }}
-        {% endfor %}
-    {% endfor %}
-    {% endfor %}
+            net_import_share_max:
+                electricity: {{ restriction / 100 }}
+        {%- endfor %}
+    {%- endfor %}
+    {%- endfor %}
 """
 COUNTRY_CODE_COLUMN = "country_code"
 

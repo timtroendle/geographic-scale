@@ -6,7 +6,7 @@ DEMAND_TECH = "demand_elec"
 @pytest.fixture
 def net_import_threshold(carrier_con, model):
     demand = carrier_con.sel(techs=DEMAND_TECH).sum(["locs", "timesteps"]).item()
-    autarky_scale, _, autarky_level, _, _ = model.inputs.scenario.split("-")
+    _, autarky_scale, _, autarky_level, _, _ = model.inputs.scenario.split("-")
     share = 1 - float(autarky_level) / 100
     if autarky_scale == "continental":
         share = 100 # basically unlimited national imports allowed
@@ -54,7 +54,6 @@ def test_biofuel_potential_not_exceeded(carrier_prod, biofuel_potential, locatio
     assert biofuel_generation <= biofuel_potential
 
 
-@pytest.mark.xfail(reason="losses can currently be fed from net imports, see Calliope #270")
 def test_net_imports(net_imports, net_import_threshold):
     # this tests tests imports on the national level only
     # thereby continental autarky will always pass which is fine

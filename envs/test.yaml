@@ -6,9 +6,9 @@ dependencies:
     - pytest=4.2.0
     - pytest-html=1.20.0
     - pandas=0.24.2
-    - calliope=0.6.4
     - xarray=0.12.2
     - geopandas=0.4.1 # somehow conda on Euler works only with 0.4.1
     - pip=19.0.3
     - pip:
         - pytest-pythonpath # adds the root path "./" to PYTHONPATH
+        - git+git://github.com/timtroendle/calliope.git@5f6a2068857301f0ec1b406815b9beb053036e98 # FIXME install development version. Remove after release of 0.6.5

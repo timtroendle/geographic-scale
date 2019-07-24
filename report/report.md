@@ -176,9 +176,7 @@ To determine location, power and storage capacity of each pumped hydro station i
 
 ## Short-term and long-term storage
 
-Because it is not yet known which storage technology will become dominant in a fully renewable electricity system and what its techno-economic parameters will be, we do not model specific technologies, but two distinct technology classes: short-term and long-term storage. We assume that these can be deployed in all regional administrative units.
-
-We model both classes models with two technical parameters: the ratio between power and storage capacity, and the round-trip efficiency. Short-term storage is permitted to a maximum capacity of 4 h of full power, while long-term storage has a minimum of 4 h capacity at full power. We assume 86% of round-trip efficiency for short-term and 40% for long-term storage.
+We assume that short-term and long-term storage capacities can be deployed in all regional administrative units. We model short-term as Lithium-ion batteries and long-term as hydrogen storage as they are likely to become the dominant technology in their respective applications [@Schmidt:2019]. We models are based on two technical parameters: the ratio between power and storage capacity, and the round-trip efficiency. Short-term storage is permitted to a maximum capacity of 4 h of full power, while long-term storage has a minimum of 4 h capacity at full power. We assume 86% of round-trip efficiency for short-term and 40% for long-term storage.
 
 Additionally, we assume that power and storage capacities can be expanded independently, only limited by the above mentioned minimum/maximum storage capacities.
 

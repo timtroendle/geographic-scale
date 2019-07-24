@@ -64,13 +64,8 @@ overrides:
         # and long term storage solutions.
         techs:
             battery:
-                essentials:
-                    name: Stylised short-term (e.g. battery) storage
                 constraints:
                     energy_cap_per_storage_cap_min: 0.25 # max 4h full-power discharge
             hydrogen:
-                essentials:
-                    name: Stylised long-term (e.g. hydrogen) storage
                 constraints:
                     energy_cap_per_storage_cap_max: 0.25 # min 4h full-power discharge
-                    # TODO add upper restriction? energy_cap_per_storage_cap_min: ??

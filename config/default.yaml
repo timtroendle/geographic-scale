@@ -2,9 +2,10 @@ scaling-factors:
     power: 0.00001 # from MW to 100 GW
     area: 0.0001 # from km to 10000 km2
     monetary: 0.000000001 # from EUR to 1000 Mio EUR
-minimal-capacity-factor: 0.001 # consider smaller values to be 0; this helps numerics in the LP
-maximal-capacity-factor: 10 # for hydro reservoirs, value chosen so that numerical range is << 1e6
-                            # considering a time resolution of 4 H (0.001 - 10*4=40)
+capacity-factors:
+    min: 0.001 # consider smaller values to be 0; this helps numerics in the LP
+    max: 10 # for hydro reservoirs, value chosen so that numerical range is << 1e6
+            # considering a time resolution of 4 H (0.001 - 10*4=40)
 parameters:
     biofuel-efficiency: 0.45
     jrc-biofuel:
@@ -77,6 +78,7 @@ uncertainty:
             calliope-params:
                 tech_groups.pv.costs.monetary.energy_cap: 1
                 tech_groups.pv.costs.monetary.om_annual: 0.017
+                # TODO do something about om_prod missing
         installation-cost-wind-onshore:
             short-name: c_wind
             description: Costs for installing onshore wind capacity.
@@ -88,6 +90,7 @@ uncertainty:
             calliope-params:
                 tech_groups.wind_onshore.costs.monetary.energy_cap: 1
                 tech_groups.wind_onshore.costs.monetary.om_annual: 0.017
+                # TODO do something about om_prod missing
         installation-cost-wind-offshore:
             short-name: c_offshore
             description: Costs for installing offshore wind capacity.
@@ -99,6 +102,7 @@ uncertainty:
             calliope-params:
                 techs.wind_offshore.costs.monetary.energy_cap: 1
                 techs.wind_offshore.costs.monetary.om_annual: 0.023
+                # TODO do something about om_prod missing
         installation-cost-short-term-storage-power:
             short-name: c_sts_p
             description: Costs for installing battery power capacity (inverter etc.).

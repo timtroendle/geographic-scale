@@ -15,6 +15,7 @@ uncertainty_run:
     runtime: 120
     cores: 6
     memory: 5000
+    output: "build/logs/uncertainty/{rule}.{wildcards}.log"
 weather_run:
     runtime: 1439
     cores: 6
@@ -25,6 +26,9 @@ plot_map:
     runtime: 60
 test:
     runtime: 60
+    memory: 128000
+test_uncertainty_runs:
+    runtime: 240
     memory: 128000
 overview_cost_assumptions:
     runtime: 60

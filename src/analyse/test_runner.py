@@ -3,7 +3,6 @@ import sys
 import pytest
 import calliope
 import pandas as pd
-import geopandas as gpd
 
 
 def run_test(scenario_results, path_to_biofuel_potentials, scaling_factors, path_to_output, path_to_units):
@@ -36,7 +35,7 @@ def _create_config_plugin(scenario_results, scaling_factors, path_to_biofuel_pot
 
         @pytest.fixture(scope="session")
         def units(self):
-            return gpd.read_file(path_to_units).set_index("id")
+            return pd.read_csv(path_to_units, index_col=0)
 
         @pytest.fixture(
             params=calliope.read_netcdf(scenario_results[0]).inputs.locs.values

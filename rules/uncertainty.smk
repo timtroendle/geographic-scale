@@ -11,7 +11,16 @@ import pandas as pd
 
 experiment_design = pd.read_csv(config["uncertainty"]["experiment-design"], index_col=0, sep="\t")
 experiment_design.index = experiment_design.index.astype(str)
-localrules: x, weather_diff, normal_diff, weather_diff_diff
+localrules: all_uncertainty, x, weather_diff, normal_diff, weather_diff_diff
+
+
+rule all_uncertainty:
+    message: "Perform entire uncertainty analysis."
+    input:
+        xy = "build/output/{resolution}/uncertainty/xy.csv".format(resolution=config["uncertainty"]["resolution"]["space"]),
+        test = "build/logs/uncertainty/{resolution}/test-report.html".format(resolution=config["uncertainty"]["resolution"]["space"]),
+        weather = "build/output/{resolution}/uncertainty/weather-diff-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"]),
+
 
 
 rule biofuel_availability:
@@ -129,6 +138,28 @@ rule xy:
             index=True,
             header=True
         )
+
+
+rule test_uncertainty_runs:
+    message: "Run tests for uncertainty runs"
+    input:
+        "src/analyse/test_runner.py",
+        "tests/test_feasibility.py",
+        "tests/test_constraints.py",
+        "tests/test_assumptions.py",
+        results = expand(
+            "build/output/{{resolution}}/uncertainty/{id}--{scenario}-results.nc",
+            scenario=config["uncertainty"]["scenarios"].values(),
+            id=experiment_design.index
+        ),
+        biofuel_potentials = eurocalliope("build/data/{{resolution}}/biofuel/{scenario}/potential-mwh-per-year.csv".format(
+            scenario=config["parameters"]["jrc-biofuel"]["scenario"]
+        )),
+        units = eurocalliope("build/data/{resolution}/units.csv")
+    params: scaling_factors = config["scaling-factors"]
+    output: "build/logs/uncertainty/{resolution}/test-report.html"
+    conda: "../envs/test.yaml"
+    script: "../src/analyse/test_runner.py"
 
 
 rule repeat_timeseries:

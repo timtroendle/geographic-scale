@@ -169,7 +169,8 @@ def _read_network_graph(shapes, model):
 
     try:
         lines = [(line.split(":")[0], line.split(":")[-1])
-                 for line in model._model_data.loc_techs_transmission.values]
+                 for line in model._model_data.loc_techs_transmission.values
+                 if model.inputs.energy_cap_max.sel(loc_techs=line) > 0]
         lines = [(a, b, {"line": shapely.geometry.LineString([g.nodes[a]["centroid"], g.nodes[b]["centroid"]])})
                  for a, b in lines]
         g.add_edges_from(lines)

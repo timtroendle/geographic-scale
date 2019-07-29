@@ -68,7 +68,7 @@ rule uncertainty_run:
     conda: "../envs/calliope.yaml"
     shell:
         """
-        calliope run {input.model} --save_netcdf {output} --scenario={wildcards.resolution}-{wildcards.scenario}\
+        calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario}\
         --override_dict="{{import: [{input.parameters}], \
                            model.subset_time: {params.subset_time}, \
                            model.time.function: resample, \
@@ -92,7 +92,7 @@ rule weather_run:
     conda: "../envs/calliope.yaml"
     shell:
         """
-        calliope run {input.model} --save_netcdf {output} --scenario={wildcards.resolution}-{wildcards.scenario}\
+        calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario}\
         --override_dict="{{model.subset_time: [{params.start_year}-01-01, {params.final_year}-12-31], \
                            model.time.function: resample, \
                            model.time.function_options: {{'resolution': '{params.time_resolution}'}}, \

@@ -35,7 +35,7 @@ def _create_config_plugin(scenario_results, scaling_factors, path_to_biofuel_pot
 
         @pytest.fixture(scope="session")
         def units(self):
-            return pd.read_csv(path_to_units, index_col=0)
+            return pd.read_csv(path_to_units, index_col=0).rename(index=lambda idx: idx.replace(".", "-"))
 
         @pytest.fixture(
             params=calliope.read_netcdf(scenario_results[0]).inputs.locs.values

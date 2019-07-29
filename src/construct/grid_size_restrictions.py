@@ -8,9 +8,9 @@ TEMPLATE = """
 overrides:
     {% for grid_size, links in restrictions.items() %}
     {{ grid_size }}:
-        {% for link in links %}
-        links.{{ link.location_A }},{{ link.location_B }}.exists: {{ link.is_allowed }}
-        {% endfor %}
+        {%- for link in links %}
+        links.{{ link.location_A }},{{ link.location_B }}.techs.ac_transmission.constraints.energy_cap_max: {{ link.energy_cap_max() }}
+        {%- endfor %}
     {% endfor %}
 """
 
@@ -20,6 +20,12 @@ class Link:
     location_A: str
     location_B: str
     is_allowed: bool = True
+
+    def energy_cap_max(self):
+        if self.is_allowed:
+            return "inf"
+        else:
+            return 0
 
 
 def grid_size_restriction(path_to_units, path_to_links, connected_regions, path_to_result):

@@ -6,7 +6,7 @@ DEMAND_TECH = "demand_elec"
 @pytest.fixture
 def net_import_threshold(carrier_con, model):
     demand = carrier_con.sel(techs=DEMAND_TECH).sum(["locs", "timesteps"]).item()
-    _, autarky_scale, _, autarky_level, _, _ = model.inputs.scenario.split("-")
+    autarky_scale, _, autarky_level, _, _ = model.inputs.scenario.split("-")
     share = 1 - float(autarky_level) / 100
     if autarky_scale == "continental":
         share = 100 # basically unlimited national imports allowed
@@ -16,7 +16,9 @@ def net_import_threshold(carrier_con, model):
 @pytest.fixture
 def net_imports(model, transmission_carrier_prod, units):
     if "loc_techs_transmission" in model.inputs:
-        edges = [(line.split(":")[0], line.split(":")[-1]) for line in model.inputs.loc_techs_transmission.values]
+        edges = [(line.split(":")[0], line.split(":")[-1])
+                 for line in model.inputs.loc_techs_transmission.values
+                 if model.inputs.energy_cap_max.sel(loc_techs=line) > 0]
     else:
         edges = []
     edges = filter( # transform to links between countries

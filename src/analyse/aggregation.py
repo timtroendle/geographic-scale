@@ -317,7 +317,9 @@ def _create_graph(model, units, scaling_factor): # FIXME almost duplicate from f
     nodes = [country_code for country_code in units.country_code.unique()]
     graph.add_nodes_from(nodes)
     if "loc_techs_transmission" in model.inputs:
-        edges = [(line.split(":")[0], line.split(":")[-1]) for line in model.inputs.loc_techs_transmission.values]
+        edges = [(line.split(":")[0], line.split(":")[-1])
+                 for line in model.inputs.loc_techs_transmission.values
+                 if model.inputs.energy_cap_max.sel(loc_techs=line) > 0]
     else:
         edges = []
     edges = filter( # transform to linkes between countries

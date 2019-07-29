@@ -10,7 +10,7 @@ run_national:
 run_regional:
     runtime: 2879
     cores: 6
-    memory: 40000
+    memory: 45000
 uncertainty_run:
     runtime: 120
     cores: 6
@@ -22,6 +22,8 @@ weather_run:
     memory: 30000
 run_single_location:
     runtime: 60
+y:
+    output: "build/logs/uncertainty/{rule}.{wildcards}.log"
 plot_map:
     runtime: 60
 test:

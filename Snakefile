@@ -5,7 +5,7 @@ wildcard_constraints:
     resolution = "((continental)|(national)|(regional))", # supported spatial resolutions
     scenario = "({})".format("|".join([f"({scenario})" for scenario in config["scenarios"]]))
 onstart:
-    shell("mkdir -p build/logs")
+    shell("mkdir -p build/logs/uncertainty")
 onsuccess:
     if "email" in config.keys():
         shell("echo "" | mail -s 'geographical-scale succeeded' {config[email]}")

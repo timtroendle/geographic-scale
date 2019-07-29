@@ -217,7 +217,7 @@ sea-connections:
         - [SWE.1_1, POL.11_1] # Blekinge and Pomorskie
         - [DNK.1_1, SWE.13_1] # Hovedstaden and Skåne
         - [SWE.13_1, DEU.15_1] # Skåne and Schleswig-Holstein
-        - [DNK.4_1, DEU.8_1] # Sjællandand Mecklenburg-Vorpommern
+        - [DNK.4_1, DEU.8_1] # Sjælland and Mecklenburg-Vorpommern
         - [DNK.4_1, DNK.5_1] # Sjælland and Syddanmark
         - [DNK.3_1, SWE.12_1] # Nordjylland and Östergötland
         - [NOR.18_1, DNK.3_1] # Vest-Agder and Nordjylland
@@ -229,7 +229,7 @@ sea-connections:
         - [GBR.1_1, BEL.2_1] # England and Vlaanderen
         - [GBR.1_1, NLD.14_1] # England and Zuid-Holland
         - [GBR.4_1, IRL.17_1] # Wales and Meath
-        - [GBR.3_1, GBR.4_1] # Scotland and Northern Ireland
+        - [GBR.3_1, GBR.2_1] # Scotland and Northern Ireland
         # the following do not exist today
         - [EST.7_1, EST.2_1] # Lääne and Hiiu
         - [EST.7_1, EST.12_1] # Lääne and Saare

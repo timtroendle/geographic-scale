@@ -80,6 +80,9 @@ overrides:
             battery:
                 constraints:
                     energy_cap_per_storage_cap_min: 0.25 # max 4h full-power discharge
+                costs:
+                    monetary:
+                        om_prod: 0 # ASSUME 0 instead of 0.000378 €/kWh, as the tiny number causes numerical issues
             hydrogen:
                 constraints:
                     energy_cap_per_storage_cap_max: 0.25 # min 4h full-power discharge

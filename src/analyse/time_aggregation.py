@@ -12,7 +12,8 @@ VARIABLE_SCALING_FACTOR = {
     "carrier_con": lambda sf: 1 / sf["power"],
     "total_levelised_cost": lambda sf: sf["power"] / sf["monetary"],
     "capacity_factor": lambda sf: 1,
-    "resource": lambda sf: 1
+    "resource": lambda sf: 1,
+    "cost": lambda sf: 1 / sf["monetary"]
 }
 
 
@@ -62,9 +63,11 @@ class CalliopeExporter:
         if "timesteps" in data.dims:
             data = data.sum("timesteps")
         if "techs" in data.dims:
-            data = (data
-                    .sel(techs=[tech.item() for tech in data.techs if "transmission" not in tech.item()])
-                    .dropna(dim="techs", how="all"))
+            if data.techs.str.contains("ac_transmission").any():
+                data = (data
+                        .groupby(data.techs.where(~data.techs.str.contains("ac_transmission"), "ac_transmission"))
+                        .sum("techs"))
+            data = data.dropna(dim="techs", how="all")
         return data * VARIABLE_SCALING_FACTOR[variable_name](self.__scaling_factors)
 
 

@@ -86,8 +86,6 @@ rule plot_scenario_space:
     input:
         src = "src/analyse/scenarios.py",
         results = expand("build/output/{{resolution}}/{scenario}/results.nc", scenario=config["scenarios"])
-    params:
-        scaling_factor_cost = config["scaling-factors"]["power"] / config["scaling-factors"]["monetary"]
     output: "build/output/{resolution}/scenario-space.png"
     conda: "../envs/default.yaml"
     script: "../src/analyse/scenarios.py"

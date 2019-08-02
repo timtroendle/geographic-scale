@@ -20,6 +20,7 @@ rule all_uncertainty:
         xy = "build/output/{resolution}/uncertainty/xy.csv".format(resolution=config["uncertainty"]["resolution"]["space"]),
         test = "build/logs/uncertainty/{resolution}/test-report.html".format(resolution=config["uncertainty"]["resolution"]["space"]),
         weather = "build/output/{resolution}/uncertainty/weather-diff-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"]),
+        resolution_diff = "build/output/{resolution}/uncertainty/resolution-diff-diff.txt".format(resolution=config["uncertainty"]["resolution"]["space"])
 
 
 
@@ -193,6 +194,22 @@ rule normal_diff:
     output: "build/output/{resolution}/uncertainty/normal-diff.txt"
     conda: "../envs/default.yaml"
     script: "../src/uncertainty/weather_diff.py"
+
+
+rule resolution_diff_diff:
+    message: "Determine the diff between resolutions for uncertainty and normal."
+    input:
+        normal = "build/output/{resolution}/uncertainty/normal-diff.txt".format(resolution=config["resolution"]["space"]),
+        weather = "build/output/{resolution}/uncertainty/normal-diff.txt".format(resolution=config["uncertainty"]["resolution"]["space"]),
+    output: "build/output/{resolution}/uncertainty/uncertainty-diff-diff.txt"
+    run:
+        with open(input.normal, "r") as f_normal:
+            normal_diff = float(f_normal.readline())
+        with open(input.weather, "r") as f_weather:
+            weather_diff = float(f_weather.readline())
+        diff_diff = abs(normal_diff - weather_diff) / normal_diff
+        with open(output[0], "w") as f_output:
+            f_output.write(str(diff_diff))
 
 
 rule weather_diff_diff:

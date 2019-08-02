@@ -1,0 +1,56 @@
+sheet	col	row	longname	input	keystrokes	comment
+			open-file	build-by-euler/output/regional/aggregation.nc	o	
+aggregation		2	dive-row		^J	
+carrier_prod	scenario		freq-col		F	
+carrier_prod_scenario_freq		キcontinental-autarky-100-continental-grid	dup-row		^J	
+carrier_prod_continental-autarky-100-continental-grid	carrier_prod		aggregate-col	sum	+	
+carrier_prod_continental-autarky-100-continental-grid	tech_group		freq-col		F	
+carrier_prod_continental-autarky-100-continental-grid_tech_group_freq		キsupply	select-row		s	
+carrier_prod_continental-autarky-100-continental-grid_tech_group_freq		キsupply_plus	select-row		s	
+carrier_prod_continental-autarky-100-continental-grid_tech_group_freq			quit-sheet		q	
+carrier_prod_continental-autarky-100-continental-grid			dup-selected		"	
+carrier_prod_continental-autarky-100-continental-grid_selectedref	locs		freq-col		F	
+carrier_prod_continental-autarky-100-continental-grid_selectedref_locs_freq	count		hide-col		-	
+carrier_prod_continental-autarky-100-continental-grid_selectedref_locs_freq			sheets		S	
+sheets	name	キcarrier_prod_continental-autarky-100-continental-grid_selectedref_locs_freq	edit-cell	generation	e	
+sheets		キaggregation	open-row		^J	
+aggregation		3	dive-row		^J	
+carrier_con	scenario		freq-col		F	
+carrier_con_scenario_freq		キcontinental-autarky-100-continental-grid	dup-row		^J	
+carrier_con_continental-autarky-100-continental-grid	tech_group	3	select-equal-cell		,	
+carrier_con_continental-autarky-100-continental-grid			dup-selected		"	
+carrier_con_continental-autarky-100-continental-grid_selectedref	locs		freq-col		F	
+carrier_con_continental-autarky-100-continental-grid_selectedref_locs_freq	count		hide-col		-	
+carrier_con_continental-autarky-100-continental-grid_selectedref_locs_freq	histogram		hide-col		-	
+carrier_con_continental-autarky-100-continental-grid_selectedref_locs_freq			quit-sheet		q	
+carrier_con_continental-autarky-100-continental-grid_selectedref	carrier_con		aggregate-col	sum	+	
+carrier_con_continental-autarky-100-continental-grid_selectedref	scenario		hide-col		-	
+carrier_con_continental-autarky-100-continental-grid_selectedref	locs		key-col		!	
+carrier_con_continental-autarky-100-continental-grid_selectedref	techs		hide-col		-	
+carrier_con_continental-autarky-100-continental-grid_selectedref	country_code		hide-col		-	
+carrier_con_continental-autarky-100-continental-grid_selectedref	tech_group		hide-col		-	
+carrier_con_continental-autarky-100-continental-grid_selectedref	carrier_con		rename-col	demand	rename-col	
+carrier_con_continental-autarky-100-continental-grid_selectedref			sheets		S	
+sheets	name	キcarrier_con_continental-autarky-100-continental-grid_selectedref	edit-cell	demand	e	
+sheets		キdemand	select-row		s	
+sheets		キgeneration	select-row		s	
+sheets			join-sheets	inner	&	
+demand+generation	sum_carrier_prod		addcol-expr	sum_carrier_prod/(-demand)	=	
+demand+generation	sum_carrier_prod/(-demand)		sort-asc		[	
+demand+generation	sum_carrier_prod/(-demand)		sort-desc		]	
+			open-file	euro-calliope/build/data/regional/units.csv	open-file	
+units	id		key-col		!	
+units	id		key-col		!	
+units	id		addcol-expr	id.replace(".", "-")	=	
+units	id		hide-col		-	
+units	id.replace(".", "-")		rename-col	id	rename-col	
+units	id		key-col		!	
+units			sheets		S	
+sheets		キdemand	unselect-row		u	
+sheets		キgeneration	unselect-row		u	
+sheets		キdemand+generation	select-row		s	
+sheets		キdemand+generation	select-row		s	
+sheets		キunits	select-row		s	
+sheets			join-sheets	inner	&	
+units+demand+generation	sum_carrier_prod/(-demand)		sort-asc		[	
+units+demand+generation	sum_carrier_prod/(-demand)		sort-desc		]	

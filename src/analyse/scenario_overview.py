@@ -15,10 +15,7 @@ CURTAILMENT = '<i class="fas fa-traffic-light"></i>'
 
 SCENARIOS = [
     "continental-autarky-100-continental-grid",
-    "national-autarky-100-continental-grid",
-    "regional-autarky-100-continental-grid",
     "national-autarky-100-national-grid",
-    "regional-autarky-100-national-grid",
     "regional-autarky-100-regional-grid"
 ]
 VARIABLES_TABLE_1 = OrderedDict([

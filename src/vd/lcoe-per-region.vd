@@ -1,0 +1,38 @@
+sheet	col	row	longname	input	keystrokes	comment
+			open-file	build-by-euler/output/regional/aggregation.nc	o	
+aggregation		7	dive-row		^J	
+cost	scenario		freq-col		F	
+cost_scenario_freq		キregional-autarky-100-regional-grid	dup-row		^J	
+cost_regional-autarky-100-regional-grid	techs	3	select-equal-cell		,	
+cost_regional-autarky-100-regional-grid			stoggle-rows		gt	
+cost_regional-autarky-100-regional-grid			dup-selected		"	
+cost_regional-autarky-100-regional-grid_selectedref	cost		aggregate-col	sum	+	
+cost_regional-autarky-100-regional-grid_selectedref	locs		freq-col		F	
+cost_regional-autarky-100-regional-grid_selectedref_locs_freq			sheets		S	
+sheets	name	キcost_regional-autarky-100-regional-grid_selectedref_locs_freq	edit-cell	total-cost-per-region	e	
+sheets		キaggregation	open-row		^J	
+aggregation		2	dive-row		^J	
+carrier_prod	scenario		freq-col		F	
+carrier_prod_scenario_freq		キregional-autarky-100-regional-grid	dup-row		^J	
+carrier_prod_regional-autarky-100-regional-grid	tech_group		freq-col		F	
+carrier_prod_regional-autarky-100-regional-grid_tech_group_freq		キsupply	select-row		s	
+carrier_prod_regional-autarky-100-regional-grid_tech_group_freq		キsupply_plus	select-row		s	
+carrier_prod_regional-autarky-100-regional-grid_tech_group_freq			quit-sheet		q	
+carrier_prod_regional-autarky-100-regional-grid			dup-selected		"	
+carrier_prod_regional-autarky-100-regional-grid_selectedref	carrier_prod		aggregate-col	sum	+	
+carrier_prod_regional-autarky-100-regional-grid_selectedref	locs		freq-col		F	
+carrier_prod_regional-autarky-100-regional-grid_selectedref_locs_freq			sheets		S	
+sheets	name	キcarrier_prod_regional-autarky-100-regional-grid_selectedref_locs_freq	edit-cell	total-supply-per-region	e	
+sheets		キtotal-supply-per-region	select-row		s	
+sheets		キtotal-cost-per-region	select-row		s	
+sheets			join-sheets	inner	&	
+total-supply-per-region+total-cost-per-region	count		hide-col		-	
+total-supply-per-region+total-cost-per-region	count		hide-col		-	
+total-supply-per-region+total-cost-per-region	sum_cost		addcol-expr	sum_cost/sum_carrier_prod	=	
+total-supply-per-region+total-cost-per-region	sum_cost/sum_carrier_prod		sort-asc		[	
+total-supply-per-region+total-cost-per-region	sum_cost/sum_carrier_prod		sort-desc		]	
+total-supply-per-region+total-cost-per-region			sheets		S	
+sheets		キtotal-supply-per-region+total-cost-per-region	open-row		^J	
+total-supply-per-region+total-cost-per-region			sheets		S	
+sheets	name	キtotal-supply-per-region+total-cost-per-region	edit-cell	lcoe-per-region	e	
+sheets		キlcoe-per-region	open-row		^J	

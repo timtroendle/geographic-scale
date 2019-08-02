@@ -1,0 +1,39 @@
+sheet	col	row	longname	input	keystrokes	comment
+			open-file	build-by-euler/output/regional/aggregation.nc	o	
+aggregation		2	dive-row		^J	
+carrier_prod	scenario		freq-col		F	
+carrier_prod_scenario_freq		キcontinental-autarky-100-continental-grid	dup-row		^J	
+carrier_prod_continental-autarky-100-continental-grid	carrier_prod		aggregate-col	sum	+	
+carrier_prod_continental-autarky-100-continental-grid	techs	0	select-equal-cell		,	
+carrier_prod_continental-autarky-100-continental-grid			dup-selected		"	
+carrier_prod_continental-autarky-100-continental-grid_selectedref	scenario		hide-col		-	
+carrier_prod_continental-autarky-100-continental-grid_selectedref	techs		hide-col		-	
+carrier_prod_continental-autarky-100-continental-grid_selectedref	country_code		hide-col		-	
+carrier_prod_continental-autarky-100-continental-grid_selectedref	tech_group		hide-col		-	
+carrier_prod_continental-autarky-100-continental-grid_selectedref	carrier_prod		rename-col	transmission	rename-col	
+carrier_prod_continental-autarky-100-continental-grid_selectedref	locs		key-col		!	
+carrier_prod_continental-autarky-100-continental-grid_selectedref			sheets		S	
+sheets		キaggregation	open-row		^J	
+aggregation		3	dive-row		^J	
+carrier_con	scenario		freq-col		F	
+carrier_con_scenario_freq		キcontinental-autarky-100-continental-grid	dup-row		^J	
+carrier_con_continental-autarky-100-continental-grid	techs	3	select-equal-cell		,	
+carrier_con_continental-autarky-100-continental-grid			dup-selected		"	
+carrier_con_continental-autarky-100-continental-grid_selectedref	scenario		hide-col		-	
+carrier_con_continental-autarky-100-continental-grid_selectedref	locs		key-col		!	
+carrier_con_continental-autarky-100-continental-grid_selectedref	techs		hide-col		-	
+carrier_con_continental-autarky-100-continental-grid_selectedref	country_code		hide-col		-	
+carrier_con_continental-autarky-100-continental-grid_selectedref	tech_group		hide-col		-	
+carrier_con_continental-autarky-100-continental-grid_selectedref	carrier_con		rename-col	demand	rename-col	
+			open-file	euro-calliope/build/data/regional/units.csv	open-file	
+units	id		addcol-expr	id.replace(".", "-")	=	
+units	id		hide-col		-	
+units	id.replace(".", "-")		rename-col	id	rename-col	
+units	id		key-col		!	
+units			sheets		S	
+sheets		キcarrier_con_continental-autarky-100-continental-grid_selectedref	select-row		s	
+sheets		キcarrier_prod_continental-autarky-100-continental-grid_selectedref	select-row		s	
+sheets		キunits	select-row		s	
+sheets			join-sheets	inner	&	
+units+carrier_con_continental-autarky-100-continental-grid_selectedref+carrier_prod_continental-autarky-100-continental-grid_selectedref	transmission		addcol-expr	transmission/(-demand)	=	
+units+carrier_con_continental-autarky-100-continental-grid_selectedref+carrier_prod_continental-autarky-100-continental-grid_selectedref	transmission/(-demand)		sort-desc		]	

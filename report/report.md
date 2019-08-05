@@ -22,7 +22,7 @@ Lower cost of systems with larger grids can be explained by the ability to spati
 
 Cost optimal electricity systems with different scales of the transmission grid also have different compositions and operations of supply and support technologies, with some technologies being more important for the large grids and some technologies being more important for smaller grids. Indeed, the differences in total system costs are driven by these system compositions.
 
-Electricity systems with larger grids of course compose of more transmission capacities but also make use of these capacities more, see Table @tbl:overview-scenario-results-2. The continental scale system layout contains high voltage transmission capacity of nearly 400 TW km, which is roughly 4 times current capacity [@ENTSO-E:2019] (CURRENT NUMBER CORRECT?). Using this capacity, about 3000 TWh electricity are crossing country borders, which, again, is roughly 4 times current international electricity flows [@ENTSO-E:2019]. Of those 3000 TWh, 1400 TWh remain as net imports within countries, which is more than 7 times the amount of today [@ENTSO-E:2019]. All these numbers are smaller when electricity is generated locally, but transmission capacity and international electricity flows in those cases are still 2-3 times today's values. While not covered by our model, electricity systems with such high amount of cooperation require institutional support in the form of markets, grid governance, and long-term trade agreements.
+Electricity systems with larger grids of course comprise more transmission capacities but also make use of these capacities more, see Table @tbl:overview-scenario-results-2. The continental scale system layout contains high voltage transmission capacity of nearly 400 TW km, which is roughly 4 times current capacity [@ENTSO-E:2019] (CURRENT NUMBER CORRECT?). Using this capacity, about 3000 TWh electricity are crossing country borders, which, again, is roughly 4 times current international electricity flows [@ENTSO-E:2019]. Of those 3000 TWh, 1400 TWh remain as net imports within countries, which is more than 7 times the amount of today [@ENTSO-E:2019]. All these numbers are smaller when electricity is generated locally, but transmission capacity and international electricity flows in those cases are still 2-3 times today's values. While not covered by our model, electricity systems with such high amount of cooperation require institutional support in the form of markets, grid governance, and long-term trade agreements.
 
 ```table
 ---
@@ -122,7 +122,7 @@ We derive capacity factor time series for on- and offshore wind on the same 50 k
 
 ## Hydro run of river and reservoirs
 
-We assume hydro run of river and hydro reservoir potentials to be largely tapped today (ADD source maybe JRC Technology Map) with almost no expansion potential. Thus, for hydro generation capacities we deviate from the greenfield approach and fix today's capacities. Similar to PV and wind generation, hydro generation can be curtailed.
+We assume hydro run of river and hydro reservoir potentials to be largely tapped today [@LacalArantegui:2014] with almost no expansion potential. Thus, for hydro generation capacities we deviate from the greenfield approach and fix today's capacities. Similar to PV and wind generation, hydro generation can be curtailed.
 
 We derive the location and installed power and storage capacities of hydro stations in Europe today from the JRC Hydro Power Database [@MatteoDeFelice:2019]. Where no storage capacity of hydro reservoirs is available, we use the median national ratio of power to storage capacity, and if that is not available, we use the median Europe-wide ratio of power to storage capacity.
 
@@ -150,7 +150,7 @@ markdown: True
 
 ## Pumped hydro
 
-Similar to hydro run of river and hydro reservoir capacities, we assume pumped hydro capacities in Europe to be largely tapped (ADD source, maybe JRC Technology Map) and do not allow for capacity expansion. Thus, we deploy today's pumped hydro power and storage capacities. We assume a round-trip electricity efficiency of 78% [@Schmidt:2019].
+Similar to hydro run of river and hydro reservoir capacities, we assume pumped hydro capacities in Europe to be largely tapped [@LacalArantegui:2014] and do not allow for capacity expansion. Thus, we deploy today's pumped hydro power and storage capacities. We assume a round-trip electricity efficiency of 78% [@Schmidt:2019].
 
 To determine location, power and storage capacity of each pumped hydro station in Europe today, we also use the JRC Hydro Power Database [@MatteoDeFelice:2019]. Where storage capacities are missing, we employ the same method as for hydro reservoirs: we assume national median ratios of power to storage capacity for all stations with missing storage capacity; and where this is not available, we assume Europe-wide median ratios of power to storage capacity. Storage capacities within the JRC Hydro Power Database sum up to more than 10 TWh which is more than what other sources report (for example 1.3 TWh in [@Geth:2015]). We thus scale the storage capacities to match national data reported by @Geth:2015. Using location data of each station, we then sum all power and storage capacities within regional administrative units to form a single pumped hydro capacity per unit.
 
@@ -198,24 +198,20 @@ The additional cost of national autarky compared to continental autarky, however
 
 ## Sensitivity to technology costs
 
-Ignore correlation of uncertain inputs because "end of learning" type of costs are assumed, so the link between cost parameters based on political decisions can be ignored. There is still a link through developments on markets of raw material for example, but we ignore that.
+We furthermore assess the uncertainty of our result stemming from uncertainty of technology costs. While we do know current costs and we do know that costs are likely to fall with deployment due to learning effects, we do not know exact future costs with certainty. This is mainly because it is unknown exactly how much technologies are deployed, and exactly how much costs will fall with deployment. Because in our analysis we are assuming technologies are deployed at large scale, the first aspect does not lead to much uncertainty. Uncertainty of technology costs in our analysis thus stems largely from the uncertain relationship of deployment and cost decreases. Being a cost optimisation, the absolute total system costs of any assessed electricity system layout can be sensitive to costs of technologies, as shown for example in @Moret:2017. Here, we assess the sensitivity of the cost difference between large and small scale system layouts.
 
-* depreciation rate [i]: 1.9—13.5% max and min for PV and wind between 2009 and 2017 [@Steffen:2019]
-* installation costs of PV [c_pv]: 280—580 €/kW [@JRC:2014] (Table 7)
-* installation costs wind onshore [c_wind]: 800-1700 €/kW [@JRC:2014] (Table 4)
-* installation costs wind offshore [c_offshore]: 1790–3270 €/kW [@JRC:2014] (Table 5)
-* installation costs short term storage power [c_sts_p]: 611.324 * (0.05--0.23) = 31 -- 141 €/kW [@Schmidt:2019]
-* installation costs short term storage energy [c_sts_e]: 723.130 * (0.05--0.23) = 36--166 [@Schmidt:2019]  
-* installation costs long term storage power [c_lts_p]: 4884.287 * (0.23--0.43) = 1123-2100
- €/kW [@Schmidt:2019]
-* installation costs long term storage energy [c_lts_e]: 27.951 * (0.23--0.43) = 6 - 12 €/kWh [@Schmidt:2019]
-* installation costs net transfer capacities [c_ntc]: 700—1080 € / kW / km [@JRC:2014]
-* installation costs biofuel [c_bio]: 1380—3450 €/kW [@JRC:2014](Table 48)
-* fuel costs biofuel [c_biofuel]: 25.02–30.58 €/MWh [@RuizCastello:2015]
-* availability biofuels [a_biofuel]: [low/reference/high availability] [@RuizCastello:2015]
+We consider ten technology cost parameters, the weighted cost of capital, and the availability of biomass for combustion as uncertain and describe their uncertainty by an uniform distribution over ranges taken from literature (see Table @tbl:overview-uncertain-parameters). We perform a global sensitivity analysis of the additional costs of national autarky compared to continental autarky and several other model outputs in this twelve dimensional space. This allows us to describe the uncertainty of each model output by a distribution and it allows us to derive total and first-order Sobol' indices. The Sobol' indices determine the share of the variation of each output that is explained by the variation of each input. Building on this characteristic, we use the indices to rank input parameters based on their importance for the uncertainty of each output. We find only low interaction between input parameters (higher than first-order indices are very small) and thus ignore parameter interactions.
 
-We furthermore assess the uncertainty of our result stemming from uncertainty of technology costs. While we do know current costs and we do know that costs are likely to fall with deployment due to learning effects, we do not know exact future costs with certainty. This is mainly because it is unknown exactly how much technologies are deployed, and exactly how much costs will fall with deployment. Because in our analysis we are assuming technologies are deployed at large scale, the first aspect does not lead to much uncertainty. Uncertainty of technology costs in our analysis thus stems largely from the uncertain relationship of deployment and cost decreases. Being a cost optimisation, the absolute total system costs of any assessed electricity system layout is sensitive to costs of technologies (SOURCE). Here, we assess the sensitivity of the cost difference between large and small scale system layouts.
+To derive the output distribution and Sobol' indices uncertainty is propagated through the model: after determining the input uncertainty, the input distributions are sampled many times to derive samples of the output. Because of the high computational requirements, in particular the long runtime of our model, this method is prohibitive for our study. Thus, we employ a method described in @Sudret:2008 and implemented in the MATLAB package UQLab [@MarelliStefano:2014], and derive a surrogate model of our original model using polynomial chaos expansion. From this surrogate model, Sobol' indices can be determined analytically and the distribution of the outputs can be derived using Monte Carlo sampling. We derive the surrogate model by sampling 150 times from the input parameters using maximin Euclidean-distance-optimized Latin Hypercube Sampling, and running the large scale and small scale models each once for each input parameter vector. The estimated empirical error of the surrogate model is below 5% and thus we deem the surrogate usable to derive Total and first-order Sobol' indices.
 
-We consider ten technology cost parameters and the weighted cost of capital as uncertain and describe their uncertainty by an uniform distribution over ranges taken from literature (see Methods). We perform a global sensitivity analysis of the additional costs of national autarky compared to continental autarky in this eleven dimensional space. We find that national autarky is 20%--60% (FAKE RESULT) more expensive and that this range is largely driven by parameters X, Y, and Z. Higher values of X lead to higher relative costs of national autarky, while higher values of Y lead to lower relative costs of national autarky. High values of Z lead to higher relative costs of national autarky, but only if X is high as well.
+```table
+---
+caption: 'Uncertain input parameters. For all parameters we assume a uniform distribution. {#tbl:overview-uncertain-parameters}'
+alignment: LLLLLL
+include: report/overview-uncertain-parameters.csv
+include-encoding: UTF-8
+markdown: True
+---
+```
 
 # Bibliography

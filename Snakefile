@@ -55,7 +55,8 @@ REPORT_DEPENDENCIES = [
     "build/output/{resolution}/report/flows.png",
     "build/output/{resolution}/report/overview-scenario-results-1.csv",
     "build/output/{resolution}/report/overview-scenario-results-2.csv",
-    "build/output/{resolution}/report/overview-cost-assumptions.csv"
+    "build/output/{resolution}/report/overview-cost-assumptions.csv",
+    "build/output/{resolution}/report/overview-uncertain-parameters.csv"
 ]
 
 

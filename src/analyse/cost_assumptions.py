@@ -67,6 +67,7 @@ def main(path_to_model, scaling_factors, path_to_output):
                      .groupby("techs")
                      .mean("locs")
                      .fillna(0))
+    lifetime.loc["ac_transmission"] = transmission_lifetime(model)
     variable_costs_prod = (model.get_formatted_array("cost_om_prod")
                                 .squeeze("costs")
                                 .reindex(techs=list(TECHS.keys()))
@@ -105,6 +106,15 @@ def transmission_cost(model, scaling_factor):
     rel_costs = (cost / distance).to_series().dropna()
     assert math.isclose(rel_costs.std(), 0, abs_tol=EPSILON)
     return rel_costs.iloc[0]
+
+
+def transmission_lifetime(model):
+    lifetimes = model.get_formatted_array("lifetime")
+    return (lifetimes
+            .groupby(lifetimes.techs.where(~lifetimes.techs.str.contains("ac_transmission"), "ac_transmission"))
+            .mean(["techs", "locs"])
+            .sel(techs="ac_transmission")
+            .item())
 
 
 if __name__ == "__main__":

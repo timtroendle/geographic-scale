@@ -226,3 +226,12 @@ rule weather_diff_diff:
         diff_diff = abs(normal_diff - weather_diff) / normal_diff
         with open(output[0], "w") as f_output:
             f_output.write(str(diff_diff))
+
+
+rule overview_uncertainty_parameters:
+    message: "Create table of uncertainty parameters."
+    input: src = "src/uncertainty/overview_parameters.py"
+    params: parameters = config["uncertainty"]["parameters"]
+    output: "build/output/{resolution}/overview-uncertain-parameters.csv"
+    conda: "../envs/default.yaml"
+    script: "../src/uncertainty/overview_parameters.py"

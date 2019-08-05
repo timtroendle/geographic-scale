@@ -58,6 +58,7 @@ uncertainty:
             min: 0.016
             max: 0.138
             unit: "-/yr"
+            source: "max and min for solar and wind between 2009 and 2017 in @Steffen:2019"
             scaling-factor:
             inverse-scaling-factor:
             calliope-params:
@@ -73,6 +74,7 @@ uncertainty:
             min: 280_000
             max: 580_000
             unit: EUR/MW
+            source: "[@JRC:2014] (Table 7)"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -85,6 +87,7 @@ uncertainty:
             min: 800_000
             max: 1_700_000
             unit: EUR/MW
+            source: "[@JRC:2014] (Table 4)"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -97,6 +100,7 @@ uncertainty:
             min: 1_790_000
             max: 3_270_000
             unit: EUR/MW
+            source: "[@JRC:2014] (Table 5)"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -109,6 +113,7 @@ uncertainty:
             min: 31_000
             max: 141_000
             unit: EUR/MW
+            source: "[@Schmidt:2019]"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -119,6 +124,7 @@ uncertainty:
             min: 36_000
             max: 166_000
             unit: EUR/MWh
+            source: "[@Schmidt:2019]"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -129,6 +135,7 @@ uncertainty:
             min: 1_123_000
             max: 2_100_000
             unit: EUR/MW
+            source: "[@Schmidt:2019]"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -139,6 +146,7 @@ uncertainty:
             min: 6_000
             max: 12_000
             unit: EUR/MWh
+            source: "[@Schmidt:2019]"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -149,6 +157,7 @@ uncertainty:
             min: 0.7
             max: 1.08
             unit: EUR/MW/m
+            source: "[@JRC:2014] (Table 39)"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -159,6 +168,7 @@ uncertainty:
             min: 1_380_000
             max: 3_450_000
             unit: EUR/MW
+            source: "[@JRC:2014](Table 48)"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -170,16 +180,18 @@ uncertainty:
             min: 28.12 # includes 3.1 om_gen costs
             max: 33.68 # includes 3.1 om_gen costs
             unit: EUR/MWh
+            source: "[@RuizCastello:2015]"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
                 techs.biofuel.costs.monetary.om_con: 1
         availability-biofuel:
             short-name: a_bio
-            description: Biofuel potential based on scenarios from (Ruiz Castello et al., 2015).
+            description: Interpolation between biofuel potential scenarios.
             min: 0 # represents low availability scenario
             max: 1 # represents high availability scenario
             unit: "-"
+            source: "[@RuizCastello:2015]"
             scaling-factor:
             inverse-scaling-factor:
             calliope-params: # handled as special case in code

@@ -52,7 +52,7 @@ def plot_costs(paths_to_results, path_to_costs):
         vmax=results["cost"].max(),
         annot=True
     )
-    plt.title("CONTINENTAL GRID")
+    plt.title("CONTINENTAL SYSTEM")
     ax2 = fig.add_subplot(gs[1])
     sns.heatmap(
         cost_heatmap(results, "national"),
@@ -65,7 +65,7 @@ def plot_costs(paths_to_results, path_to_costs):
     )
     plt.ylabel("")
     plt.yticks([])
-    plt.title("NATIONAL GRIDS")
+    plt.title("NATIONAL SYSTEMS")
     ax3 = fig.add_subplot(gs[2])
     sns.heatmap(
         cost_heatmap(results, "regional"),
@@ -78,7 +78,7 @@ def plot_costs(paths_to_results, path_to_costs):
     )
     plt.ylabel("")
     plt.yticks([])
-    plt.title("REGIONAL GRIDS")
+    plt.title("REGIONAL SYSTEMS")
     fig.autofmt_xdate()
     plt.tight_layout()
     plt.subplots_adjust(wspace=0.6)

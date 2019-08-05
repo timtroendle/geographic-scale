@@ -38,7 +38,7 @@ Because of the ability to use the transmission grid to balance demand and renewa
 
 ```table
 ---
-caption: 'Installed capacities of solar (<i class="fas fa-sun"></i>), wind (<i class="fas fa-wind"></i>), biofuel (<i class="fas fa-leaf"></i>), short-term (<i class="fas fa-battery-three-quarters"></i> short) and long-term storage (<i class="fas fa-battery-three-quarters"></i> long) and relative curtailment of solar, wind, and hydro power (<i class="fas fa-traffic-light"></i>) for all electricity system layouts without net imports into autarkic units. Each layout is characterised by the autarky scale (<i class="fas fa-layer-group"></i>), the maximum level of annual net imports into autarkic units (<i class="fas fa-shield-alt"></i>), and the size of the electricity grid surrounding autarkic units (<i class="fab fa-connectdevelop"></i>). Each layout additionally contains fixed hydroelectricity capacities on their current locations: 36 GW run of river, 103 GW / 97 TWh reservoirs, and 54 GW / 1.3 TWh pumped hydro storage. {#tbl:overview-scenario-results-1}'
+caption: 'Installed capacities of solar (<i class="fas fa-sun"></i>), wind (<i class="fas fa-wind"></i>), bioenergy (<i class="fas fa-leaf"></i>), short-term (<i class="fas fa-battery-three-quarters"></i> short) and long-term storage (<i class="fas fa-battery-three-quarters"></i> long) and relative curtailment of solar, wind, and hydro power (<i class="fas fa-traffic-light"></i>) for all electricity system layouts without net imports into autarkic units. Each layout is characterised by the autarky scale (<i class="fas fa-layer-group"></i>), the maximum level of annual net imports into autarkic units (<i class="fas fa-shield-alt"></i>), and the size of the electricity grid surrounding autarkic units (<i class="fab fa-connectdevelop"></i>). Each layout additionally contains fixed hydroelectricity capacities on their current locations: 36 GW run of river, 103 GW / 97 TWh reservoirs, and 54 GW / 1.3 TWh pumped hydro storage. {#tbl:overview-scenario-results-1}'
 alignment: LRRRRRRRR
 include: report/overview-scenario-results-1.csv
 include-encoding: utf-8
@@ -132,15 +132,15 @@ Second, we are applying bias correction factors based on annual generation neces
 
 Using location data of each plant, we sum up time series as well as power and storage capacities per regional administrative unit. Our total resulting capacities are 36 GW for run of river and 103 GW / 97 TWh for reservoirs.
 
-## Biofuels
+## Bioenergy
 
-We use estimations of biofuel potentials for the year 2020 and reference assumptions taken from @RuizCastello:2015, but we assume no dedicated farming for energy crops and thus consider residuals and wastes only. The data is given as national aggregates, and we use national shares of farmland [@EuropeanSpaceAgency:2010], national shares of forests [@EuropeanSpaceAgency:2010], and national shares of population [@JRC:2015] as proxies to derive proportionally allocated potentials per regional administrative unit. Table @tbl:biofuel-feedstocks lists all feedstocks we consider together with the allocation proxy we use.
+We use estimations of biomass potentials for the year 2020 and reference assumptions taken from @RuizCastello:2015, but we assume no dedicated farming for energy crops and thus consider residuals and wastes only. The data is given as national aggregates, and we use national shares of farmland [@EuropeanSpaceAgency:2010], national shares of forests [@EuropeanSpaceAgency:2010], and national shares of population [@JRC:2015] as proxies to derive proportionally allocated potentials per regional administrative unit. Table @tbl:biomass-feedstocks lists all feedstocks we consider together with the allocation proxy we use.
 
-We assume an efficiency of 45% for the combustion of all biofuels.
+We assume an efficiency of 45% for the combustion of all biomass.
 
 ```table
 ---
-caption: 'Biofuel feedstocks we consider, together with the proxy we use to derive regional from national values. {#tbl:biofuel-feedstocks}'
+caption: 'Biomass feedstocks we consider, together with the proxy we use to derive regional from national values. {#tbl:biomass-feedstocks}'
 alignment: LR
 include: biofuel-feedstocks.csv
 include-encoding: UTF-8
@@ -166,7 +166,7 @@ In some regions, local technical potential for renewable electricity is not high
 
 ## Technology costs
 
-We assess long term (quasi steady state) cost of electricity supply. We aim neither to determine costs of a transition to such states nor to consider disruptive developments on the global market for supply and storage technologies. Thus, we assume expected learning-rate based costs once renewable supply and electricity storage are deployed at the large scales consistent with our study. Cost estimations for the year 2050 are primarily from [@JRC:2014] for supply and transmission technologies, from [@Schmidt:2019] for storage technologies, and from [@RuizCastello:2015] for fuel costs of biofuels.
+We assess long term (quasi steady state) cost of electricity supply. We aim neither to determine costs of a transition to such states nor to consider disruptive developments on the global market for supply and storage technologies. Thus, we assume expected learning-rate based costs once renewable supply and electricity storage are deployed at the large scales consistent with our study. Cost estimations for the year 2050 are primarily from [@JRC:2014] for supply and transmission technologies, from [@Schmidt:2019] for storage technologies, and from [@RuizCastello:2015] for fuel costs of bioenergy.
 
 Technology costs are modelled as installed capacities costs, annual maintenance costs based on installed capacity, and variable costs per unit of generated electricity. For solar and wind we assume small variable costs of 0.1 €ct / kWh only to enforce curtailment whenever generation potential is higher than demand and storage capacities. We subtract these variable costs from the fixed operation and maintenance cost based on average capacity factors to not increase the overall cost of the technologies. Technology lifetime and costs of capital are used to derive annuities for each technology. For hydroelectricity, we consider annual maintenance and variable costs only as we assume capacities are already built today and as installation costs of hydroelectricity have no impact on our results. See Table @tbl:overview-cost-assumptions for an overview of all cost assumptions.
 
@@ -194,7 +194,7 @@ We assess the sensitivity of our main result to meteorological conditions impact
 
 We assess the sensitivity of relative total system costs of national autarky with continental autarky as a baseline. Because computational requirements to solve a model with regional spatial resolution and temporal resolution of 4h for ten years are very high, we perform this sensitivity analysis using a model with national spatial resolution while keeping temporal resolution the same. Comparing the results between national and regional resolution for the case with only one year of meteorological conditions, we find a difference of 6% for the relative costs of national autarky.
 
-The additional cost of national autarky compared to continental autarky, however, is unaffected by the longer time duration: the difference to the case with only one year is negligible (< 3‰). This is not to say that the electricity system layout is not sensitive to meteorological conditions. In fact, we find that total system costs are generally slightly higher, and more wind and biofuel capacities are deployed in exchange of solar capacities. However, large scale and small scale system layouts are impacted similarly and so the difference between both is unaffected by the longer time duration of considered meteorological conditions. These results justify the use of only a single meteorological year.
+The additional cost of national autarky compared to continental autarky, however, is unaffected by the longer time duration: the difference to the case with only one year is negligible (< 3‰). This is not to say that the electricity system layout is not sensitive to meteorological conditions. In fact, we find that total system costs are generally slightly higher, and more wind and bioenergy capacities are deployed in exchange of solar capacities. However, large scale and small scale system layouts are impacted similarly and so the difference between both is unaffected by the longer time duration of considered meteorological conditions. These results justify the use of only a single meteorological year.
 
 ## Sensitivity to technology costs
 

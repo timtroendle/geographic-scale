@@ -1,20 +1,26 @@
 localrules: overview_scenario_results
 
+RESAMPLE_OVERRIDE_DICT = {
+    "model.time.function": "resample",
+    "model.time.function_options": {"resolution": config["resolution"]["time"]}
+}
+CALLIOPE_OVERRIDE_DICT = {
+    **config["calliope-parameters"],
+    **RESAMPLE_OVERRIDE_DICT
+}
+
 
 rule run_national:
     message: "Run the model for scenario {wildcards.scenario} on national resolution."
     input:
         model = "build/model/national/model.yaml"
-    params:
-        subset_time = config["subset_time"],
-        time_resolution = config["resolution"]["time"]
+    params: override_dict = CALLIOPE_OVERRIDE_DICT
     output: "build/output/national/{scenario}/results.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """
         calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario} \
-            --override_dict "{{model.subset_time: {params.subset_time}, model.time.function: resample, \
-                               model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"
+            --override_dict="{params.override_dict}"
         """
 
 
@@ -22,17 +28,14 @@ rule run_regional: # this is a copy of run_national which is necessary to have d
     message: "Run the model for scenario {wildcards.scenario} on regional resolution."
     input:
         model = "build/model/regional/model.yaml"
-    params:
-        subset_time = config["subset_time"],
-        time_resolution = config["resolution"]["time"]
+    params: override_dict = CALLIOPE_OVERRIDE_DICT
     output: "build/output/regional/{scenario}/results.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """ # because runs take a lot of computation time, don't fail when suboptimal
         calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario} \
             --no_fail_when_infeasible\
-            --override_dict "{{model.subset_time: {params.subset_time}, model.time.function: resample, \
-                               model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"
+            --override_dict="{params.override_dict}"
         """
 
 

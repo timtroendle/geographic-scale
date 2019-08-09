@@ -41,7 +41,7 @@ rule run_single_location:
         src = "src/impossible/run_single_location.py",
         model = "build/model/{resolution}/model-single-location.yaml"
     params:
-        subset_time = config["subset_time"],
+        subset_time = config["calliope-parameters"]["model.subset_time"],
         time_resolution = "1H", #config["resolution"]["time"],
         all_locations = lambda wildcards: locations(wildcards["resolution"])
     output: "build/output/{resolution}/single-location/{location}.txt"

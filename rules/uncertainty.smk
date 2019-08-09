@@ -86,21 +86,23 @@ rule weather_run:
         ror_ts = "build/model/{resolution}/uncertainty/capacityfactors-hydro-ror.csv",
         reservoir_ts = "build/model/{resolution}/uncertainty/capacityfactors-hydro-reservoir-inflow.csv"
     params:
-        start_year = config["weather-uncertainty"]["start-year"],
-        final_year = config["year"],
-        time_resolution = config["weather-uncertainty"]["resolution"]["time"],
+        override_dict = {
+            **config["weather-uncertainty"]["calliope-parameters"],
+            **{
+                "model.subset_time": [f"{config['weather-uncertainty']['start-year']}-01-01", f"{config['year']}-12-31"],
+                "model.time.function": "resample",
+                "model.time.function_options": {'resolution': f'{config["weather-uncertainty"]["resolution"]["time"]}'},
+                "techs.demand_elec.constraints.resource": "file=./uncertainty/electricity-demand.csv",
+                "techs.hydro_run_of_river.constraints.resource": "file=./uncertainty/capacityfactors-hydro-ror.csv",
+                "techs.hydro_reservoir.constraints.resource": "file=./uncertainty/capacityfactors-hydro-reservoir-inflow.csv"
+            }
+        }
     output: "build/output/{resolution}/uncertainty/weather-{scenario}.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """
         calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario}\
-        --override_dict="{{model.subset_time: [{params.start_year}-01-01, {params.final_year}-12-31], \
-                           model.time.function: resample, \
-                           model.time.function_options: {{'resolution': '{params.time_resolution}'}}, \
-                           techs.demand_elec.constraints.resource: file=./uncertainty/electricity-demand.csv, \
-                           techs.hydro_run_of_river.constraints.resource: file=./uncertainty/capacityfactors-hydro-ror.csv, \
-                           techs.hydro_reservoir.constraints.resource: file=./uncertainty/capacityfactors-hydro-reservoir-inflow.csv, \
-                           }}"
+        --override_dict="{params.override_dict}"
         """
 
 

@@ -43,6 +43,7 @@ weather-uncertainty:
     scenarios:
         large-scale: continental-autarky-100-continental-grid
         small-scale: national-autarky-100-national-grid
+    calliope-parameters: {}
 uncertainty:
     experiment-design: ./config/uncertainty-experiment-design-small.tsv
     resolution:

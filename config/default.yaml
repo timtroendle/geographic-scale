@@ -36,7 +36,7 @@ connected-regions: # regions with insufficient potentials can be connected to ne
     NOR-12_1: NOR-1_1 # Oslo: Akershus
     CHE-5_1: CHE-4_1 # Basel-City: Basel-Country
 weather-uncertainty:
-    start-year: 2012
+    start-year: 2007
     resolution:
         space: national
         time: 1M

@@ -27,7 +27,7 @@ y:
 plot_map:
     runtime: 60
 test:
-    runtime: 60
+    runtime: 120
     memory: 128000
 test_uncertainty_runs:
     runtime: 240

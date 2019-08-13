@@ -18,6 +18,14 @@ This repository contains the entire scientific project, including code and repor
 
 5. Provide the input data for Euro-Calliope, as defined in "Getting Ready" in  `./euro-calliope/README.md`.
 
+6. To run the sensitivity analysis, you need MATLAB and UQLab installed:
+
+    1. Install [MATLAB R2019a](https://de.mathworks.com/products/matlab.html).
+
+    2. [Register](https://www.uqlab.com/register) and [install](https://www.uqlab.com/install) UQLab.
+
+    3. Add UQLab's `core` folder to the [MATLAB search path on startup](https://ch.mathworks.com/help/matlab/matlab_env/add-folders-to-matlab-search-path-at-startup.html), to be able to call `UQLab` from outside its own folder.
+
 ## Run the analysis
 
     snakemake --use-conda

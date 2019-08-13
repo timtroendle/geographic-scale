@@ -26,6 +26,7 @@ rule all:
     input:
         "build/logs/{resolution}/test-report.html".format(resolution=config["resolution"]["space"]),
         "build/output/{resolution}/report.html".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/supplementary.html".format(resolution=config["resolution"]["space"]),
         "build/output/{resolution}/aggregation.nc".format(resolution=config["resolution"]["space"]),
         "build/output/{resolution}/uncertainty/weather-diff-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"])
 
@@ -38,25 +39,14 @@ rule copy_report_file:
     shell: "cp {input} {output}"
 
 
-REPORT_DEPENDENCIES = [
-    "report/report.md",
+GENERAL_DOCUMENT_DEPENDENCIES = [
     "report/literature.bib",
-    "report/biofuel-feedstocks.csv",
-    "report/concept.md",
-    "report/pandoc-metadata.yml",
     "report/report.css",
     "report/pnas.csl",
     "report/fonts/KlinicSlabBook.otf",
     "report/fonts/KlinicSlabBookIt.otf",
     "report/fonts/KlinicSlabMedium.otf",
     "report/fonts/KlinicSlabMediumIt.otf",
-    "build/output/{resolution}/report/scenario-space.png",
-    "build/output/{resolution}/report/map.png",
-    "build/output/{resolution}/report/flows.png",
-    "build/output/{resolution}/report/overview-scenario-results-1.csv",
-    "build/output/{resolution}/report/overview-scenario-results-2.csv",
-    "build/output/{resolution}/report/overview-cost-assumptions.csv",
-    "build/output/{resolution}/report/overview-uncertain-parameters.csv"
 ]
 
 
@@ -74,7 +64,18 @@ def pandoc_options(wildcards):
 
 rule report:
     message: "Compile report.{wildcards.suffix}."
-    input: REPORT_DEPENDENCIES
+    input:
+        GENERAL_DOCUMENT_DEPENDENCIES,
+        "report/report.md",
+        "report/pandoc-metadata.yml",
+        "report/biofuel-feedstocks.csv",
+        "build/output/{resolution}/report/scenario-space.png",
+        "build/output/{resolution}/report/map.png",
+        "build/output/{resolution}/report/flows.png",
+        "build/output/{resolution}/report/overview-scenario-results-1.csv",
+        "build/output/{resolution}/report/overview-scenario-results-2.csv",
+        "build/output/{resolution}/report/overview-cost-assumptions.csv",
+        "build/output/{resolution}/report/overview-uncertain-parameters.csv"
     output: "build/output/{resolution}/report.{suffix}"
     params: options = pandoc_options
     conda: "envs/pdf.yaml"
@@ -85,6 +86,24 @@ rule report:
         ln -s ../build/output/{wildcards.resolution}/report .
         {PANDOC} report.md pandoc-metadata.yml {params.options} \
         -o ../build/output/{wildcards.resolution}/report.{wildcards.suffix}
+        """
+
+
+rule supplementary_material:
+    message: "Compile the supplementary material."
+    input:
+        GENERAL_DOCUMENT_DEPENDENCIES,
+        "report/supplementary.md"
+    params: options = pandoc_options
+    output: "build/output/{resolution}/supplementary.{suffix}"
+    conda: "envs/pdf.yaml"
+    shadow: "minimal"
+    shell:
+        """
+        cd report
+        ln -s ../build/output/{wildcards.resolution}/report .
+        {PANDOC} supplementary.md {params.options} --table-of-contents \
+        -o ../build/output/{wildcards.resolution}/supplementary.{wildcards.suffix}
         """
 
 

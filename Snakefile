@@ -12,7 +12,7 @@ onsuccess:
 onerror:
     if "email" in config.keys():
         shell("echo "" | mail -s 'geographical-scale crashed' {config[email]}")
-localrules: all, clean, copy_report_file, report
+localrules: all, clean, copy_report_file, report, supplementary_material
 
 include: "./rules/sync.smk"
 include: "./rules/construct.smk"
@@ -72,8 +72,7 @@ rule report:
         "build/output/{resolution}/report/scenario-space.png",
         "build/output/{resolution}/report/map.png",
         "build/output/{resolution}/report/flows.png",
-        "build/output/{resolution}/report/overview-scenario-results-1.csv",
-        "build/output/{resolution}/report/overview-scenario-results-2.csv",
+        "build/output/{resolution}/report/composition.png",
         "build/output/{resolution}/report/overview-cost-assumptions.csv",
         "build/output/{resolution}/report/overview-uncertain-parameters.csv"
     output: "build/output/{resolution}/report.{suffix}"
@@ -93,7 +92,9 @@ rule supplementary_material:
     message: "Compile the supplementary material."
     input:
         GENERAL_DOCUMENT_DEPENDENCIES,
-        "report/supplementary.md"
+        "report/supplementary.md",
+        "build/output/{resolution}/report/overview-scenario-results-1.csv",
+        "build/output/{resolution}/report/overview-scenario-results-2.csv",
     params: options = pandoc_options
     output: "build/output/{resolution}/supplementary.{suffix}"
     conda: "envs/pdf.yaml"

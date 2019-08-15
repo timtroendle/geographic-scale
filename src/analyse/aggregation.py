@@ -13,8 +13,9 @@ import networkx as nx
 CARRIER = "electricity"
 ONSHORE_WIND_TECHS = ["wind_onshore_competing", "wind_onshore_monopoly"]
 PV_TECHS = ["open_field_pv", "roof_mounted_pv"]
-RE_TECHS = ["open_field_pv", "roof_mounted_pv", "wind_onshore_monopoly",
-            "wind_onshore_competing", "wind_offshore", "hydro_run_of_river"]
+VRES_TECHS_WITHOUT_HYDRO = ONSHORE_WIND_TECHS + PV_TECHS + ["wind_offshore"]
+VRES_TECHS = VRES_TECHS_WITHOUT_HYDRO + ["hydro_run_of_river"]
+GENERATION_TECHS = VRES_TECHS + ["hydro_reservoir", "biofuel"]
 ELECTRICITY_DEMAND_TECH = "demand_elec"
 CACHE_SIZE = 20
 M_TO_KM = 1e-3
@@ -106,6 +107,8 @@ def _set_up_variables(units):
                  lambda model, sf: _capacity_for_tech(model, ["hydro_reservoir"], sf)),
         Variable("Capacity|Bioenergy", "GW",
                  lambda model, sf: _capacity_for_tech(model, ["biofuel"], sf)),
+        Variable("Capacity|Generation total", "GW",
+                 lambda model, sf: _capacity_for_tech(model, GENERATION_TECHS, sf)),
         Variable("Capacity|Storage|Short term|Power", "GW",
                  lambda model, sf: _capacity_for_tech(model, ["battery"], sf)),
         Variable("Capacity|Storage|Short term|Energy", "GWh",
@@ -140,10 +143,16 @@ def _set_up_variables(units):
                  lambda model, sf: _generation_for_tech(model, ["hydro_reservoir"], sf)),
         Variable("Energy|Bioenergy", "TWh",
                  lambda model, sf: _generation_for_tech(model, ["biofuel"], sf)),
-        Variable("Energy|Renewable curtailment|Absolute", "TWh",
-                 _absolute_curtailment),
-        Variable("Energy|Renewable curtailment|Relative", "[%]",
-                 _relative_curtailment),
+        Variable("Energy|Generation total", "TWh",
+                 lambda model, sf: _generation_for_tech(model, GENERATION_TECHS, sf)),
+        Variable("Energy|Renewable curtailment|Absolute total", "TWh",
+                 lambda model, sf: _absolute_curtailment(model, VRES_TECHS, sf)),
+        Variable("Energy|Renewable curtailment|Relative total", "[%]",
+                 lambda model, sf: _relative_curtailment(model, VRES_TECHS, sf)),
+        Variable("Energy|Renewable curtailment|Absolute wind+solar", "TWh",
+                 lambda model, sf: _absolute_curtailment(model, VRES_TECHS_WITHOUT_HYDRO, sf)),
+        Variable("Energy|Renewable curtailment|Relative wind+solar", "[%]",
+                 lambda model, sf: _relative_curtailment(model, VRES_TECHS_WITHOUT_HYDRO, sf)),
         Variable("Energy|Storage|Short term", "TWh",
                  lambda model, sf: _generation_for_tech(model, ["battery"], sf)),
         Variable("Energy|Storage|Long term", "TWh",
@@ -183,16 +192,16 @@ def _consumption(model, scaling_factor):
 
 @functools.lru_cache(maxsize=CACHE_SIZE, typed=False)
 def _renewable_generation_potential(model, scaling_factor):
-    resource = model.get_formatted_array("resource").sel(techs=RE_TECHS)
-    capacity = model.get_formatted_array("energy_cap").sel(techs=RE_TECHS) / scaling_factor
-    return (resource * capacity).sum(dim=["timesteps", "techs"])
+    resource = model.get_formatted_array("resource").sel(techs=VRES_TECHS)
+    capacity = model.get_formatted_array("energy_cap").sel(techs=VRES_TECHS) / scaling_factor
+    return (resource * capacity).sum(dim=["timesteps"])
 
 
 @functools.lru_cache(maxsize=CACHE_SIZE, typed=False)
 def _renewable_generation(model, scaling_factor):
     return (model.get_formatted_array("carrier_prod")
-                 .sel(techs=RE_TECHS)
-                 .sum(dim=["timesteps", "techs"])) / scaling_factor
+                 .sel(techs=VRES_TECHS)
+                 .sum(dim=["timesteps"])) / scaling_factor
 
 
 def _cost_total_system(model, scaling_factors):
@@ -293,15 +302,27 @@ def _net_import_national_level(model, units, scaling_factors):
                     if national_exchange >= 0]))
 
 
-def _relative_curtailment(model, scaling_factors):
-    potential = _renewable_generation_potential(model, scaling_factors["energy"]).sum("locs").item()
-    generated = _renewable_generation(model, scaling_factors["energy"]).sum("locs").item()
+def _relative_curtailment(model, techs, scaling_factors):
+    potential = (_renewable_generation_potential(model, scaling_factors["energy"])
+                 .sel(techs=techs)
+                 .sum(["techs", "locs"])
+                 .item())
+    generated = (_renewable_generation(model, scaling_factors["energy"])
+                 .sel(techs=techs)
+                 .sum(["techs", "locs"])
+                 .item())
     return (potential - generated) / potential * 100
 
 
-def _absolute_curtailment(model, scaling_factors):
-    potential = _renewable_generation_potential(model, scaling_factors["energy"]).sum("locs").item()
-    generated = _renewable_generation(model, scaling_factors["energy"]).sum("locs").item()
+def _absolute_curtailment(model, techs, scaling_factors):
+    potential = (_renewable_generation_potential(model, scaling_factors["energy"])
+                 .sel(techs=techs)
+                 .sum(["techs", "locs"])
+                 .item())
+    generated = (_renewable_generation(model, scaling_factors["energy"])
+                 .sel(techs=techs)
+                 .sum(["techs", "locs"])
+                 .item())
     return potential - generated
 
 

@@ -15,13 +15,23 @@ CURTAILMENT = '<i class="fas fa-traffic-light"></i>'
 
 SCENARIOS = [
     "continental-autarky-100-continental-grid",
+    "national-autarky-100-continental-grid",
+    "national-autarky-85-continental-grid",
+    "national-autarky-70-continental-grid",
     "national-autarky-100-national-grid",
-    "regional-autarky-100-regional-grid"
+    "regional-autarky-100-continental-grid",
+    "regional-autarky-85-continental-grid",
+    "regional-autarky-70-continental-grid",
+    "regional-autarky-100-national-grid",
+    "regional-autarky-85-national-grid",
+    "regional-autarky-70-national-grid",
+    "regional-autarky-100-regional-grid",
+
 ]
 VARIABLES_TABLE_1 = OrderedDict([
     ("Capacity|Solar PV", f"{SOLAR} [GW]"),
     ("Capacity|Wind", f"{WIND} [GW]"),
-    ("Energy|Renewable curtailment|Relative", f"{CURTAILMENT} [%]"),
+    ("Energy|Renewable curtailment|Relative total", f"{CURTAILMENT} [%]"),
     ("Capacity|Bioenergy", f"{BIOFUEL} [GW]"),
     ("Capacity|Storage|Short term|Power", f"{STORAGE} short [GW]"),
     ("Capacity|Storage|Short term|Energy", f"{STORAGE} short [GWh]"),

@@ -124,6 +124,16 @@ rule plot_electricity_flows:
     script: "../src/analyse/flows.py"
 
 
+rule plot_system_composition:
+    message: "Create plot of system composition of all scenarios."
+    input:
+        src = "src/analyse/composition.py",
+        results = rules.aggregated_results.output[0]
+    output: "build/output/{resolution}/composition.png"
+    conda: "../envs/default.yaml"
+    script: "../src/analyse/composition.py"
+
+
 rule overview_scenario_results:
     message: "Create table of key outputs of scenarios."
     input:

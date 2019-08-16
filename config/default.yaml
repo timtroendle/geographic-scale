@@ -394,3 +394,10 @@ shapes: # This config must be consistent with data from https://doi.org/10.5281/
         Norway: gadm1 # match 19
         Serbia: gadm1 # gadm1 25 regions; wiki 5 regions
         Switzerland: gadm1 # match 26
+report:
+    timeseries-plot:
+        thresholds:
+            unit-lcoe: 60
+            biofuel-lcoe: 300
+            hydrogen-lcos: 200
+        resolution: M

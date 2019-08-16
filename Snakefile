@@ -73,6 +73,7 @@ rule report:
         "build/output/{resolution}/report/map.png",
         "build/output/{resolution}/report/flows.png",
         "build/output/{resolution}/report/composition.png",
+        "build/output/{resolution}/report/timeseries.png",
         "build/output/{resolution}/report/overview-cost-assumptions.csv",
         "build/output/{resolution}/report/overview-uncertain-parameters.csv"
     output: "build/output/{resolution}/report.{suffix}"

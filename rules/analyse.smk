@@ -134,6 +134,26 @@ rule plot_system_composition:
     script: "../src/analyse/composition.py"
 
 
+rule plot_timeseries:
+    message: "Create plot of timeseries on regional resolution."
+    input:
+        src = "src/analyse/timeseries.py",
+        result = "build/output/{resolution}/regional-autarky-100-regional-grid/results.nc",
+        units = eurocalliope("build/data/{resolution}/units.csv")
+    params:
+        connected_regions = config["connected-regions"],
+        scaling_factors = config["scaling-factors"],
+        unit_lcoe = config["report"]["timeseries-plot"]["thresholds"]["unit-lcoe"],
+        biofuel_lcoe = config["report"]["timeseries-plot"]["thresholds"]["biofuel-lcoe"],
+        hydrogen_lcos = config["report"]["timeseries-plot"]["thresholds"]["hydrogen-lcos"],
+        resolution = config["report"]["timeseries-plot"]["resolution"]
+    output:
+        plot = "build/output/{resolution}/timeseries.png",
+        units = "build/output/{resolution}/timeseries-selection.nc"
+    conda: "../envs/calliope.yaml"
+    script: "../src/analyse/timeseries.py"
+
+
 rule overview_scenario_results:
     message: "Create table of key outputs of scenarios."
     input:

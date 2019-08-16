@@ -1,0 +1,36 @@
+sheet	col	row	longname	input	keystrokes	comment
+			open-file	build-by-euler/output/regional/timeseries-selection.nc	o	
+timeseries-selection		1	dive-row		^J	
+name	locs		key-col		!	
+name	costs		hide-col		-	
+name	carriers		hide-col		-	
+name	techs		hide-col		-	
+name			sheets		S	
+sheets		キsheets	open-row		^J	
+sheets		キtimeseries-selection	open-row		^J	
+timeseries-selection		4	dive-row		^J	
+in_mask0	locs		key-col		!	
+in_mask0	costs		hide-col		-	
+in_mask0	carriers		hide-col		-	
+in_mask0	techs		hide-col		-	
+in_mask0			sheets		S	
+sheets		キtimeseries-selection	open-row		^J	
+timeseries-selection		5	dive-row		^J	
+in_mask1	locs		key-col		!	
+in_mask1	costs		hide-col		-	
+in_mask1	carriers		hide-col		-	
+in_mask1	techs		hide-col		-	
+in_mask1			sheets		S	
+sheets		キtimeseries-selection	open-row		^J	
+timeseries-selection		6	dive-row		^J	
+in_mask2	costs		hide-col		-	
+in_mask2	carriers		hide-col		-	
+in_mask2	techs		hide-col		-	
+in_mask2	locs		key-col		!	
+in_mask2			sheets		S	
+sheets		キname	select-row		s	
+sheets		キin_mask0	select-row		s	
+sheets		キin_mask1	select-row		s	
+sheets		キin_mask2	select-row		s	
+sheets			join-sheets	inner	&	
+in_mask2+in_mask1+in_mask0+name			save-cmdlog	timeseries-plot-masks.vd	save-cmdlog	

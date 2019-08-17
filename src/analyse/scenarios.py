@@ -9,6 +9,8 @@ import xarray as xr
 
 GREEN = "#679436"
 RED = "#A01914"
+PANEL_FONT_SIZE = 10
+PANEL_FONT_WEIGHT = "bold"
 
 DATA_INDEX = """autarky_scale,grid_scale,net_exchange_potential,cost
 regional,regional,0%,
@@ -52,7 +54,10 @@ def plot_costs(paths_to_results, path_to_costs):
         vmax=results["cost"].max(),
         annot=True
     )
-    plt.title("CONTINENTAL SYSTEM")
+    ax1.annotate('a', xy=[-0.05, 1.05], xycoords='axes fraction',
+                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    plt.title("CONTINENTAL")
+
     ax2 = fig.add_subplot(gs[1])
     sns.heatmap(
         cost_heatmap(results, "national"),
@@ -65,7 +70,10 @@ def plot_costs(paths_to_results, path_to_costs):
     )
     plt.ylabel("")
     plt.yticks([])
-    plt.title("NATIONAL SYSTEMS")
+    ax2.annotate('b', xy=[-0.05, 1.05], xycoords='axes fraction',
+                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    plt.title("NATIONAL")
+
     ax3 = fig.add_subplot(gs[2])
     sns.heatmap(
         cost_heatmap(results, "regional"),
@@ -78,11 +86,14 @@ def plot_costs(paths_to_results, path_to_costs):
     )
     plt.ylabel("")
     plt.yticks([])
-    plt.title("REGIONAL SYSTEMS")
+    ax3.annotate('c', xy=[-0.25, 1.05], xycoords='axes fraction',
+                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    plt.title("REGIONAL")
+
     fig.autofmt_xdate()
     plt.tight_layout()
     plt.subplots_adjust(wspace=0.6)
-    fig.savefig(path_to_costs, dpi=300, transparent=True)
+    fig.savefig(path_to_costs, dpi=600, transparent=False)
 
 
 def cost_heatmap(data, grid_scale):

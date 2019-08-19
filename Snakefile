@@ -69,6 +69,7 @@ rule report:
         "report/report.md",
         "report/pandoc-metadata.yml",
         "report/biofuel-feedstocks.csv",
+        "data/total-sobol.png", # FIXME add to repo as data and/or code
         "build/output/{resolution}/report/scenario-space.png",
         "build/output/{resolution}/report/map.png",
         "build/output/{resolution}/report/flows.png",
@@ -94,6 +95,7 @@ rule supplementary_material:
     input:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/supplementary.md",
+        "data/total-sobol.png", # FIXME add to repo as data and/or code
         "build/output/{resolution}/report/overview-scenario-results-1.csv",
         "build/output/{resolution}/report/overview-scenario-results-2.csv",
     params: options = pandoc_options

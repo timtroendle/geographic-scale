@@ -18,7 +18,7 @@ abstract: |
     David vs Goliath.
 bibliography:
     - 'literature.bib'
-csl: pnas.csl
+csl: nature.csl
 link-citations: True
 date: draft-04-dev
 ---

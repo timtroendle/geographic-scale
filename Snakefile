@@ -42,7 +42,7 @@ rule copy_report_file:
 GENERAL_DOCUMENT_DEPENDENCIES = [
     "report/literature.bib",
     "report/report.css",
-    "report/pnas.csl",
+    "report/nature.csl",
     "report/fonts/KlinicSlabBook.otf",
     "report/fonts/KlinicSlabBookIt.otf",
     "report/fonts/KlinicSlabMedium.otf",

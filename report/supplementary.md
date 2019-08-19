@@ -9,7 +9,7 @@ author:
 institute: IASS Potsdam and ETH Zürich
 bibliography:
     - 'literature.bib'
-csl: pnas.csl
+csl: nature.csl
 link-citations: True
 header-includes: |
     <script src="https://kit.fontawesome.com/40d87b9e43.js"></script>

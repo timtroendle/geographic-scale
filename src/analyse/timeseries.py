@@ -91,7 +91,7 @@ def read_plot_data(path_to_result, scaling_factors, connected_regions, unit_lcoe
     return [
         PlotData(
             name="wind \nand \nsolar",
-            ylabel="relative generation [-]",
+            ylabel="relative potential [-]",
             da=(pot.sel(techs=WIND_AND_PV).sum("techs")) / -dem,
             mask=unit_lcoe >= unit_lcoe_threshold
         ),
@@ -125,7 +125,6 @@ def plot_timeseries(plot_datas, resolution):
             "timesteps",
             ax=axes[i][0],
             legend=True,
-            pal=PALETTE
         )
         draw_areas(
             plot_data.da[plot_data.mask].resample(timesteps=resolution).mean(dim="timesteps"),
@@ -133,7 +132,6 @@ def plot_timeseries(plot_datas, resolution):
             "timesteps",
             ax=axes[i][1],
             legend=True,
-            pal=PALETTE
         )
         axes[i][0].set_ylabel(plot_data.ylabel)
         axes[i][1].set_yticks([])
@@ -180,26 +178,27 @@ def mask_all_units(path_to_units, plot_datas):
     return units
 
 
-def draw_areas(da, dim, time_dim, legend=True, ax=None, pal=None, lw=2.5, **kwargs):
-    if not pal:
-        pal = sns.color_palette("Reds_r")
-
+# This function is derived from
+# https://gist.github.com/sjpfenninger/185bfc63ee51cf22fe65229dd722ebec.
+# Original Copyright (c) 2019 Stefan Pfenninger
+def draw_areas(da, dim, time_dim, legend=True, ax=None, lw=2.5):
     da.median(dim).plot(
         lw=lw,
-        color=pal[0],
+        color=PALETTE[0],
         label="50%",
         ax=ax
     )
     ax.set_title("")
 
-    ax.fill_between(da[time_dim].values, da.min(dim), da.max(dim), color=pal[3])
-    ax.fill_between(da[time_dim].values, da.quantile(0.1, dim).values, da.quantile(0.9, dim).values, color=pal[2])
-    ax.fill_between(da[time_dim].values, da.quantile(0.25, dim).values, da.quantile(0.75, dim).values, color=pal[1])
+    xs = da[time_dim].values
+    ax.fill_between(xs, da.min(dim), da.max(dim), color=PALETTE[3])
+    ax.fill_between(xs, da.quantile(0.1, dim).values, da.quantile(0.9, dim).values, color=PALETTE[2])
+    ax.fill_between(xs, da.quantile(0.25, dim).values, da.quantile(0.75, dim).values, color=PALETTE[1])
 
     # Add legend entries
-    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=pal[0], label='25% - 75%'))
-    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=pal[1], label='10% - 90%'))
-    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=pal[2], label='Min - Max'))
+    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=PALETTE[0], label='25% - 75%'))
+    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=PALETTE[1], label='10% - 90%'))
+    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=PALETTE[2], label='Min - Max'))
 
     if legend:
         leg = ax.legend(

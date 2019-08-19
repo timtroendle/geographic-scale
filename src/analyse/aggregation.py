@@ -143,8 +143,12 @@ def _set_up_variables(units):
                  lambda model, sf: _generation_for_tech(model, ["hydro_reservoir"], sf)),
         Variable("Energy|Bioenergy", "TWh",
                  lambda model, sf: _generation_for_tech(model, ["biofuel"], sf)),
+        Variable("Energy|Generation vres", "TWh",
+                 lambda model, sf: _generation_for_tech(model, VRES_TECHS, sf)),
         Variable("Energy|Generation total", "TWh",
                  lambda model, sf: _generation_for_tech(model, GENERATION_TECHS, sf)),
+        Variable("Energy|Potential vres", "TWh",
+                 lambda model, sf: _renewable_generation_potential(model, sf["energy"]).sum(["locs", "techs"]).item()),
         Variable("Energy|Renewable curtailment|Absolute total", "TWh",
                  lambda model, sf: _absolute_curtailment(model, VRES_TECHS, sf)),
         Variable("Energy|Renewable curtailment|Relative total", "[%]",
@@ -193,15 +197,13 @@ def _consumption(model, scaling_factor):
 @functools.lru_cache(maxsize=CACHE_SIZE, typed=False)
 def _renewable_generation_potential(model, scaling_factor):
     resource = model.get_formatted_array("resource").sel(techs=VRES_TECHS)
-    capacity = model.get_formatted_array("energy_cap").sel(techs=VRES_TECHS) / scaling_factor
+    capacity = _capacity(model, scaling_factor).sel(techs=VRES_TECHS)
     return (resource * capacity).sum(dim=["timesteps"])
 
 
 @functools.lru_cache(maxsize=CACHE_SIZE, typed=False)
 def _renewable_generation(model, scaling_factor):
-    return (model.get_formatted_array("carrier_prod")
-                 .sel(techs=VRES_TECHS)
-                 .sum(dim=["timesteps"])) / scaling_factor
+    return _generation(model, scaling_factor).sel(techs=VRES_TECHS).sum(dim=["timesteps"])
 
 
 def _cost_total_system(model, scaling_factors):

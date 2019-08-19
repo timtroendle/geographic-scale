@@ -52,7 +52,8 @@ def plot_costs(paths_to_results, path_to_costs):
         cbar_kws={"label": "total system costs [-]"},
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
-        annot=True
+        annot=True,
+        fmt='.3g'
     )
     ax1.annotate('a', xy=[-0.05, 1.05], xycoords='axes fraction',
                  fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
@@ -66,7 +67,8 @@ def plot_costs(paths_to_results, path_to_costs):
         cbar=False,
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
-        annot=True
+        annot=True,
+        fmt='.3g'
     )
     plt.ylabel("")
     plt.yticks([])
@@ -82,7 +84,8 @@ def plot_costs(paths_to_results, path_to_costs):
         cbar_ax=ax4,
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
-        annot=True
+        annot=True,
+        fmt='.3g'
     )
     plt.ylabel("")
     plt.yticks([])

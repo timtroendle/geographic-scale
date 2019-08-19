@@ -46,31 +46,35 @@ def composition(path_to_aggregated_results, path_to_output):
 
     sns.set_context("paper")
     fig = plt.figure(figsize=(8, 5))
-    gs = gridspec.GridSpec(2, 3, width_ratios=[2, 1, 1])
+    gs = gridspec.GridSpec(2, 3, width_ratios=[2, 1, 2])
 
     ax = fig.add_subplot(gs[0:3])
     plot_variables(data.copy(), GENERATION_CAPACITIES, ax, scaling_factor=1e-3)
     ax.set_ylabel("TW")
     ax.get_legend().set_frame_on(False)
-    ax.annotate('a', xy=[-0.1, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.annotate('a', xy=[-0.08, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     ax = fig.add_subplot(gs[3])
     plot_variables(data.copy(), STORAGE_CAPACITIES, ax, scaling_factor=1e-3)
     ax.set_ylabel("TWh")
     ax.get_legend().remove()
-    ax.annotate('b', xy=[-0.2, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.annotate('b', xy=[-0.24, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     ax = fig.add_subplot(gs[4])
     plot_variables(data.copy(), {"Capacity|Transmission": "transmission"}, ax)
     ax.set_ylabel("TWkm")
     ax.get_legend().remove()
-    ax.annotate('c', xy=[-0.4, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.annotate('c', xy=[-0.48, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     ax = fig.add_subplot(gs[5])
-    plot_variables(data.copy(), {"Energy|Renewable curtailment|Absolute total": "curtailment"}, ax)
+    plot_variables(
+        data.copy(),
+        {"Energy|Potential vres": "vres potential", "Energy|Renewable curtailment|Absolute total": "vres curtailment"},
+        ax=ax
+    )
     ax.set_ylabel("TWh")
     ax.get_legend().remove()
-    ax.annotate('d', xy=[-0.4, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.annotate('d', xy=[-0.26, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     fig.tight_layout()
     fig.savefig(path_to_output, dpi=600)

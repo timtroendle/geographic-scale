@@ -12,6 +12,8 @@ RED = "#A01914"
 BLUE = "#4F6DB8"
 CMAP = sns.light_palette(sns.desaturate(RED, 0.85), reverse=False, as_cmap=True)
 NORM = matplotlib.colors.Normalize(vmin=0, vmax=3)
+PANEL_FONT_SIZE = 10
+PANEL_FONT_WEIGHT = "bold"
 
 EPSG_3035_PROJ4 = "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs "
 
@@ -74,18 +76,18 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     network_national = _read_network_graph(shapes, national_model)
     network_regional = _read_network_graph(shapes, regional_model)
 
-    _plot_layer(continental, network_continental, total_costs_continental, "continental", axes[0])
-    _plot_layer(national, network_national, total_costs_national, "national", axes[2])
-    _plot_layer(regional, network_regional, total_costs_regional, "regional", axes[3])
+    _plot_layer(continental, network_continental, total_costs_continental, "continental", "a", axes[0])
+    _plot_layer(national, network_national, total_costs_national, "national", "b", axes[2])
+    _plot_layer(regional, network_regional, total_costs_regional, "regional", "c", axes[3])
     sns.despine(ax=axes[1], top=True, bottom=True, left=True, right=True)
     axes[1].set_xticks([])
     axes[1].set_yticks([])
 
     _plot_colorbar(fig, axes)
-    fig.savefig(path_to_plot, dpi=300, transparent=True)
+    fig.savefig(path_to_plot, dpi=600, transparent=False)
 
 
-def _plot_layer(units, network_graph, total_cost, layer_name, ax):
+def _plot_layer(units, network_graph, total_cost, layer_name, panel_id, ax):
     ax.set_aspect('equal')
     units.plot(
         linewidth=0.1,
@@ -121,6 +123,8 @@ def _plot_layer(units, network_graph, total_cost, layer_name, ax):
     )
     ax.annotate(layer_name, xy=[0.17, 0.90], xycoords='axes fraction')
     ax.annotate(f"{total_cost:.1f}", xy=[0.17, 0.85], xycoords='axes fraction')
+    ax.annotate(panel_id, xy=[0.10, 0.96], xycoords='axes fraction',
+                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
 
 def _plot_colorbar(fig, axes):
@@ -131,6 +135,7 @@ def _plot_colorbar(fig, axes):
     cbar.set_ticklabels(["{:.1f}".format(tick)
                          for tick in cbar.get_ticks()])
     cbar.outline.set_linewidth(0)
+    cbar.ax.set_ylabel('relative system cost [-]', rotation=90)
 
 
 def _read_cost(shapes, model, level):

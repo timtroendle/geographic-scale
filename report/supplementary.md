@@ -44,6 +44,16 @@ markdown: True
 
 # Uncertainty
 
+```table
+---
+caption: 'Uncertain input parameters. For all parameters we assume a uniform distribution. {#tbl:overview-uncertain-parameters tag="S3"}'
+alignment: LLLLLL
+include: report/overview-uncertain-parameters.csv
+include-encoding: UTF-8
+markdown: True
+---
+```
+
 **TODO replace total with first order sobol indices**
 
 ![**First-order Sobol' indices for all combinations of considered input uncertainties and model outputs of continental and national scale electricity systems.** First-order Sobol' indices as result of a global sensitivity analysis determine the magnitude with which the variability of one model input directly explains the variability of one model output given assumptions on input variability. The x-axis comprises fifteen model outputs: absolute and relative system cost and installed generation, storage, and transmission capacity for the continental and the national scale system. The y-axis comprises all twelve input parameters whose uncertainty we consider: depreciation rate (d~r~), costs of solar (c~pv~), onshore wind (c~wind~), and offshore wind (c~offshore~) capacities, short-term storage power (c~sts,p~) and energy (c~sts,e~) capacities, long-term storage power (c~lts,p~) and energy (c~lts,e~) capacities, transmission (c~ntc~) and bioenergy (c~bio~) capacities, biomass fuel costs (c~fuel~) and biomass availability (a~bio~).](../data/total-sobol.png){#fig:first-sobol .class tag="S1"}

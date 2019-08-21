@@ -134,6 +134,17 @@ rule plot_system_composition:
     script: "../src/analyse/composition.py"
 
 
+rule plot_variability_of_composition:
+    message: "Create plot of variability of system composition found in uncertainty analysis."
+    input:
+        src = "src/analyse/composition_variability.py",
+        xy = rules.xy.output[0], # FIXME should use data from surrogate model
+        aggregate = rules.time_aggregated_results.output[0]
+    output: "build/output/{resolution}/uncertainty/variability.png"
+    conda: "../envs/default.yaml"
+    script: "../src/analyse/composition_variability.py"
+
+
 rule plot_timeseries:
     message: "Create plot of timeseries on regional resolution."
     input:

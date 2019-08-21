@@ -12,13 +12,13 @@ onsuccess:
 onerror:
     if "email" in config.keys():
         shell("echo "" | mail -s 'geographical-scale crashed' {config[email]}")
-localrules: all, clean, copy_report_file, report, supplementary_material
+localrules: all, clean, copy_report_file, copy_uncertainty_results, report, supplementary_material
 
 include: "./rules/sync.smk"
 include: "./rules/construct.smk"
+include: "./rules/uncertainty.smk"
 include: "./rules/analyse.smk"
 include: "./rules/impossible.smk"
-include: "./rules/uncertainty.smk"
 
 
 rule all:
@@ -34,6 +34,14 @@ rule all:
 rule copy_report_file:
     message: "Copy file {input[0]} into dedicated report folder."
     input: "build/output/{resolution}/{filename}.{suffix}"
+    wildcard_constraints: suffix = "((csv)|(png))"
+    output: "build/output/{resolution}/report/{filename}.{suffix}"
+    shell: "cp {input} {output}"
+
+
+rule copy_uncertainty_results:
+    message: "Copy file {input[0]} into dedicated report folder."
+    input: "build/output/{resolution}/uncertainty/{{filename}}.{{suffix}}".format(resolution=config["uncertainty"]["resolution"]["space"])
     wildcard_constraints: suffix = "((csv)|(png))"
     output: "build/output/{resolution}/report/{filename}.{suffix}"
     shell: "cp {input} {output}"
@@ -74,9 +82,9 @@ rule report:
         "build/output/{resolution}/report/map.png",
         "build/output/{resolution}/report/flows.png",
         "build/output/{resolution}/report/composition.png",
+        "build/output/{resolution}/report/variability.png",
         "build/output/{resolution}/report/timeseries.png",
         "build/output/{resolution}/report/overview-cost-assumptions.csv",
-        "build/output/{resolution}/report/overview-uncertain-parameters.csv"
     output: "build/output/{resolution}/report.{suffix}"
     params: options = pandoc_options
     conda: "envs/pdf.yaml"
@@ -98,6 +106,7 @@ rule supplementary_material:
         "data/total-sobol.png", # FIXME add to repo as data and/or code
         "build/output/{resolution}/report/overview-scenario-results-1.csv",
         "build/output/{resolution}/report/overview-scenario-results-2.csv",
+        "build/output/{resolution}/report/overview-uncertain-parameters.csv",
     params: options = pandoc_options
     output: "build/output/{resolution}/supplementary.{suffix}"
     conda: "envs/pdf.yaml"

@@ -76,9 +76,9 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     network_national = _read_network_graph(shapes, national_model)
     network_regional = _read_network_graph(shapes, regional_model)
 
-    _plot_layer(continental, network_continental, total_costs_continental, "continental", "a", axes[0])
-    _plot_layer(national, network_national, total_costs_national, "national", "b", axes[2])
-    _plot_layer(regional, network_regional, total_costs_regional, "regional", "c", axes[3])
+    _plot_layer(continental, network_continental, total_costs_continental, "Continental", "a", axes[0])
+    _plot_layer(national, network_national, total_costs_national, "National", "b", axes[2])
+    _plot_layer(regional, network_regional, total_costs_regional, "Regional", "c", axes[3])
     sns.despine(ax=axes[1], top=True, bottom=True, left=True, right=True)
     axes[1].set_xticks([])
     axes[1].set_yticks([])
@@ -135,7 +135,7 @@ def _plot_colorbar(fig, axes):
     cbar.set_ticklabels(["{:.1f}".format(tick)
                          for tick in cbar.get_ticks()])
     cbar.outline.set_linewidth(0)
-    cbar.ax.set_ylabel('relative system cost [-]', rotation=90)
+    cbar.ax.set_ylabel('Relative system cost [-]', rotation=90)
 
 
 def _read_cost(shapes, model, level):

@@ -73,9 +73,9 @@ def main(path_to_aggregated_results, path_to_output_table1, path_to_output_table
 
 def nice_scenario_name(scenario_name):
     autarky_scale, _, autarky_level, grid_scale, _ = scenario_name.split("-")
-    return f"""{AUTARKY_SCALE}: {autarky_scale}<br>
+    return f"""{AUTARKY_SCALE}: {autarky_scale.capitalize()}<br>
     {AUTARKY_LEVEL}: {100 - int(autarky_level)}%<br>
-    {GRID_SCALE}: {grid_scale}<br>
+    {GRID_SCALE}: {grid_scale.capitalize()}<br>
     """
 
 

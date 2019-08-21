@@ -90,20 +90,20 @@ def read_plot_data(path_to_result, scaling_factors, connected_regions, unit_lcoe
     resolution_in_hours = (gen.timesteps[1].item() - gen.timesteps[0].item()) * NS_TO_H
     return [
         PlotData(
-            name="wind \nand \nsolar",
-            ylabel="relative potential [-]",
+            name="Wind \nand \nsolar",
+            ylabel="Relative potential [-]",
             da=(pot.sel(techs=WIND_AND_PV).sum("techs")) / -dem,
             mask=unit_lcoe >= unit_lcoe_threshold
         ),
         PlotData(
-            name="bioenergy",
-            ylabel="relative generation [-]",
+            name="Bioenergy",
+            ylabel="Relative generation [-]",
             da=gen.sel(techs="biofuel") / resolution_in_hours / cap.sel(techs="biofuel"),
             mask=tech_lcoes.sel(techs="biofuel") > biofuel_lcoe_threshold
         ),
         PlotData(
-            name="hydrogen",
-            ylabel="storage level [-]",
+            name="Hydrogen",
+            ylabel="Storage level [-]",
             da=e_stor.sel(techs=HYDROGEN) / stor.sel(techs=HYDROGEN),
             mask=lcos.sel(techs=HYDROGEN) >= hydrogen_lcos_threshold
         )
@@ -140,6 +140,9 @@ def plot_timeseries(plot_datas, resolution):
             axes[i][1].set_xlabel("")
             axes[i][0].set_xticks([])
             axes[i][1].set_xticks([])
+        else:
+            axes[i][0].set_xlabel("Timesteps")
+            axes[i][1].set_xlabel("Timesteps")
         sns.despine(ax=axes[i][0], top=True, right=True)
         sns.despine(ax=axes[i][1], left=True)
         axes[i][0].annotate(panel_ids[2 * i], xy=[-0.05, 1.05], xycoords='axes fraction',

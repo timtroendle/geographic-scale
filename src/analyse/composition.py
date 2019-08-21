@@ -16,16 +16,23 @@ PANEL_FONT_WEIGHT = "bold"
 ERROR_BAR_LINEWIDTH = 1.5
 
 GENERATION_CAPACITIES = OrderedDict([
-    ("Capacity|Generation total", "total"),
-    ("Capacity|Wind", "wind"),
-    ("Capacity|Solar PV", "solar"),
-    ("Capacity|Bioenergy", "bio"),
-    ("Capacity|Storage|Short term|Power", "battery"),
-    ("Capacity|Storage|Long term|Power", "hydrogen")
+    ("Capacity|Generation total", "Total"),
+    ("Capacity|Wind", "Wind"),
+    ("Capacity|Solar PV", "Solar"),
+    ("Capacity|Bioenergy", "Bio"),
+    ("Capacity|Storage|Short term|Power", "Battery"),
+    ("Capacity|Storage|Long term|Power", "Hydrogen")
 ])
 STORAGE_CAPACITIES = OrderedDict([
-    ("Capacity|Storage|Short term|Energy", "battery"),
-    ("Capacity|Storage|Long term|Energy", "hydrogen")
+    ("Capacity|Storage|Short term|Energy", "Battery"),
+    ("Capacity|Storage|Long term|Energy", "Hydrogen")
+])
+TRANSMISSION_CAPACITIES = OrderedDict([
+    ("Capacity|Transmission", "Transmission")
+])
+VRES = OrderedDict([
+    ("Energy|Potential vres", "VRES potential"),
+    ("Energy|Renewable curtailment|Absolute total", "VRES curtailment")
 ])
 MAIN_SCENARIOS = [
     "continental-autarky-100-continental-grid",
@@ -61,17 +68,13 @@ def composition(path_to_aggregated_results, path_to_output):
     ax.annotate('b', xy=[-0.24, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     ax = fig.add_subplot(gs[4])
-    plot_variables(data.copy(), {"Capacity|Transmission": "transmission"}, ax)
+    plot_variables(data.copy(), TRANSMISSION_CAPACITIES, ax)
     ax.set_ylabel("TWkm")
     ax.get_legend().remove()
     ax.annotate('c', xy=[-0.48, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     ax = fig.add_subplot(gs[5])
-    plot_variables(
-        data.copy(),
-        {"Energy|Potential vres": "vres potential", "Energy|Renewable curtailment|Absolute total": "vres curtailment"},
-        ax=ax
-    )
+    plot_variables(data.copy(), VRES, ax=ax)
     ax.set_ylabel("TWh")
     ax.get_legend().remove()
     ax.annotate('d', xy=[-0.26, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)

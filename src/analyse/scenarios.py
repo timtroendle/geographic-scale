@@ -13,18 +13,18 @@ PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
 
 DATA_INDEX = """autarky_scale,grid_scale,net_exchange_potential,cost
-regional,regional,0%,
-regional,national,0%,
-regional,continental,0%,
-regional,national,≤15%,
-regional,continental,≤15%,
-regional,national,≤30%,
-regional,continental,≤30%,
-national,national,0%,
-national,continental,0%,
-national,continental,≤15%,
-national,continental,≤30%,
-continental,continental,0%,
+Regional,Regional,0%,
+Regional,National,0%,
+Regional,Continental,0%,
+Regional,National,≤15%,
+Regional,Continental,≤15%,
+Regional,National,≤30%,
+Regional,Continental,≤30%,
+National,National,0%,
+National,Continental,0%,
+National,Continental,≤15%,
+National,Continental,≤30%,
+Continental,Continental,0%,
 """
 
 AUTARKY_LEVEL_MAP = {
@@ -45,7 +45,7 @@ def plot_costs(paths_to_results, path_to_costs):
     ax4 = fig.add_subplot(gs[3])
     ax1 = fig.add_subplot(gs[0])
     sns.heatmap(
-        cost_heatmap(results, "continental"),
+        cost_heatmap(results, "Continental"),
         cmap=pal,
         ax=ax1,
         cbar=False,
@@ -61,7 +61,7 @@ def plot_costs(paths_to_results, path_to_costs):
 
     ax2 = fig.add_subplot(gs[1])
     sns.heatmap(
-        cost_heatmap(results, "national"),
+        cost_heatmap(results, "National"),
         cmap=pal,
         ax=ax2,
         cbar=False,
@@ -78,7 +78,7 @@ def plot_costs(paths_to_results, path_to_costs):
 
     ax3 = fig.add_subplot(gs[2])
     sns.heatmap(
-        cost_heatmap(results, "regional"),
+        cost_heatmap(results, "Regional"),
         cmap=pal,
         ax=ax3,
         cbar_ax=ax4,
@@ -100,15 +100,15 @@ def plot_costs(paths_to_results, path_to_costs):
 
 
 def cost_heatmap(data, grid_scale):
-    if grid_scale == "continental":
-        columns = ["continental", "national", "regional"]
-    elif grid_scale == "national":
-        columns = ["national", "regional"]
-    elif grid_scale == "regional":
-        columns = ["regional"]
+    if grid_scale == "Continental":
+        columns = ["Continental", "National", "Regional"]
+    elif grid_scale == "National":
+        columns = ["National", "Regional"]
+    elif grid_scale == "Regional":
+        columns = ["Regional"]
     else:
         raise ValueError("Grid scale must be in {}.".format(
-            ["regional", "national", "continental"])
+            ["Regional", "National", "Continental"])
         )
 
     pivoted_data = data[data["grid_scale"] == grid_scale].pivot(
@@ -116,8 +116,8 @@ def cost_heatmap(data, grid_scale):
         index="net_exchange_potential",
         values="cost"
     )
-    pivoted_data.columns.name = "autarky scale"
-    pivoted_data.index.name = "net electricity import"
+    pivoted_data.columns.name = "Autarky scale"
+    pivoted_data.index.name = "Net electricity import"
     return pivoted_data[columns].reindex(["≤30%", "≤15%", "0%"])
 
 
@@ -132,7 +132,7 @@ def read_results(paths_to_results):
                                .squeeze(["costs", "carriers"])
                                .item())
         results.loc[autarky_layer, grid_size, autarky_level] = total_system_cost
-    results = results / results.loc["continental", "continental", "0%"]
+    results = results / results.loc["Continental", "Continental", "0%"]
     return results.reset_index()
 
 
@@ -140,7 +140,7 @@ def parse_scenario_name(scenario_name):
     autarky_layer, _, autarky_level, grid_size, _ = scenario_name.split("-")
     assert autarky_layer in ["regional", "national", "continental"]
     assert grid_size in ["regional", "national", "continental"]
-    return autarky_layer, autarky_level, grid_size
+    return autarky_layer.capitalize(), autarky_level, grid_size.capitalize()
 
 
 if __name__ == "__main__":

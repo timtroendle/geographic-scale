@@ -64,6 +64,18 @@ Regardless which scale is preferred in Europe, it is crucial that a decision is 
 
 A decision for smaller scale systems may be easier to make, as fewer stakeholders are involved. Generally, small scale systems need less cooperation. But their development must happen in a coordinated and systematic fashion to reap the benefits of their system scales: these systems need more generation capacity, especially inexpensive solar electricity, and they need more flexible generation and storage. Building such a system requires institutional and public support as well: there must be backing from the population for expanding generation capacities and likely for higher prices of electricity, and market mechanisms must be set in place that attract investments into generation capacities that are not generating at their full potential. As we show, more wind and solar electricity is curtailed in these systems, and bioenergy is largely used in the winter months when solar electricity generation is low. The transition of the European electricity system towards a decarbonised supply must be based on these traits of systems on different geographic scales.
 
+# Acknowledgements
+
+The work of T.T. and J.L. was supported by a European Research Council grant (TRIPOD project, grant agreement number 715132).
+
+# Author contributions
+
+T.T., S.P. and J.L. designed the main part of the study. T.T. built the model, analysed the results, and carried out the bulk of the writing. S.P. and T.T. implemented necessary changes in the modelling framework Calliope. S.M. performed the sensitivity analysis and analysed its results. All authors contributed equally to editing and discussing the manuscript.
+
+# Declarations of interest
+
+None.
+
 # Methods
 
 We model the European electricity system as a set of network nodes and power flows between the nodes, with each node representing a regional administrative unit in Europe. We consider the deployment of certain renewable electricity supply and storage technologies at each node, and the deployment of transmission links between nodes, but disregard subordinate network nodes and power flows on the distribution system. We furthermore do not consider the current state of the electricity system, and thus employ a greenfield approach.

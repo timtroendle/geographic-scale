@@ -76,7 +76,6 @@ rule report:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/report.md",
         "report/pandoc-metadata.yml",
-        "report/biofuel-feedstocks.csv",
         "data/total-sobol.png", # FIXME add to repo as data and/or code
         "build/output/{resolution}/report/scenario-space.png",
         "build/output/{resolution}/report/map.png",
@@ -84,7 +83,6 @@ rule report:
         "build/output/{resolution}/report/composition.png",
         "build/output/{resolution}/report/variability.png",
         "build/output/{resolution}/report/timeseries.png",
-        "build/output/{resolution}/report/overview-cost-assumptions.csv",
     output: "build/output/{resolution}/report.{suffix}"
     params: options = pandoc_options
     conda: "envs/pdf.yaml"
@@ -103,10 +101,12 @@ rule supplementary_material:
     input:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/supplementary.md",
+        "report/biofuel-feedstocks.csv",
         "data/total-sobol.png", # FIXME add to repo as data and/or code
         "build/output/{resolution}/report/overview-scenario-results-1.csv",
         "build/output/{resolution}/report/overview-scenario-results-2.csv",
         "build/output/{resolution}/report/overview-uncertain-parameters.csv",
+        "build/output/{resolution}/report/overview-cost-assumptions.csv",
     params: options = pandoc_options
     output: "build/output/{resolution}/supplementary.{suffix}"
     conda: "envs/pdf.yaml"

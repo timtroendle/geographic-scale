@@ -55,9 +55,9 @@ def plot_costs(paths_to_results, path_to_costs):
         annot=True,
         fmt='.3g'
     )
-    ax1.annotate('a', xy=[-0.05, 1.05], xycoords='axes fraction',
+    ax1.annotate('a', xy=[-0.1, 1.05], xycoords='axes fraction',
                  fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-    plt.title("CONTINENTAL")
+    ax1.set_title("CONTINENTAL", loc="left")
 
     ax2 = fig.add_subplot(gs[1])
     sns.heatmap(
@@ -72,9 +72,9 @@ def plot_costs(paths_to_results, path_to_costs):
     )
     plt.ylabel("")
     plt.yticks([])
-    ax2.annotate('b', xy=[-0.05, 1.05], xycoords='axes fraction',
+    ax2.annotate('b', xy=[-0.1 * 3 / 2, 1.05], xycoords='axes fraction',
                  fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-    plt.title("NATIONAL")
+    ax2.set_title("NATIONAL", loc="left")
 
     ax3 = fig.add_subplot(gs[2])
     sns.heatmap(
@@ -89,9 +89,9 @@ def plot_costs(paths_to_results, path_to_costs):
     )
     plt.ylabel("")
     plt.yticks([])
-    ax3.annotate('c', xy=[-0.25, 1.05], xycoords='axes fraction',
+    ax3.annotate('c', xy=[-0.1 * 3, 1.05], xycoords='axes fraction',
                  fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-    plt.title("REGIONAL")
+    ax3.set_title("REGIONAL", loc="left")
 
     fig.autofmt_xdate()
     plt.tight_layout()

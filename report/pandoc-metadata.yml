@@ -15,7 +15,7 @@ tags:
     - 'self-sufficiency'
     - 'cooperation'
 abstract: |
-    David vs Goliath.
+    100% renewable electricity supply will decarbonise the European electricity system, but will also introduce fluctuations of renewable resources. Different strategies exist to cope with these fluctuations but their cost efficiency depends on the geographic scale of electricity systems. The exact relationship between cost, system structure, and geographic scale is unknown. Here, we show that regional scale electricity systems have 70% higher total system cost compared to a system spanning the entire continent which is mainly caused by reduced access to flexibility options. Consequently, when electricity is generated locally, but a continental scale grid provides flexibility, cost are only slightly above the unconstrained case. Furthermore, we show that cost optimal small scale systems need less transmission but more supply capacities, and more flexible generation from biomass combustion and storage. Applying a global sensitivity analysis, we show that our results are qualitatively insensitive when considering uncertainty of technology costs, but that some differences between geographic scales vary strongly.
 bibliography:
     - 'literature.bib'
 csl: nature.csl

@@ -51,6 +51,7 @@ GENERAL_DOCUMENT_DEPENDENCIES = [
     "report/literature.bib",
     "report/report.css",
     "report/nature.csl",
+    "report/template.html",
     "report/fonts/KlinicSlabBook.otf",
     "report/fonts/KlinicSlabBookIt.otf",
     "report/fonts/KlinicSlabMedium.otf",
@@ -61,9 +62,9 @@ GENERAL_DOCUMENT_DEPENDENCIES = [
 def pandoc_options(wildcards):
     suffix = wildcards["suffix"]
     if suffix == "html":
-        return "--self-contained --css=report.css --to html5"
+        return "--self-contained --css=report.css --template template.html --to html5"
     elif suffix == "pdf":
-        return "--css=report.css --pdf-engine weasyprint"
+        return "--css=report.css --template template.html --pdf-engine weasyprint"
     elif suffix == "docx":
         return []
     else:

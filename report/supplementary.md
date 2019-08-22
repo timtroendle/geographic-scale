@@ -13,7 +13,7 @@ csl: nature.csl
 link-citations: True
 header-includes: |
     <script src="https://kit.fontawesome.com/40d87b9e43.js"></script>
-date: draft-04-dev
+date: draft-04
 ---
 
 # Code and data

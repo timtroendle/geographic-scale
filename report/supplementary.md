@@ -3,9 +3,9 @@ title: 'Appropriate technology: The relationship between geographic scale, cost,
 subtitle: 'Supplementary Material'
 author:
     - Tim Tröndle
-    - Stefan Pfenninger
-    - Stefano Marelli
     - Johan Lilliestam
+    - Stefano Marelli
+    - Stefan Pfenninger
 institute: IASS Potsdam and ETH Zürich
 bibliography:
     - 'literature.bib'

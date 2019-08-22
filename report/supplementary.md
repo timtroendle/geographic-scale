@@ -1,5 +1,5 @@
 ---
-title: 'Geographical Scale'
+title: 'Appropriate technology: The relationship between geographic scale, cost, and technology mix of fully renewable electricity systems in Europe'
 subtitle: 'Supplementary Material'
 author:
     - Tim Tröndle

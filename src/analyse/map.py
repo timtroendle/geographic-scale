@@ -10,8 +10,8 @@ import shapely
 
 RED = "#A01914"
 BLUE = "#4F6DB8"
-CMAP = sns.light_palette(sns.desaturate(RED, 0.85), reverse=False, as_cmap=True)
-NORM = matplotlib.colors.Normalize(vmin=0, vmax=3)
+CMAP = 'RdBu_r'
+NORM = matplotlib.colors.Normalize(vmin=-1, vmax=3)
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
 
@@ -40,8 +40,8 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
              path_to_continental_result, path_to_national_result, path_to_regional_result,
              path_to_shapes, path_to_plot):
     """Plot maps of results."""
-    fig = plt.figure(figsize=(8, 8), constrained_layout=True)
-    axes = fig.subplots(2, 2).flatten()
+    fig = plt.figure(figsize=(8, 4), constrained_layout=True)
+    axes = fig.subplots(1, 2).flatten()
     shapes = (gpd.read_file(path_to_shapes)
                  .to_crs(EPSG_3035_PROJ4)
                  .rename(columns={"id": "locs"})
@@ -64,24 +64,17 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     regional["cost"] = _read_cost(shapes, regional_model, "regional")
 
     base_costs = continental["cost"].iloc[0]
-    continental["cost"] = continental["cost"] / base_costs
     national["cost"] = national["cost"] / base_costs
     regional["cost"] = regional["cost"] / base_costs
 
-    total_costs_continental = _read_total_system_costs(continental_model) / base_costs
     total_costs_national = _read_total_system_costs(national_model) / base_costs
     total_costs_regional = _read_total_system_costs(regional_model) / base_costs
 
-    network_continental = _read_network_graph(shapes, continental_model)
     network_national = _read_network_graph(shapes, national_model)
     network_regional = _read_network_graph(shapes, regional_model)
 
-    _plot_layer(continental, network_continental, total_costs_continental, "Continental", "a", axes[0])
-    _plot_layer(national, network_national, total_costs_national, "National", "b", axes[2])
-    _plot_layer(regional, network_regional, total_costs_regional, "Regional", "c", axes[3])
-    sns.despine(ax=axes[1], top=True, bottom=True, left=True, right=True)
-    axes[1].set_xticks([])
-    axes[1].set_yticks([])
+    _plot_layer(national, network_national, total_costs_national, "National", "a", axes[0])
+    _plot_layer(regional, network_regional, total_costs_regional, "Regional", "b", axes[1])
 
     _plot_colorbar(fig, axes)
     fig.savefig(path_to_plot, dpi=600, transparent=False)
@@ -97,10 +90,6 @@ def _plot_layer(units, network_graph, total_cost, layer_name, panel_id, ax):
         cmap=CMAP,
         ax=ax
     )
-    gpd.GeoSeries([
-        network_graph.edges[region, neighbour]["line"]
-        for region, neighbour in network_graph.edges
-    ], crs=units.crs).plot(ax=ax, linewidth=0.25, color=BLUE)
     ax.set_xlim(MAP_MIN_X, MAP_MAX_X)
     ax.set_ylim(MAP_MIN_Y, MAP_MAX_Y)
     ax.set_xticks([])
@@ -109,21 +98,21 @@ def _plot_layer(units, network_graph, total_cost, layer_name, panel_id, ax):
 
     ax.annotate(
         f"{LAYER_UNICODE} ",
-        xy=[0.10, 0.90],
+        xy=[0.19, 0.95],
         xycoords='axes fraction',
         fontproperties=matplotlib.font_manager.FontProperties(fname=PATH_TO_FONT_AWESOME.as_posix()),
         color="black"
     )
     ax.annotate(
         f"{MONEY_UNICODE} ",
-        xy=[0.10, 0.85],
+        xy=[0.19, 0.90],
         xycoords='axes fraction',
         fontproperties=matplotlib.font_manager.FontProperties(fname=PATH_TO_FONT_AWESOME.as_posix()),
         color=sns.desaturate(RED, 0.85)
     )
-    ax.annotate(layer_name, xy=[0.17, 0.90], xycoords='axes fraction')
-    ax.annotate(f"{total_cost:.1f}", xy=[0.17, 0.85], xycoords='axes fraction')
-    ax.annotate(panel_id, xy=[0.10, 0.96], xycoords='axes fraction',
+    ax.annotate(layer_name, xy=[0.26, 0.95], xycoords='axes fraction')
+    ax.annotate(f"{total_cost:.1f}", xy=[0.26, 0.90], xycoords='axes fraction')
+    ax.annotate(panel_id, xy=[0.10, 0.95], xycoords='axes fraction',
                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
 
@@ -135,7 +124,7 @@ def _plot_colorbar(fig, axes):
     cbar.set_ticklabels(["{:.1f}".format(tick)
                          for tick in cbar.get_ticks()])
     cbar.outline.set_linewidth(0)
-    cbar.ax.set_ylabel('Relative system cost [-]', rotation=90)
+    cbar.ax.set_ylabel('Relative system cost', rotation=90)
 
 
 def _read_cost(shapes, model, level):

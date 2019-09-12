@@ -5,8 +5,6 @@ import geopandas as gpd
 import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
-import networkx as nx
-import shapely
 
 RED = "#A01914"
 BLUE = "#4F6DB8"
@@ -70,17 +68,14 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
     total_costs_national = _read_total_system_costs(national_model) / base_costs
     total_costs_regional = _read_total_system_costs(regional_model) / base_costs
 
-    network_national = _read_network_graph(shapes, national_model)
-    network_regional = _read_network_graph(shapes, regional_model)
-
-    _plot_layer(national, network_national, total_costs_national, "National", "a", axes[0])
-    _plot_layer(regional, network_regional, total_costs_regional, "Regional", "b", axes[1])
+    _plot_layer(national, total_costs_national, "National", "a", axes[0])
+    _plot_layer(regional, total_costs_regional, "Regional", "b", axes[1])
 
     _plot_colorbar(fig, axes)
     fig.savefig(path_to_plot, dpi=600, transparent=False)
 
 
-def _plot_layer(units, network_graph, total_cost, layer_name, panel_id, ax):
+def _plot_layer(units, total_cost, layer_name, panel_id, ax):
     ax.set_aspect('equal')
     units.plot(
         linewidth=0.1,
@@ -155,22 +150,6 @@ def _read_cost(shapes, model, level):
 
 def _read_total_system_costs(model):
     return model.get_formatted_array("total_levelised_cost").item()
-
-
-def _read_network_graph(shapes, model):
-    g = nx.Graph()
-    g.add_nodes_from((k, {"centroid": v}) for (k, v) in shapes.centroid.to_dict().items())
-
-    try:
-        lines = [(line.split(":")[0], line.split(":")[-1])
-                 for line in model._model_data.loc_techs_transmission.values
-                 if model.inputs.energy_cap_max.sel(loc_techs=line) > 0]
-        lines = [(a, b, {"line": shapely.geometry.LineString([g.nodes[a]["centroid"], g.nodes[b]["centroid"]])})
-                 for a, b in lines]
-        g.add_edges_from(lines)
-    except AttributeError:
-        pass # there are no lines
-    return g
 
 
 if __name__ == "__main__":

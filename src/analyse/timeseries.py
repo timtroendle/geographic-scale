@@ -91,19 +91,19 @@ def read_plot_data(path_to_result, scaling_factors, connected_regions, unit_lcoe
     return [
         PlotData(
             name="Wind \nand \nsolar",
-            ylabel="Relative potential [-]",
+            ylabel="Relative potential",
             da=(pot.sel(techs=WIND_AND_PV).sum("techs")) / -dem,
             mask=unit_lcoe >= unit_lcoe_threshold
         ),
         PlotData(
             name="Bioenergy",
-            ylabel="Relative generation [-]",
+            ylabel="Relative generation",
             da=gen.sel(techs="biofuel") / resolution_in_hours / cap.sel(techs="biofuel"),
             mask=tech_lcoes.sel(techs="biofuel") > biofuel_lcoe_threshold
         ),
         PlotData(
             name="Hydrogen",
-            ylabel="Storage level [-]",
+            ylabel="Storage level",
             da=e_stor.sel(techs=HYDROGEN) / stor.sel(techs=HYDROGEN),
             mask=lcos.sel(techs=HYDROGEN) >= hydrogen_lcos_threshold
         )

@@ -29,19 +29,19 @@ SCENARIOS = [
 
 ]
 VARIABLES_TABLE_1 = OrderedDict([
-    ("Capacity|Solar PV", f"{SOLAR} [GW]"),
-    ("Capacity|Wind", f"{WIND} [GW]"),
-    ("Energy|Renewable curtailment|Relative total", f"{CURTAILMENT} [%]"),
-    ("Capacity|Bioenergy", f"{BIOFUEL} [GW]"),
-    ("Capacity|Storage|Short term|Power", f"{STORAGE} short [GW]"),
-    ("Capacity|Storage|Short term|Energy", f"{STORAGE} short [GWh]"),
-    ("Capacity|Storage|Long term|Power", f"{STORAGE} long [GW]"),
-    ("Capacity|Storage|Long term|Energy", f"{STORAGE} long [GWh]"),
+    ("Capacity|Solar PV", f"{SOLAR} (GW)"),
+    ("Capacity|Wind", f"{WIND} (GW)"),
+    ("Energy|Renewable curtailment|Relative total", f"{CURTAILMENT} (%)"),
+    ("Capacity|Bioenergy", f"{BIOFUEL} (GW)"),
+    ("Capacity|Storage|Short term|Power", f"{STORAGE} short (GW)"),
+    ("Capacity|Storage|Short term|Energy", f"{STORAGE} short (GWh)"),
+    ("Capacity|Storage|Long term|Power", f"{STORAGE} long (GW)"),
+    ("Capacity|Storage|Long term|Energy", f"{STORAGE} long (GWh)"),
 ])
 VARIABLES_TABLE_2 = OrderedDict([
     ("Capacity|Transmission", f"{TRANSMISSION} [TW km]"),
-    ("Energy|Gross import national level", f"{IMPORT} gross [TWh]"),
-    ("Energy|Net import national level", f"{IMPORT} net [TWh]")
+    ("Energy|Gross import national level", f"{IMPORT} gross (TWh)"),
+    ("Energy|Net import national level", f"{IMPORT} net (TWh)")
 ])
 
 

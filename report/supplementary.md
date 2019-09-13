@@ -38,7 +38,7 @@ markdown: True
 
 ```table
 ---
-caption: 'Assumptions on technology costs. ^AC transmission installation costs are given in [€/kW/1000km] {#tbl:overview-cost-assumptions tag="S2"}'
+caption: 'Assumptions on technology costs. ^AC transmission installation costs are given in €/kW/1000km {#tbl:overview-cost-assumptions tag="S2"}'
 alignment: LRRRRRR
 include: report/overview-cost-assumptions.csv
 include-encoding: UTF-8

@@ -49,7 +49,7 @@ def plot_costs(paths_to_results, path_to_costs):
         cmap=pal,
         ax=ax1,
         cbar=False,
-        cbar_kws={"label": "total system costs [-]"},
+        cbar_kws={"label": "total system costs"},
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
         annot=True,

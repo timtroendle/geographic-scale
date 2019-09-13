@@ -52,8 +52,8 @@ def read_plot_data(path_to_xy, path_to_scenario_results):
     return [
         PlotData(
             title="Total supply",
-            ylabel="National scale [TW]",
-            xlabel="Continental scale [TW]",
+            ylabel="National scale (TW)",
+            xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
             x=(xy["y-large-scale-wind-gw"]
@@ -68,8 +68,8 @@ def read_plot_data(path_to_xy, path_to_scenario_results):
         ),
         PlotData(
             title="Wind",
-            ylabel="National scale [TW]",
-            xlabel="Continental scale [TW]",
+            ylabel="National scale (TW)",
+            xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
             x=xy["y-large-scale-wind-gw"],
@@ -78,8 +78,8 @@ def read_plot_data(path_to_xy, path_to_scenario_results):
         ),
         PlotData(
             title="Bioenergy + storage",
-            ylabel="National scale [TW]",
-            xlabel="Continental scale [TW]",
+            ylabel="National scale (TW)",
+            xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
             x=xy["y-large-scale-biofuel-gw"] + xy["y-large-scale-storage-gw"],

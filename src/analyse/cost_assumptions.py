@@ -85,11 +85,11 @@ def main(path_to_model, scaling_factors, path_to_output):
     variable_costs = variable_costs_prod + variable_costs_con
 
     all_costs = xr.Dataset({
-        "Installation cost [€/kW]": energy_cap,
-        "Installation cost [€/kWh]": storage_cap,
-        "Annual cost [€/kW/yr]": annual_cost,
-        "Variable cost [€ct/kWh]": variable_costs,
-        "Lifetime [yr]": lifetime,
+        "Installation cost (€/kW)": energy_cap,
+        "Installation cost (€/kWh)": storage_cap,
+        "Annual cost (€/kW/yr)": annual_cost,
+        "Variable cost (€ct/kWh)": variable_costs,
+        "Lifetime (yr)": lifetime,
         "Source": pd.Series(COST_SOURCES).to_xarray().rename(index="techs")
     })
     all_costs.rename(techs="Technology").to_dataframe().rename(index=TECHS).to_csv(

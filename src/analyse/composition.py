@@ -41,23 +41,23 @@ MAIN_SCENARIOS = [
     "regional-autarky-100-regional-grid"
 ]
 SCALE_ORDER = OrderedDict([
-    ("Continental", -0.25),
-    ("National", 0),
-    ("Regional", 0.25)
+    ("Continental scale", -0.25),
+    ("National scale", 0),
+    ("Regional scale", 0.25)
 ])
 
 
 def composition(path_to_aggregated_results, path_to_output):
     """Plot system compositions for all scenarios."""
     data = pd.read_csv(path_to_aggregated_results)
-    data["Scale"] = data["Scenario"].str.split("-").str.get(-2).str.capitalize()
+    data["Scale"] = data["Scenario"].str.split("-").str.get(-2).str.capitalize() + ' scale'
 
     sns.set_context("paper")
     fig = plt.figure(figsize=(8, 5))
     gs = gridspec.GridSpec(2, 3, width_ratios=[2, 1, 2])
 
     ax = fig.add_subplot(gs[0:3])
-    ax.plot([0, 0], [0, 0], color=ERROR_BAR_COLOR, lw=ERROR_BAR_LINEWIDTH, label='Range with relaxed autarky\nand interconnection strictness')
+    ax.plot([0, 0], [0, 0], color=ERROR_BAR_COLOR, lw=ERROR_BAR_LINEWIDTH, label='Range with enforced national\nor regional self-sufficiency')
     plot_variables(data.copy(), GENERATION_CAPACITIES, ax, scaling_factor=1e-3)
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(handles[1:] + [handles[0]], labels[1:] + [labels[0]])
@@ -70,7 +70,7 @@ def composition(path_to_aggregated_results, path_to_output):
     plot_variables(data.copy(), STORAGE_CAPACITIES, ax, scaling_factor=1e-3)
     ax.set_ylabel("TWh")
     ax.get_legend().remove()
-    ax.annotate('b – Storage', xy=[-0.24, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.annotate('b – Storage capacities', xy=[-0.24, 1.05], xycoords='axes fraction', fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     ax = fig.add_subplot(gs[4])
     plot_variables(data.copy(), TRANSMISSION_CAPACITIES, ax)

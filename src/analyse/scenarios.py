@@ -5,32 +5,35 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+from matplotlib.patches import Rectangle
 import xarray as xr
 
 GREEN = "#679436"
 RED = "#A01914"
+HIGHLIGHT_COLORS = sns.light_palette(GREEN, n_colors=4, reverse=False)[1:]
+HIGHLIGHT_LINEWIDTH = 4
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
 
-DATA_INDEX = """autarky_scale,grid_scale,net_exchange_potential,cost
-Regional,Regional,0%,
-Regional,National,0%,
-Regional,Continental,0%,
-Regional,National,≤15%,
-Regional,Continental,≤15%,
-Regional,National,≤30%,
-Regional,Continental,≤30%,
-National,National,0%,
-National,Continental,0%,
-National,Continental,≤15%,
-National,Continental,≤30%,
-Continental,Continental,0%,
+DATA_INDEX = """autarky_layer,grid_scale,autarky_degree,cost
+Regional,Regional,100%,
+Regional,National,100%,
+Regional,Continental,100%,
+Regional,National,≥85%,
+Regional,Continental,≥85%,
+Regional,National,≥70%,
+Regional,Continental,≥70%,
+National,National,100%,
+National,Continental,100%,
+National,Continental,≥85%,
+National,Continental,≥70%,
+Continental,Continental,100%,
 """
 
 AUTARKY_LEVEL_MAP = {
-    "100": "0%",
-    "85": "≤15%",
-    "70": "≤30%"
+    "100": "100%",
+    "85": "≥85%",
+    "70": "≥70%"
 }
 
 
@@ -93,6 +96,9 @@ def plot_costs(paths_to_results, path_to_costs):
                  fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
     ax3.set_title("REGIONAL", loc="left")
 
+    for color, ax in zip(HIGHLIGHT_COLORS, fig.axes[1:]): # highlight base cases
+        ax.add_patch(Rectangle((0.04, 2.04), 0.92, 0.92, fill=False, edgecolor=color, lw=HIGHLIGHT_LINEWIDTH))
+
     fig.autofmt_xdate()
     plt.tight_layout()
     plt.subplots_adjust(wspace=0.6)
@@ -112,18 +118,18 @@ def cost_heatmap(data, grid_scale):
         )
 
     pivoted_data = data[data["grid_scale"] == grid_scale].pivot(
-        columns="autarky_scale",
-        index="net_exchange_potential",
+        columns="autarky_layer",
+        index="autarky_degree",
         values="cost"
     )
-    pivoted_data.columns.name = "Autarky scale"
-    pivoted_data.index.name = "Net electricity import"
-    return pivoted_data[columns].reindex(["≤30%", "≤15%", "0%"])
+    pivoted_data.columns.name = "Self-sufficiency layer"
+    pivoted_data.index.name = "Self-sufficiency degree"
+    return pivoted_data[columns].reindex(["≥70%", "≥85%", "100%"])
 
 
 def read_results(paths_to_results):
     results = (pd.read_csv(io.StringIO(DATA_INDEX))
-                 .set_index(["autarky_scale", "grid_scale", "net_exchange_potential"]))
+                 .set_index(["autarky_layer", "grid_scale", "autarky_degree"]))
     for path_to_results in paths_to_results:
         scenario_name = Path(path_to_results).parent.name
         autarky_layer, autarky_level, grid_size = parse_scenario_name(scenario_name)
@@ -132,7 +138,7 @@ def read_results(paths_to_results):
                                .squeeze(["costs", "carriers"])
                                .item())
         results.loc[autarky_layer, grid_size, autarky_level] = total_system_cost
-    results = results / results.loc["Continental", "Continental", "0%"]
+    results = results / results.loc["Continental", "Continental", "100%"]
     return results.reset_index()
 
 

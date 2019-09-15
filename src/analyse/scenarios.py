@@ -1,5 +1,4 @@
 import io
-from pathlib import Path
 
 import pandas as pd
 import seaborn as sns
@@ -15,6 +14,7 @@ HIGHLIGHT_LINEWIDTH = 4
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
 
+BASE_SCENARIO = "continental-autarky-100-continental-grid"
 DATA_INDEX = """autarky_layer,grid_scale,autarky_degree,cost
 Regional,Regional,100%,
 Regional,National,100%,
@@ -37,9 +37,9 @@ AUTARKY_LEVEL_MAP = {
 }
 
 
-def plot_costs(paths_to_results, path_to_costs):
+def plot_costs(path_to_aggregated_results, path_to_costs):
     """Plot scenario space and results."""
-    results = read_results(paths_to_results)
+    results = read_results(path_to_aggregated_results)
 
     sns.set_context("paper")
     fig = plt.figure(figsize=(8, 3))
@@ -127,18 +127,16 @@ def cost_heatmap(data, grid_scale):
     return pivoted_data[columns].reindex(["≥70%", "≥85%", "100%"])
 
 
-def read_results(paths_to_results):
+def read_results(path_to_agregrated_results):
+    cost = xr.open_dataset(path_to_agregrated_results)["cost"].sum(["locs", "techs"])
+    relative_cost = cost / cost.sel(scenario=BASE_SCENARIO)
     results = (pd.read_csv(io.StringIO(DATA_INDEX))
                  .set_index(["autarky_layer", "grid_scale", "autarky_degree"]))
-    for path_to_results in paths_to_results:
-        scenario_name = Path(path_to_results).parent.name
-        autarky_layer, autarky_level, grid_size = parse_scenario_name(scenario_name)
+    for scenario in relative_cost.scenario:
+        scenario = scenario.item()
+        autarky_layer, autarky_level, grid_size = parse_scenario_name(scenario)
         autarky_level = AUTARKY_LEVEL_MAP[autarky_level]
-        total_system_cost = (xr.open_dataset(path_to_results)["total_levelised_cost"]
-                               .squeeze(["costs", "carriers"])
-                               .item())
-        results.loc[autarky_layer, grid_size, autarky_level] = total_system_cost
-    results = results / results.loc["Continental", "Continental", "100%"]
+        results.loc[autarky_layer, grid_size, autarky_level] = relative_cost.sel(scenario=scenario).item()
     return results.reset_index()
 
 
@@ -151,6 +149,6 @@ def parse_scenario_name(scenario_name):
 
 if __name__ == "__main__":
     plot_costs(
-        paths_to_results=snakemake.input.results,
+        path_to_aggregated_results=snakemake.input.results,
         path_to_costs=snakemake.output[0]
     )

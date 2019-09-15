@@ -1,6 +1,7 @@
+from itertools import chain
 from pathlib import Path
 
-import calliope
+import xarray as xr
 import numpy as np
 import geopandas as gpd
 import seaborn as sns
@@ -25,19 +26,14 @@ PATH_TO_FONT_AWESOME = Path(__file__).parent.parent / 'fonts' / 'fa-solid-900.tt
 LAYER_UNICODE = "\uf5fd"
 MONEY_UNICODE = "\uf3d1"
 
-ALL_TECHS = ['wind_onshore_monopoly', 'demand_elec', 'biofuel',
-             'roof_mounted_pv', 'hydro_reservoir', 'wind_offshore',
-             'wind_onshore_competing', 'battery', 'hydrogen', 'free_transmission',
-             'ac_transmission', 'open_field_pv', 'hydro_run_of_river',
-             'pumped_hydro']
-SUPPLY_TECHS = ['wind_onshore_monopoly', 'biofuel',
-                'roof_mounted_pv', 'hydro_reservoir', 'wind_offshore',
-                'wind_onshore_competing', 'open_field_pv', 'hydro_run_of_river']
+CONTINENTAL_SCENARIO = "continental-autarky-100-continental-grid"
+NATIONAL_SCENARIO = "national-autarky-100-national-grid"
+REGIONAL_SCENARIO = "regional-autarky-100-regional-grid"
+DEMAND_TECH = "demand_elec"
 
 
-def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regional_shapes,
-             path_to_continental_result, path_to_national_result, path_to_regional_result,
-             path_to_shapes, path_to_plot):
+def plot_map(path_to_national_shapes, path_to_regional_shapes, connected_regions,
+             path_to_aggregated_results, path_to_shapes, path_to_plot):
     """Plot maps of results."""
     fig = plt.figure(figsize=(8, 4), constrained_layout=True)
     axes = fig.subplots(1, 2).flatten()
@@ -47,27 +43,26 @@ def plot_map(path_to_continental_shape, path_to_national_shapes, path_to_regiona
                  .set_index("locs")
                  .rename(index=lambda idx: idx.replace(".", "-")))
 
-    continental_model = calliope.read_netcdf(path_to_continental_result)
-    national_model = calliope.read_netcdf(path_to_national_result)
-    regional_model = calliope.read_netcdf(path_to_regional_result)
-
-    continental = gpd.read_file(path_to_continental_shape).to_crs(EPSG_3035_PROJ4).set_index("id")
     national = gpd.read_file(path_to_national_shapes).to_crs(EPSG_3035_PROJ4).set_index("country_code")
     regional = (gpd.read_file(path_to_regional_shapes)
                    .to_crs(EPSG_3035_PROJ4)
                    .set_index("id")
                    .rename(index=lambda idx: idx.replace(".", "-")))
 
-    continental["cost"] = _read_cost(shapes, continental_model, "continental")
-    national["cost"] = _read_cost(shapes, national_model, "national")
-    regional["cost"] = _read_cost(shapes, regional_model, "regional")
+    cost_reader = CostReader(
+        path_to_aggregated_results=path_to_aggregated_results,
+        connected_regions=connected_regions,
+        country_codes=shapes.country_code.to_xarray()
+    )
+    national["cost"] = cost_reader.read(scenario=NATIONAL_SCENARIO, level="national")
+    regional["cost"] = cost_reader.read(scenario=REGIONAL_SCENARIO, level="regional")
 
-    base_costs = continental["cost"].iloc[0]
+    base_costs = cost_reader.read(scenario=CONTINENTAL_SCENARIO, level="continental")
     national["cost"] = national["cost"] / base_costs
     regional["cost"] = regional["cost"] / base_costs
 
-    total_costs_national = _read_total_system_costs(national_model) / base_costs
-    total_costs_regional = _read_total_system_costs(regional_model) / base_costs
+    total_costs_national = cost_reader.read(scenario=NATIONAL_SCENARIO, level="continental") / base_costs
+    total_costs_regional = cost_reader.read(scenario=REGIONAL_SCENARIO, level="continental") / base_costs
 
     _plot_layer(national, total_costs_national, "National", "a", axes[0])
     _plot_layer(regional, total_costs_regional, "Regional", "b", axes[1])
@@ -126,44 +121,61 @@ def _plot_colorbar(fig, axes):
     cbar.ax.set_ylabel('Relative system cost', rotation=90)
 
 
-def _read_cost(shapes, model, level):
-    assert level in ["continental", "national", "regional"]
-    assert set(model.inputs.techs.values) == set(ALL_TECHS)
-    cost = model.get_formatted_array('cost').squeeze('costs').sum("techs")
-    carrier_prod = (model
-                    .get_formatted_array('carrier_prod')
-                    .squeeze(['carriers']))
-    carrier_prod = (carrier_prod
-                    .sel(techs=SUPPLY_TECHS)
-                    .sum(dim=['techs', 'timesteps']))
-    if level == "continental":
-        cost = cost.sum(dim="locs").item()
-        carrier_prod = carrier_prod.sum(dim="locs").item()
-    elif level == "national":
-        cost = (cost.groupby(shapes.country_code.to_xarray().sortby(cost.locs))
-                    .sum("locs")
-                    .to_series())
-        carrier_prod = (carrier_prod.groupby(shapes.country_code.to_xarray().sortby(carrier_prod.locs))
-                                    .sum("locs")
-                                    .to_series())
-    elif level == "regional":
-        cost = cost.to_series()
-        carrier_prod.to_series()
-    return (cost / carrier_prod)
+class CostReader:
 
+    def __init__(self, path_to_aggregated_results, country_codes, connected_regions):
+        self.__results = xr.open_dataset(path_to_aggregated_results)
+        self.__country_codes = country_codes
+        self.__connected_regions = connected_regions
 
-def _read_total_system_costs(model):
-    return model.get_formatted_array("total_levelised_cost").item()
+    def read(self, scenario, level):
+        assert level in ["continental", "national", "regional"]
+        cost = self.__results.cost.sel(scenario=scenario).sum("techs")
+        demand = -self.__results.energy_cap.sel(techs=DEMAND_TECH, scenario=scenario)
+        if level == "continental":
+            cost = cost.sum(dim="locs").item()
+            demand = demand.sum(dim="locs").item()
+        elif level == "national":
+            cost = (
+                cost
+                .groupby(self.__country_codes.sortby(cost.locs))
+                .sum("locs")
+                .to_series()
+            )
+            demand = (
+                demand
+                .groupby(self.__country_codes.sortby(demand.locs))
+                .sum("locs")
+                .to_series()
+            )
+        elif level == "regional":
+            cost = self._postprocess_combined_regions(cost).to_series()
+            demand = self._postprocess_combined_regions(demand).to_series()
+        return (cost / demand)
+
+    def _postprocess_combined_regions(self, da):
+        region_pairs = list(self.__connected_regions.items())
+        regions = list(chain(*region_pairs))
+        if all([region in da.locs for region in regions]):
+            # config is valid, and resolution is regional. apply config
+            for region1, region2 in region_pairs:
+                sum_data = da.sel(locs=region1) + da.sel(locs=region2)
+                da.loc[dict(locs=region1)] = sum_data
+                da.loc[dict(locs=region2)] = sum_data
+            return da
+        elif all([region not in da.locs for region in regions]):
+            # config is valid, but resolution is not regional. do nothing
+            return da
+        else:
+            raise ValueError("Config of connected regions is invalid.")
 
 
 if __name__ == "__main__":
     plot_map(
         path_to_shapes=snakemake.input.shapes,
-        path_to_continental_shape=snakemake.input.continental_shape,
         path_to_national_shapes=snakemake.input.national_shapes,
         path_to_regional_shapes=snakemake.input.regional_shapes,
-        path_to_continental_result=snakemake.input.continental_result,
-        path_to_national_result=snakemake.input.national_result,
-        path_to_regional_result=snakemake.input.regional_result,
+        path_to_aggregated_results=snakemake.input.results,
+        connected_regions=snakemake.params.connected_regions,
         path_to_plot=snakemake.output[0]
     )

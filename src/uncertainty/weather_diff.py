@@ -9,8 +9,9 @@ def weather_diff(path_to_large_scale, path_to_small_scale, path_to_output):
 
 
 def read_total_system_costs(path_to_results):
-    return (xr.open_dataset(path_to_results)["total_levelised_cost"]
-              .squeeze(["costs", "carriers"])
+    return (xr.open_dataset(path_to_results)["cost"]
+              .squeeze(["costs"])
+              .sum("loc_techs_cost")
               .item())
 
 

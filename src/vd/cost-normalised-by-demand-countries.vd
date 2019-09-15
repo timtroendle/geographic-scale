@@ -1,0 +1,34 @@
+sheet	col	row	longname	input	keystrokes	comment
+			open-file	build-by-euler/output/regional/aggregation.nc	o	
+aggregation		3	dive-row		^J	
+carrier_con	techs	3	select-equal-cell		,	
+carrier_con			dup-selected		"	
+carrier_con_selectedref	techs		hide-col		-	
+carrier_con_selectedref	tech_group		hide-col		-	
+carrier_con_selectedref	carrier_con		aggregate-col	sum	+	
+carrier_con_selectedref	country_code		key-col		!	
+carrier_con_selectedref	scenario		key-col		!	
+carrier_con_selectedref			freq-keys		gF	
+carrier_con_selectedref_scenario-country_code_freq	count		hide-col		-	
+carrier_con_selectedref_scenario-country_code_freq			sheets		S	
+sheets	name	キcarrier_con_selectedref_scenario-country_code_freq	edit-cell	demand	e	
+sheets		キaggregation	open-row		^J	
+aggregation		7	dive-row		^J	
+cost	tech_group		freq-col		F	
+cost_tech_group_freq		キsupply	select-row		s	
+cost_tech_group_freq		キstorage	select-row		s	
+cost_tech_group_freq		キsupply_plus	select-row		s	
+cost_tech_group_freq		キtransmission	select-row		s	
+cost_tech_group_freq			quit-sheet		q	
+cost			dup-selected		"	
+cost_selectedref	cost		aggregate-col	sum	+	
+cost_selectedref	scenario		key-col		!	
+cost_selectedref	country_code		key-col		!	
+cost_selectedref			freq-keys		gF	
+cost_selectedref_scenario-country_code_freq	count		hide-col		-	
+cost_selectedref_scenario-country_code_freq			sheets		S	
+sheets	name	キcost_selectedref_scenario-country_code_freq	edit-cell	costs	e	
+sheets		キcosts	select-row		s	
+sheets		キdemand	select-row		s	
+sheets			join-sheets	inner	&	
+costs+demand	sum_carrier_con		addcol-expr	-sum_cost/sum_carrier_con	=	

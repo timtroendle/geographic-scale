@@ -1,0 +1,31 @@
+sheet	col	row	longname	input	keystrokes	comment
+			open-file	build-by-euler/output/regional/aggregation.nc	o	
+aggregation		3	dive-row		^J	
+carrier_con	techs	3	select-equal-cell		,	
+carrier_con			dup-selected		"	
+carrier_con_selectedref	carrier_con		aggregate-col	sum	+	
+carrier_con_selectedref	scenario		freq-col		F	
+carrier_con_selectedref_scenario_freq	count		hide-col		-	
+carrier_con_selectedref_scenario_freq			sheets		S	
+sheets	name	キcarrier_con_selectedref_scenario_freq	edit-cell	total_demand	e	
+sheets		キaggregation	open-row		^J	
+aggregation		7	dive-row		^J	
+cost	tech_group		freq-col		F	
+cost_tech_group_freq		キsupply	select-row		s	
+cost_tech_group_freq		キstorage	select-row		s	
+cost_tech_group_freq		キsupply_plus	select-row		s	
+cost_tech_group_freq		キtransmission	select-row		s	
+cost_tech_group_freq			quit-sheet		q	
+cost			dup-selected		"	
+cost_selectedref	cost		aggregate-col	sum	+	
+cost_selectedref	scenario		freq-col		F	
+cost_selectedref_scenario_freq	count		hide-col		-	
+cost_selectedref_scenario_freq			sheets		S	
+sheets	name	キcost_selectedref_scenario_freq	edit-cell	total_cost	e	
+sheets		キtotal_cost	select-row		s	
+sheets		キtotal_demand	select-row		s	
+sheets			join-sheets	inner	&	
+total_cost+total_demand	sum_carrier_con		addcol-expr	-sum_cost/sum_carrier_con	=	
+total_cost+total_demand	-sum_cost/sum_carrier_con		rename-col	levelised_cost	rename-col	
+total_cost+total_demand	levelised_cost		sort-desc		]	
+total_cost+total_demand	levelised_cost		sort-asc		[	

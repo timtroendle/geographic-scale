@@ -88,7 +88,7 @@ rule plot_scenario_space:
     message: "Plot scenario space and results."
     input:
         src = "src/analyse/scenarios.py",
-        results = expand("build/output/{{resolution}}/{scenario}/results.nc", scenario=config["scenarios"])
+        results = rules.time_aggregated_results.output[0]
     output: "build/output/{resolution}/scenario-space.png"
     conda: "../envs/default.yaml"
     script: "../src/analyse/scenarios.py"
@@ -99,12 +99,11 @@ rule plot_map:
     input:
         src = "src/analyse/map.py",
         shapes = eurocalliope("build/data/{resolution}/units.geojson"),
-        continental_shape = eurocalliope("build/data/continental/units.geojson"),
         national_shapes = eurocalliope("build/data/national/units.geojson"),
         regional_shapes = eurocalliope("build/data/regional/units.geojson"),
-        continental_result = "build/output/{resolution}/continental-autarky-100-continental-grid/results.nc",
-        national_result = "build/output/{resolution}/national-autarky-100-national-grid/results.nc",
-        regional_result = "build/output/{resolution}/regional-autarky-100-regional-grid/results.nc"
+        results = rules.time_aggregated_results.output[0]
+    params:
+        connected_regions = config["connected-regions"]
     output: "build/output/{resolution}/map.png"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/map.py"

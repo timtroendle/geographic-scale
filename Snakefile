@@ -108,6 +108,7 @@ rule supplementary_material:
         "build/output/{resolution}/report/overview-scenario-results-2.csv",
         "build/output/{resolution}/report/overview-uncertain-parameters.csv",
         "build/output/{resolution}/report/overview-cost-assumptions.csv",
+        "build/output/{resolution}/report/network.png"
     params: options = pandoc_options
     output: "build/output/{resolution}/supplementary.{suffix}"
     conda: "envs/pdf.yaml"

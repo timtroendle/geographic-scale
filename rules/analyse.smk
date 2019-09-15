@@ -110,6 +110,17 @@ rule plot_map:
     script: "../src/analyse/map.py"
 
 
+rule plot_network_map:
+    message: "Create map of electricity grid."
+    input:
+        src = "src/analyse/network.py",
+        units = eurocalliope("build/data/{resolution}/units.geojson"),
+        results = "build/output/{resolution}/continental-autarky-100-continental-grid/results.nc"
+    output: "build/output/{resolution}/network.png"
+    conda: "../envs/geo.yaml"
+    script: "../src/analyse/network.py"
+
+
 rule plot_electricity_flows:
     message: "Create map of electricity flows."
     input:

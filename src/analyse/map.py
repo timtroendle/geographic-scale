@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import calliope
+import numpy as np
 import geopandas as gpd
 import seaborn as sns
 import matplotlib
@@ -113,11 +114,14 @@ def _plot_layer(units, total_cost, layer_name, panel_id, ax):
 
 def _plot_colorbar(fig, axes):
     s_m = matplotlib.cm.ScalarMappable(cmap=CMAP, norm=NORM)
+    cmap = s_m.get_cmap()
+    colors = cmap(np.linspace(1 / 4, 1, cmap.N))
+    cmap = matplotlib.colors.LinearSegmentedColormap.from_list('cut_jet', colors)
+    s_m = matplotlib.cm.ScalarMappable(cmap=cmap, norm=matplotlib.colors.Normalize(vmin=0, vmax=3))
     s_m.set_array([])
     cbar = fig.colorbar(s_m, ax=axes, fraction=1, aspect=35, shrink=0.65)
-    cbar.set_ticks(cbar.get_ticks())
-    cbar.set_ticklabels(["{:.1f}".format(tick)
-                         for tick in cbar.get_ticks()])
+    cbar.set_ticks([0, 1, 2, 3])
+    cbar.set_ticklabels(["0", "1", "2", "≥3"])
     cbar.outline.set_linewidth(0)
     cbar.ax.set_ylabel('Relative system cost', rotation=90)
 

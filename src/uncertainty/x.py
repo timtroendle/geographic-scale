@@ -10,7 +10,9 @@ def preprocess_x(x, scaling_factors, parameter_definitions, path_to_biofuel_pote
     }
     x = x.to_dict()
     # special case treatment for a_bio
-    biofuel_potentials = pd.read_csv(path_to_biofuel_potentials, index_col=0)
+    biofuel_potentials = (pd
+                          .read_csv(path_to_biofuel_potentials, index_col=0)
+                          .rename(index=lambda idx: idx.replace(".", "-")))
     a_bio = _calliope_parameters_for_a_bio(x["a_bio"], biofuel_potentials * scaling_factors["power"])
     del parameter_definitions["a_bio"]
     del x["a_bio"]

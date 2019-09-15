@@ -56,16 +56,37 @@ rule x:
     script: "../src/uncertainty/x.py"
 
 
-rule uncertainty_run:
+rule national_uncertainty_run:
     message:
-        "Experiment {wildcards.id} using scenario {wildcards.scenario} and {wildcards.resolution} resolution."
+        "Experiment {wildcards.id} using scenario {wildcards.scenario} and national resolution."
     input:
-        model = "build/model/{resolution}/model.yaml",
-        parameters = rules.x.output
+        model = "build/model/national/model.yaml",
+        parameters = "build/uncertainty/national/{id}-x.yaml"
     params:
         subset_time = config["uncertainty"]["subset_time"],
         time_resolution = config["uncertainty"]["resolution"]["time"],
-    output: "build/output/{resolution}/uncertainty/{id}--{scenario}-results.nc"
+    output: "build/output/national/uncertainty/{id}--{scenario}-results.nc"
+    conda: "../envs/calliope.yaml"
+    shell:
+        """
+        calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario}\
+        --override_dict="{{import: [{input.parameters}], \
+                           model.subset_time: {params.subset_time}, \
+                           model.time.function: resample, \
+                           model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"
+        """
+
+
+rule regional_uncertainty_run:
+    message:
+        "Experiment {wildcards.id} using scenario {wildcards.scenario} and regional resolution."
+    input:
+        model = "build/model/regional/model.yaml",
+        parameters = "build/uncertainty/regional/{id}-x.yaml"
+    params:
+        subset_time = config["uncertainty"]["subset_time"],
+        time_resolution = config["uncertainty"]["resolution"]["time"],
+    output: "build/output/regional/uncertainty/{id}--{scenario}-results.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """

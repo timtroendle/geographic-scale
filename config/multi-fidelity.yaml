@@ -1,0 +1,19 @@
+resolution:
+    space: regional
+    time: 4H
+calliope-parameters: # arbitrary many calliope parameters applied as override
+    model.subset_time: ['2016-01-01', '2016-12-31']
+    run.solver_options.OptimalityTol: 1e-3
+weather-uncertainty:
+    start-year: 2007
+    resolution:
+        space: national
+        time: 4H
+    calliope-parameters:
+        run.solver_options.OptimalityTol: 1e-3
+uncertainty:
+    experiment-design: ./config/uncertainty-experiment-design-regional.tsv
+    resolution:
+        space: regional
+        time: 4H
+    subset_time: "['2016-01-01', '2016-12-31']"

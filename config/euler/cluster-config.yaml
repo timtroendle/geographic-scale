@@ -11,10 +11,15 @@ run_regional:
     runtime: 2879
     cores: 6
     memory: 45000
-uncertainty_run:
+national_uncertainty_run:
     runtime: 120
     cores: 6
     memory: 5000
+    output: "build/logs/uncertainty/{rule}.{wildcards}.log"
+regional_uncertainty_run:
+    runtime: 2879
+    cores: 6
+    memory: 45000
     output: "build/logs/uncertainty/{rule}.{wildcards}.log"
 weather_run:
     runtime: 1439

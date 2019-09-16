@@ -156,7 +156,7 @@ rule plot_variability_of_composition:
 
 
 rule plot_timeseries:
-    message: "Create plot of timeseries on regional resolution."
+    message: "Create plot of timeseries on {wildcards.resolution} resolution."
     input:
         src = "src/analyse/timeseries.py",
         result = "build/output/{resolution}/regional-autarky-100-regional-grid/results.nc",
@@ -164,9 +164,6 @@ rule plot_timeseries:
     params:
         connected_regions = config["connected-regions"],
         scaling_factors = config["scaling-factors"],
-        unit_lcoe = config["report"]["timeseries-plot"]["thresholds"]["unit-lcoe"],
-        biofuel_lcoe = config["report"]["timeseries-plot"]["thresholds"]["biofuel-lcoe"],
-        hydrogen_lcos = config["report"]["timeseries-plot"]["thresholds"]["hydrogen-lcos"],
         resolution = config["report"]["timeseries-plot"]["resolution"]
     output:
         plot = "build/output/{resolution}/timeseries.png",

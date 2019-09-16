@@ -5,6 +5,7 @@ import calliope
 import xarray as xr
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.dates
 import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
@@ -15,7 +16,10 @@ GREEN = "#679436"
 RED = "#A01914"
 BLUE = "#4F6DB8"
 YELLOW = "#FABC3C"
-PALETTE = sns.light_palette(GREEN, n_colors=5, reverse=True)
+NEUTRAL = "#637074"
+GREEN_PALETTE = sns.light_palette(GREEN, n_colors=5, reverse=True)
+RED_PALETTE = sns.light_palette(RED, n_colors=5, reverse=True)
+NEUTRAL_PALETTE = sns.light_palette(NEUTRAL, n_colors=5, reverse=True)
 
 SUPPLY_TECHS = [
     'wind_onshore_monopoly', 'biofuel',
@@ -29,6 +33,7 @@ VRES_TECHS = WIND_AND_PV + ["hydro_run_of_river"]
 DEMAND = "demand_elec"
 STORAGE_TECHS = ["hydrogen", "battery", "pumped_hydro", "hydro_reservoir"]
 HYDROGEN = "hydrogen"
+FLEX_TECHS = ['biofuel', 'battery', 'hydrogen']
 NS_TO_H = 1e-9 / 3600
 
 
@@ -41,19 +46,16 @@ class PlotData:
 
 
 def timeseries(path_to_result, path_to_units, scaling_factors, connected_regions,
-               unit_lcoe_threshold, biofuel_lcoe_threshold, hydrogen_lcos_threshold,
                resolution, path_to_plot, path_to_displayed_units):
     """Create plots of timeseries for regional result."""
-    plot_datas = read_plot_data(path_to_result, scaling_factors, connected_regions,
-                                unit_lcoe_threshold, biofuel_lcoe_threshold, hydrogen_lcos_threshold)
+    plot_datas = read_plot_data(path_to_result, scaling_factors, connected_regions)
     fig = plot_timeseries(plot_datas, resolution)
     fig.savefig(path_to_plot, dpi=600)
     units = mask_all_units(path_to_units, plot_datas)
     units.to_netcdf(path_to_displayed_units)
 
 
-def read_plot_data(path_to_result, scaling_factors, connected_regions, unit_lcoe_threshold,
-                   biofuel_lcoe_threshold, hydrogen_lcos_threshold):
+def read_plot_data(path_to_result, scaling_factors, connected_regions):
     model = calliope.read_netcdf(path_to_result)
     gen = postprocess_combined_regions(
         model.get_formatted_array("carrier_prod").squeeze("carriers") / scaling_factors["power"],
@@ -84,28 +86,26 @@ def read_plot_data(path_to_result, scaling_factors, connected_regions, unit_lcoe
         connected_regions.items()
     )
     pot = (resource * cap.sel(techs=VRES_TECHS))
-    unit_lcoe = (cost.sum("techs") / -dem.sum(["timesteps"]))
-    tech_lcoes = (cost.sel(techs=SUPPLY_TECHS) / gen.sel(techs=SUPPLY_TECHS).sum(["timesteps"]))
-    lcos = (cost.sel(techs=STORAGE_TECHS) / gen.sel(techs=STORAGE_TECHS).sum(["timesteps"]))
+    flex_cost_share = cost.sel(techs=FLEX_TECHS).sum("techs") / cost.sum("techs")
     resolution_in_hours = (gen.timesteps[1].item() - gen.timesteps[0].item()) * NS_TO_H
     return [
         PlotData(
-            name="Wind \nand \nsolar",
+            name="Wind and solar",
             ylabel="Relative potential",
             da=(pot.sel(techs=WIND_AND_PV).sum("techs")) / -dem,
-            mask=unit_lcoe >= unit_lcoe_threshold
+            mask=flex_cost_share >= flex_cost_share.quantile(0.9).item()
         ),
         PlotData(
             name="Bioenergy",
             ylabel="Relative generation",
-            da=gen.sel(techs="biofuel") / resolution_in_hours / cap.sel(techs="biofuel"),
-            mask=tech_lcoes.sel(techs="biofuel") > biofuel_lcoe_threshold
+            da=gen.sel(techs="biofuel") / resolution_in_hours / -dem,
+            mask=flex_cost_share >= flex_cost_share.quantile(0.9).item()
         ),
         PlotData(
             name="Hydrogen",
             ylabel="Storage level",
             da=e_stor.sel(techs=HYDROGEN) / stor.sel(techs=HYDROGEN),
-            mask=lcos.sel(techs=HYDROGEN) >= hydrogen_lcos_threshold
+            mask=flex_cost_share >= flex_cost_share.quantile(0.9).item()
         )
     ]
 
@@ -124,6 +124,7 @@ def plot_timeseries(plot_datas, resolution):
             "locs",
             "timesteps",
             ax=axes[i][0],
+            pal=GREEN_PALETTE,
             legend=True,
         )
         draw_areas(
@@ -131,40 +132,62 @@ def plot_timeseries(plot_datas, resolution):
             "locs",
             "timesteps",
             ax=axes[i][1],
+            pal=RED_PALETTE,
             legend=True,
         )
         axes[i][0].set_ylabel(plot_data.ylabel)
         axes[i][1].set_yticks([])
+        axes[i][0].set_ylim(0)
+        axes[i][0].get_yaxis().set_label_coords(-0.13, 0.5)
+        axes[i][0].set_xlim("2016-01-01T00:00:00.000000000", "2016-12-30T00:00:00.000000000")
         if i is not len(plot_datas) - 1:
             axes[i][0].set_xlabel("")
             axes[i][1].set_xlabel("")
             axes[i][0].set_xticks([])
             axes[i][1].set_xticks([])
         else:
-            axes[i][0].set_xlabel("Timesteps")
-            axes[i][1].set_xlabel("Timesteps")
+            axes[i][0].set_xlabel("Time")
+            axes[i][1].set_xlabel("Time")
+            axes[i][0].xaxis.set_minor_locator(matplotlib.dates.MonthLocator(interval=1))
+            axes[i][0].set_xticks(
+                [
+                    '2016-01-01T00:00:00.000000000',
+                    '2016-04-01T00:00:00.000000000',
+                    '2016-07-01T00:00:00.000000000',
+                    '2016-10-01T00:00:00.000000000',
+                ])
+            axes[i][0].xaxis.set_ticklabels(["Jan.", "Apr.", "Jul.", "Oct."])
+            axes[i][0].xaxis.set_tick_params(reset=True, top=False)
+            axes[i][1].xaxis.set_tick_params(reset=True, top=False)
         sns.despine(ax=axes[i][0], top=True, right=True)
         sns.despine(ax=axes[i][1], left=True)
         axes[i][0].annotate(panel_ids[2 * i], xy=[-0.05, 1.05], xycoords='axes fraction',
                             fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
         axes[i][1].annotate(panel_ids[2 * i + 1], xy=[-0.05, 1.05], xycoords='axes fraction',
                             fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-        axes[i][0].annotate(plot_data.name, xy=(-0.2, 0.5), xycoords="axes fraction",
-                            size='large', ha='right', va='center')
+        axes[i][0].annotate(plot_data.name, xy=(-0.19, 0.5), xycoords="axes fraction",
+                            size='large', ha='right', va='center', rotation=90)
+
+    axes[0][0].annotate('Low flexibility cost', xy=(0.5, 1.2), xycoords="axes fraction",
+                        size='large', ha='center', va='center', fontweight='bold')
+    axes[0][1].annotate('High flexibility cost', xy=(0.5, 1.2), xycoords="axes fraction",
+                        size='large', ha='center', va='center', fontweight='bold')
 
     leg = fig.legend(
         labels=[t.get_text() for t in axes[0][0].get_legend().get_texts()],
         loc="upper right",
-        bbox_to_anchor=(0.87, 1.00),
+        bbox_to_anchor=(0.83, 1.00),
         ncol=4
     )
+    for handle, color in zip(leg.legendHandles, NEUTRAL_PALETTE):
+        handle.set_color(color)
     leg.draw_frame(False)
     for row in axes:
         for ax in row:
             ax.get_legend().remove()
 
     fig.tight_layout()
-    plt.subplots_adjust(wspace=0, top=0.90)
+    plt.subplots_adjust(wspace=0.1, top=0.88)
     return fig
 
 
@@ -184,24 +207,24 @@ def mask_all_units(path_to_units, plot_datas):
 # This function is derived from
 # https://gist.github.com/sjpfenninger/185bfc63ee51cf22fe65229dd722ebec.
 # Original Copyright (c) 2019 Stefan Pfenninger
-def draw_areas(da, dim, time_dim, legend=True, ax=None, lw=2.5):
+def draw_areas(da, dim, time_dim, pal, legend=True, ax=None, lw=2.5):
     da.median(dim).plot(
         lw=lw,
-        color=PALETTE[0],
+        color=pal[0],
         label="50%",
         ax=ax
     )
     ax.set_title("")
 
     xs = da[time_dim].values
-    ax.fill_between(xs, da.min(dim), da.max(dim), color=PALETTE[3])
-    ax.fill_between(xs, da.quantile(0.1, dim).values, da.quantile(0.9, dim).values, color=PALETTE[2])
-    ax.fill_between(xs, da.quantile(0.25, dim).values, da.quantile(0.75, dim).values, color=PALETTE[1])
+    ax.fill_between(xs, da.min(dim), da.max(dim), color=pal[3])
+    ax.fill_between(xs, da.quantile(0.1, dim).values, da.quantile(0.9, dim).values, color=pal[2])
+    ax.fill_between(xs, da.quantile(0.25, dim).values, da.quantile(0.75, dim).values, color=pal[1])
 
     # Add legend entries
-    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=PALETTE[0], label='25% - 75%'))
-    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=PALETTE[1], label='10% - 90%'))
-    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=PALETTE[2], label='Min - Max'))
+    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=pal[0], label='25% - 75%'))
+    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=pal[1], label='10% - 90%'))
+    ax.add_patch(plt.Rectangle((0, 0), 0, 0, facecolor=pal[2], label='Min - Max'))
 
     if legend:
         leg = ax.legend(
@@ -238,9 +261,6 @@ if __name__ == "__main__":
         path_to_plot=snakemake.output.plot,
         path_to_displayed_units=snakemake.output.units,
         scaling_factors=snakemake.params.scaling_factors,
-        unit_lcoe_threshold=snakemake.params.unit_lcoe,
-        biofuel_lcoe_threshold=snakemake.params.biofuel_lcoe,
-        hydrogen_lcos_threshold=snakemake.params.hydrogen_lcos,
         resolution=snakemake.params.resolution,
         connected_regions=snakemake.params.connected_regions
     )

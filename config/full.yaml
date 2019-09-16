@@ -19,8 +19,4 @@ uncertainty:
     subset_time: "['2016-01-01', '2016-12-31']"
 report:
     timeseries-plot:
-        thresholds:
-            unit-lcoe: 100
-            biofuel-lcoe: 250
-            hydrogen-lcos: 400
-        resolution: W
+        resolution: 7D

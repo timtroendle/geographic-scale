@@ -17,7 +17,7 @@ national_uncertainty_run:
     memory: 5000
     output: "build/logs/uncertainty/{rule}.{wildcards}.log"
 regional_uncertainty_run:
-    runtime: 2879
+    runtime: 5760
     cores: 6
     memory: 45000
     output: "build/logs/uncertainty/{rule}.{wildcards}.log"

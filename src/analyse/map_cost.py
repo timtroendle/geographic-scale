@@ -1,8 +1,8 @@
 from itertools import chain
 from pathlib import Path
 
-import xarray as xr
 import numpy as np
+import xarray as xr
 import geopandas as gpd
 import seaborn as sns
 import matplotlib
@@ -14,6 +14,8 @@ CMAP = 'RdBu_r'
 NORM = matplotlib.colors.Normalize(vmin=-1, vmax=3)
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
+EDGE_WIDTH = 0.06
+EDGE_COLOR = "white"
 
 EPSG_3035_PROJ4 = "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs "
 
@@ -74,7 +76,8 @@ def plot_map(path_to_national_shapes, path_to_regional_shapes, connected_regions
 def _plot_layer(units, total_cost, layer_name, panel_id, ax):
     ax.set_aspect('equal')
     units.plot(
-        linewidth=0.1,
+        linewidth=EDGE_WIDTH,
+        edgecolor=EDGE_COLOR,
         column="cost",
         vmin=NORM.vmin,
         vmax=NORM.vmax,
@@ -89,21 +92,21 @@ def _plot_layer(units, total_cost, layer_name, panel_id, ax):
 
     ax.annotate(
         f"{LAYER_UNICODE} ",
-        xy=[0.19, 0.95],
+        xy=[0.13, 0.95],
         xycoords='axes fraction',
         fontproperties=matplotlib.font_manager.FontProperties(fname=PATH_TO_FONT_AWESOME.as_posix()),
         color="black"
     )
     ax.annotate(
         f"{MONEY_UNICODE} ",
-        xy=[0.19, 0.90],
+        xy=[0.13, 0.90],
         xycoords='axes fraction',
         fontproperties=matplotlib.font_manager.FontProperties(fname=PATH_TO_FONT_AWESOME.as_posix()),
         color=sns.desaturate(RED, 0.85)
     )
-    ax.annotate(layer_name, xy=[0.26, 0.95], xycoords='axes fraction')
-    ax.annotate(f"{total_cost:.1f}", xy=[0.26, 0.90], xycoords='axes fraction')
-    ax.annotate(panel_id, xy=[0.10, 0.95], xycoords='axes fraction',
+    ax.annotate(layer_name, xy=[0.2, 0.95], xycoords='axes fraction')
+    ax.annotate(f"{total_cost:.1f}", xy=[0.2, 0.90], xycoords='axes fraction')
+    ax.annotate(panel_id, xy=[0.05, 0.95], xycoords='axes fraction',
                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
 

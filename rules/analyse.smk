@@ -94,19 +94,32 @@ rule plot_scenario_space:
     script: "../src/analyse/scenarios.py"
 
 
-rule plot_map:
-    message: "Create map of results."
+rule plot_map_cost:
+    message: "Create map of cost."
     input:
-        src = "src/analyse/map.py",
+        src = "src/analyse/map_cost.py",
         shapes = eurocalliope("build/data/{resolution}/units.geojson"),
         national_shapes = eurocalliope("build/data/national/units.geojson"),
         regional_shapes = eurocalliope("build/data/regional/units.geojson"),
         results = rules.time_aggregated_results.output[0]
     params:
         connected_regions = config["connected-regions"]
-    output: "build/output/{resolution}/map.png"
+    output: "build/output/{resolution}/map-cost.png"
     conda: "../envs/geo.yaml"
-    script: "../src/analyse/map.py"
+    script: "../src/analyse/map_cost.py"
+
+
+rule plot_map_energy:
+    message: "Create map of generation and transmission."
+    input:
+        src = "src/analyse/map_energy.py",
+        shapes = eurocalliope("build/data/{resolution}/units.geojson"),
+        results = rules.time_aggregated_results.output[0]
+    params:
+        connected_regions = config["connected-regions"]
+    output: "build/output/{resolution}/map-energy.png"
+    conda: "../envs/geo.yaml"
+    script: "../src/analyse/map_energy.py"
 
 
 rule plot_network_map:

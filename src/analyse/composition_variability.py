@@ -14,6 +14,7 @@ GREEN = "#679436"
 RED = "#A01914"
 BLUE = "#4F6DB8"
 YELLOW = "#FABC3C"
+GREY = "#C0C0C0"
 COLOR = GREEN
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
@@ -112,7 +113,7 @@ def plot_data(plot_datas):
         ax.set_aspect('equal')
         ax.set_ylim(*plot_data.ylim)
         ax.set_xlim(*plot_data.xlim)
-        ax.plot(plot_data.xlim, plot_data.ylim, "--", color=BLUE)
+        ax.plot(plot_data.xlim, plot_data.ylim, "--", color=GREY)
         ax.set_xlabel(plot_data.xlabel)
         if i == 0:
             ax.set_ylabel(plot_data.ylabel)

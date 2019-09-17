@@ -77,7 +77,7 @@ rule report:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/report.md",
         "report/pandoc-metadata.yml",
-        "data/total-sobol.png", # FIXME add to repo as data and/or code
+        "build/output/{resolution{/report/total-sobol.png",
         "build/output/{resolution}/report/scenario-space.png",
         "build/output/{resolution}/report/map.png",
         "build/output/{resolution}/report/flows.png",
@@ -103,7 +103,7 @@ rule supplementary_material:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/supplementary.md",
         "report/biofuel-feedstocks.csv",
-        "data/total-sobol.png", # FIXME add to repo as data and/or code
+        "build/output/{resolution{/report/total-sobol.png",
         "build/output/{resolution}/report/overview-scenario-results-1.csv",
         "build/output/{resolution}/report/overview-scenario-results-2.csv",
         "build/output/{resolution}/report/overview-uncertain-parameters.csv",

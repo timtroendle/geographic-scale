@@ -172,6 +172,16 @@ rule plot_timeseries:
     script: "../src/analyse/timeseries.py"
 
 
+rule plot_sobol_indices:
+    message: "Create heatmap of the Sobol indices of all input/output combinations."
+    input:
+        src = "src/analyse/sobol.py",
+        indices = "data/total-sobol.csv"
+    output: "build/output/{resolution}/total-sobol.png"
+    conda: "../envs/default.yaml"
+    script: "../src/analyse/sobol.py"
+
+
 rule overview_scenario_results:
     message: "Create table of key outputs of scenarios."
     input:

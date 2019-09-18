@@ -77,7 +77,7 @@ rule report:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/report.md",
         "report/pandoc-metadata.yml",
-        "build/output/{resolution{/report/total-sobol.png",
+        "build/output/{resolution}/report/total-sobol.png",
         "build/output/{resolution}/report/scenario-space.png",
         "build/output/{resolution}/report/map-cost.png",
         "build/output/{resolution}/report/map-energy.png",
@@ -104,7 +104,7 @@ rule supplementary_material:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/supplementary.md",
         "report/biofuel-feedstocks.csv",
-        "build/output/{resolution{/report/total-sobol.png",
+        "build/output/{resolution}/report/total-sobol.png",
         "build/output/{resolution}/report/overview-scenario-results-1.csv",
         "build/output/{resolution}/report/overview-scenario-results-2.csv",
         "build/output/{resolution}/report/overview-uncertain-parameters.csv",
@@ -118,7 +118,7 @@ rule supplementary_material:
         """
         cd report
         ln -s ../build/output/{wildcards.resolution}/report .
-        {PANDOC} supplementary.md {params.options} --table-of-contents \
+        {PANDOC} supplementary.md {params.options} \
         -o ../build/output/{wildcards.resolution}/supplementary.{wildcards.suffix}
         """
 

@@ -52,7 +52,7 @@ def read_plot_data(path_to_xy, path_to_scenario_results):
     )
     return [
         PlotData(
-            title="Total supply",
+            title="a – Total supply",
             ylabel="National scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
@@ -68,7 +68,7 @@ def read_plot_data(path_to_xy, path_to_scenario_results):
             gridsize=10
         ),
         PlotData(
-            title="Wind",
+            title="b - Wind",
             ylabel="National scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
@@ -78,7 +78,7 @@ def read_plot_data(path_to_xy, path_to_scenario_results):
             gridsize=11
         ),
         PlotData(
-            title="Bioenergy + storage",
+            title="c - Bioenergy + storage",
             ylabel="National scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
@@ -86,7 +86,6 @@ def read_plot_data(path_to_xy, path_to_scenario_results):
             x=xy["y-large-scale-biofuel-gw"] + xy["y-large-scale-storage-gw"],
             y=xy["y-small-scale-biofuel-gw"] + xy["y-small-scale-storage-gw"],
             gridsize=6
-
         )
     ]
 
@@ -95,7 +94,6 @@ def plot_data(plot_datas):
     sns.set_context("paper")
     fig = plt.figure(figsize=(8, 3))
     gs = gridspec.GridSpec(1, len(plot_datas))
-    panel_ids = "abcdefghi"
 
     color_rgb = mpl.colors.colorConverter.to_rgb(COLOR)
     colors = [utils.set_hls_values(color_rgb, l=l)  # noqa
@@ -120,8 +118,7 @@ def plot_data(plot_datas):
         else:
             for tick in ax.yaxis.get_major_ticks():
                 tick.set_visible(False)
-        ax.set_title(plot_data.title)
-        ax.annotate(panel_ids[i], xy=[-0.05, 1.05], xycoords='axes fraction',
+        ax.annotate(plot_data.title, xy=[0.0, 1.05], xycoords='axes fraction',
                     fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
     return fig
 

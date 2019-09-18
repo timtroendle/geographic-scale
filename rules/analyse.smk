@@ -163,7 +163,7 @@ rule plot_variability_of_composition:
         src = "src/analyse/composition_variability.py",
         xy = rules.xy.output[0], # FIXME should use data from surrogate model
         aggregate = rules.time_aggregated_results.output[0]
-    output: "build/output/{resolution}/uncertainty/variability.png"
+    output: "build/output/{resolution}/variability.png"
     conda: "../envs/default.yaml"
     script: "../src/analyse/composition_variability.py"
 

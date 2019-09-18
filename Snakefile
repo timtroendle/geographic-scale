@@ -12,7 +12,7 @@ onsuccess:
 onerror:
     if "email" in config.keys():
         shell("echo "" | mail -s 'geographical-scale crashed' {config[email]}")
-localrules: all, clean, copy_report_file, copy_uncertainty_results, report, supplementary_material
+localrules: all, clean, copy_report_file, report, supplementary_material
 
 include: "./rules/sync.smk"
 include: "./rules/construct.smk"
@@ -34,14 +34,6 @@ rule all:
 rule copy_report_file:
     message: "Copy file {input[0]} into dedicated report folder."
     input: "build/output/{resolution}/{filename}.{suffix}"
-    wildcard_constraints: suffix = "((csv)|(png))"
-    output: "build/output/{resolution}/report/{filename}.{suffix}"
-    shell: "cp {input} {output}"
-
-
-rule copy_uncertainty_results:
-    message: "Copy file {input[0]} into dedicated report folder."
-    input: "build/output/{resolution}/uncertainty/{{filename}}.{{suffix}}".format(resolution=config["uncertainty"]["resolution"]["space"])
     wildcard_constraints: suffix = "((csv)|(png))"
     output: "build/output/{resolution}/report/{filename}.{suffix}"
     shell: "cp {input} {output}"

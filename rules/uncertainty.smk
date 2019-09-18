@@ -17,11 +17,7 @@ localrules: all_uncertainty, x, weather_diff, normal_diff, weather_diff_diff
 rule all_uncertainty:
     message: "Perform entire uncertainty analysis."
     input:
-        xy = "build/output/{resolution}/uncertainty/xy.csv".format(resolution=config["uncertainty"]["resolution"]["space"]),
-        test = "build/logs/uncertainty/{resolution}/test-report.html".format(resolution=config["uncertainty"]["resolution"]["space"]),
         weather = "build/output/{resolution}/uncertainty/weather-diff-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"]),
-        resolution_diff = "build/output/{resolution}/uncertainty/resolution-diff-diff.txt".format(resolution=config["uncertainty"]["resolution"]["space"])
-
 
 
 rule biofuel_availability:
@@ -65,7 +61,7 @@ rule national_uncertainty_run:
     params:
         subset_time = config["uncertainty"]["subset_time"],
         time_resolution = config["uncertainty"]["resolution"]["time"],
-    output: "build/output/national/uncertainty/{id}--{scenario}-results.nc"
+    output: "build/output/national/uncertainty/{scenario}/{id}.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """
@@ -86,7 +82,7 @@ rule regional_uncertainty_run:
     params:
         subset_time = config["uncertainty"]["subset_time"],
         time_resolution = config["uncertainty"]["resolution"]["time"],
-    output: "build/output/regional/uncertainty/{id}--{scenario}-results.nc"
+    output: "build/output/regional/uncertainty/{scenario}/{id}.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """
@@ -128,12 +124,11 @@ rule weather_run:
 
 
 rule y:
-    message: "Calculate y for experiment {wildcards.id}."
+    message: "Calculate y for experiment {wildcards.id} of {wildcards.scenario} on {wildcards.resolution} resolution."
     input:
         src = "src/uncertainty/y.py",
-        large_scale = "build/output/{{resolution}}/uncertainty/{{id}}--{}-results.nc".format(config["uncertainty"]["scenarios"]["large-scale"]),
-        small_scale = "build/output/{{resolution}}/uncertainty/{{id}}--{}-results.nc".format(config["uncertainty"]["scenarios"]["small-scale"])
-    output: "build/output/{resolution}/uncertainty/{id}-y.tsv"
+        result = "build/output/{resolution}/uncertainty/{scenario}/{id}.nc"
+    output: "build/output/{resolution}/uncertainty/{scenario}/{id}-y.tsv"
     params:
         scaling_factors = config["scaling-factors"],
         experiment_id = lambda wildcards: wildcards.id
@@ -142,10 +137,10 @@ rule y:
 
 
 rule xy:
-    message: "Gather all y and combine with x."
+    message: "Gather all y of {wildcards.scenario} on {wildcards.resolution} resolution and combine with x."
     input:
-        y = expand("build/output/{{resolution}}/uncertainty/{id}-y.tsv", id=experiment_design.index)
-    output: "build/output/{resolution}/uncertainty/xy.csv"
+        y = expand("build/output/{{resolution}}/uncertainty/{{scenario}}/{id}-y.tsv", id=experiment_design.index)
+    output: "build/output/{resolution}/uncertainty/{scenario}/xy.csv"
     params: x = experiment_design
     run:
         import pandas as pd
@@ -165,23 +160,22 @@ rule xy:
 
 
 rule test_uncertainty_runs:
-    message: "Run tests for uncertainty runs"
+    message: "Run tests for uncertainty runs of {wildcards.scenario} on {wildcards.resolution} resolution."
     input:
         "src/analyse/test_runner.py",
         "tests/test_feasibility.py",
         "tests/test_constraints.py",
         "tests/test_assumptions.py",
         results = expand(
-            "build/output/{{resolution}}/uncertainty/{id}--{scenario}-results.nc",
-            scenario=config["uncertainty"]["scenarios"].values(),
+            "build/output/{{resolution}}/uncertainty/{{scenario}}/{id}.nc",
             id=experiment_design.index
         ),
-        biofuel_potentials = eurocalliope("build/data/{{resolution}}/biofuel/{scenario}/potential-mwh-per-year.csv".format(
-            scenario=config["parameters"]["jrc-biofuel"]["scenario"]
+        biofuel_potentials = eurocalliope("build/data/{{resolution}}/biofuel/{bioscenario}/potential-mwh-per-year.csv".format(
+            bioscenario=config["parameters"]["jrc-biofuel"]["scenario"]
         )),
         units = eurocalliope("build/data/{resolution}/units.csv")
     params: scaling_factors = config["scaling-factors"]
-    output: "build/logs/uncertainty/{resolution}/test-report.html"
+    output: "build/output/{resolution}/uncertainty/{scenario}/test-report.html"
     conda: "../envs/test.yaml"
     script: "../src/analyse/test_runner.py"
 
@@ -217,22 +211,6 @@ rule normal_diff:
     output: "build/output/{resolution}/uncertainty/normal-diff.txt"
     conda: "../envs/default.yaml"
     script: "../src/uncertainty/weather_diff.py"
-
-
-rule resolution_diff_diff:
-    message: "Determine the diff between resolutions for uncertainty and normal."
-    input:
-        normal = "build/output/{resolution}/uncertainty/normal-diff.txt".format(resolution=config["resolution"]["space"]),
-        weather = "build/output/{resolution}/uncertainty/normal-diff.txt".format(resolution=config["uncertainty"]["resolution"]["space"]),
-    output: "build/output/{resolution}/uncertainty/uncertainty-diff-diff.txt"
-    run:
-        with open(input.normal, "r") as f_normal:
-            normal_diff = float(f_normal.readline())
-        with open(input.weather, "r") as f_weather:
-            weather_diff = float(f_weather.readline())
-        diff_diff = abs(normal_diff - weather_diff) / normal_diff
-        with open(output[0], "w") as f_output:
-            f_output.write(str(diff_diff))
 
 
 rule weather_diff_diff:

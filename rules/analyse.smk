@@ -161,7 +161,8 @@ rule plot_variability_of_composition:
     message: "Create plot of variability of system composition found in uncertainty analysis."
     input:
         src = "src/analyse/composition_variability.py",
-        xy = rules.xy.output[0], # FIXME should use data from surrogate model
+        large_scales = "data/pce-samples-continental-national-scales.csv",
+        small_scale = "data/pce-samples-regional-scale.csv",
         aggregate = rules.time_aggregated_results.output[0]
     output: "build/output/{resolution}/variability.png"
     conda: "../envs/default.yaml"
@@ -186,11 +187,13 @@ rule plot_timeseries:
 
 
 rule plot_sobol_indices:
-    message: "Create heatmap of the Sobol indices of all input/output combinations."
+    message: "Create heatmap of {wildcards.order} Sobol indices of all input/output combinations."
     input:
         src = "src/analyse/sobol.py",
-        indices = "data/total-sobol.csv"
-    output: "build/output/{resolution}/total-sobol.png"
+        indices_cont_and_nat = "data/{order}-sobol-continental-national.csv",
+        indices_reg = "data/{order}-sobol-regional.csv"
+    wildcard_constraints: order = "((total)|(first)|(total-minus-first))"
+    output: "build/output/{resolution}/{order}-sobol.png"
     conda: "../envs/default.yaml"
     script: "../src/analyse/sobol.py"
 

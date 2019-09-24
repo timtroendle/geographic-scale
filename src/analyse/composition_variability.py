@@ -5,7 +5,6 @@ import seaborn as sns
 import numpy as np
 import xarray as xr
 import matplotlib as mpl
-from matplotlib import gridspec
 import matplotlib.pyplot as plt
 from seaborn import utils
 from seaborn.palettes import blend_palette
@@ -24,6 +23,31 @@ HYDRO_TECHS = ["hydro_run_of_river", "hydro_reservoir"]
 GW_TO_TW = 1e-3
 MW_TO_TW = 1e-6
 
+COLUMN_HEADER = [
+    "y-continental-scale-cost-eur",
+    "y-national-scale-cost-eur",
+    "y-cost-diff-eur",
+    "y-cost-diff-relative",
+    "y-continental-scale-pv-gw",
+    "y-national-scale-pv-gw",
+    "y-continental-scale-wind-gw",
+    "y-national-scale-wind-gw",
+    "y-continental-scale-biofuel-gw",
+    "y-national-scale-biofuel-gw",
+    "y-continental-scale-storage-gw",
+    "y-national-scale-storage-gw",
+    "y-continental-scale-storage-gwh",
+    "y-national-scale-storage-gwh",
+    "y-continental-scale-transmission-gwkm",
+    "y-regional-scale-cost-eur",
+    "y-regional-scale-pv-gw",
+    "y-regional-scale-wind-gw",
+    "y-regional-scale-biofuel-gw",
+    "y-regional-scale-storage-gw",
+    "y-regional-scale-storage-gwh",
+    "y-regional-scale-transmission-gwkm"
+]
+
 
 @dataclass
 class PlotData:
@@ -34,21 +58,25 @@ class PlotData:
     ylabel: str
     xlim: tuple
     ylim: tuple
-    gridsize: int
 
 
-def plot_composition_variability(path_to_xy, path_to_scenario_results, path_to_plot):
-    plot_datas = read_plot_data(path_to_xy, path_to_scenario_results)
+def plot_composition_variability(path_to_large_scales, path_to_small_scale, path_to_scenario_results, path_to_plot):
+    plot_datas = read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_results)
     fig = plot_data(plot_datas)
     fig.savefig(path_to_plot, dpi=600)
 
 
-def read_plot_data(path_to_xy, path_to_scenario_results):
-    xy = pd.read_csv(path_to_xy, index_col=0) * GW_TO_TW
+def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_results):
+    y = pd.concat([
+        pd.read_csv(path_to_large_scales, index_col=None, header=None),
+        pd.read_csv(path_to_small_scale, index_col=None, header=None),
+
+    ], axis="columns") * GW_TO_TW
+    y.columns = COLUMN_HEADER
     agg = xr.open_dataset(path_to_scenario_results)
     hydro_cap = pd.Series(
         agg.energy_cap.sel(techs=HYDRO_TECHS).sum(["techs", "locs"]).isel(scenario=0).item() * MW_TO_TW,
-        index=xy.index
+        index=y.index
     )
     return [
         PlotData(
@@ -57,15 +85,14 @@ def read_plot_data(path_to_xy, path_to_scenario_results):
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
-            x=(xy["y-large-scale-wind-gw"]
-               + xy["y-large-scale-pv-gw"]
-               + xy["y-large-scale-biofuel-gw"]
+            x=(y["y-continental-scale-wind-gw"]
+               + y["y-continental-scale-pv-gw"]
+               + y["y-continental-scale-biofuel-gw"]
                + hydro_cap),
-            y=(xy["y-small-scale-wind-gw"]
-               + xy["y-small-scale-pv-gw"]
-               + xy["y-small-scale-biofuel-gw"]
+            y=(y["y-national-scale-wind-gw"]
+               + y["y-national-scale-pv-gw"]
+               + y["y-national-scale-biofuel-gw"]
                + hydro_cap),
-            gridsize=10
         ),
         PlotData(
             title="b - Wind",
@@ -73,9 +100,8 @@ def read_plot_data(path_to_xy, path_to_scenario_results):
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
-            x=xy["y-large-scale-wind-gw"],
-            y=xy["y-small-scale-wind-gw"],
-            gridsize=11
+            x=y["y-continental-scale-wind-gw"],
+            y=y["y-national-scale-wind-gw"],
         ),
         PlotData(
             title="c - Bioenergy + storage",
@@ -83,17 +109,54 @@ def read_plot_data(path_to_xy, path_to_scenario_results):
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
-            x=xy["y-large-scale-biofuel-gw"] + xy["y-large-scale-storage-gw"],
-            y=xy["y-small-scale-biofuel-gw"] + xy["y-small-scale-storage-gw"],
-            gridsize=6
+            x=y["y-continental-scale-biofuel-gw"] + y["y-continental-scale-storage-gw"],
+            y=y["y-national-scale-biofuel-gw"] + y["y-national-scale-storage-gw"],
+        ),
+        PlotData(
+            title="d – Total supply",
+            ylabel="Regional scale (TW)",
+            xlabel="Continental scale (TW)",
+            xlim=(0, MAX_VALUE),
+            ylim=(0, MAX_VALUE),
+            x=(y["y-continental-scale-wind-gw"]
+               + y["y-continental-scale-pv-gw"]
+               + y["y-continental-scale-biofuel-gw"]
+               + hydro_cap),
+            y=(y["y-regional-scale-wind-gw"]
+               + y["y-regional-scale-pv-gw"]
+               + y["y-regional-scale-biofuel-gw"]
+               + hydro_cap),
+        ),
+        PlotData(
+            title="e - Wind",
+            ylabel="Regional scale (TW)",
+            xlabel="Continental scale (TW)",
+            xlim=(0, MAX_VALUE),
+            ylim=(0, MAX_VALUE),
+            x=y["y-continental-scale-wind-gw"],
+            y=y["y-regional-scale-wind-gw"],
+        ),
+        PlotData(
+            title="f - Bioenergy + storage",
+            ylabel="Regional scale (TW)",
+            xlabel="Continental scale (TW)",
+            xlim=(0, MAX_VALUE),
+            ylim=(0, MAX_VALUE),
+            x=y["y-continental-scale-biofuel-gw"] + y["y-continental-scale-storage-gw"],
+            y=y["y-regional-scale-biofuel-gw"] + y["y-regional-scale-storage-gw"],
         )
     ]
 
 
 def plot_data(plot_datas):
     sns.set_context("paper")
-    fig = plt.figure(figsize=(8, 3))
-    gs = gridspec.GridSpec(1, len(plot_datas))
+    fig = plt.figure(figsize=(8, 5))
+    axes = fig.subplots(
+        nrows=2,
+        ncols=int(len(plot_datas) / 2),
+        sharex=True,
+        sharey=True
+    )
 
     color_rgb = mpl.colors.colorConverter.to_rgb(COLOR)
     colors = [utils.set_hls_values(color_rgb, l=l)  # noqa
@@ -101,19 +164,23 @@ def plot_data(plot_datas):
     cmap = blend_palette(colors, as_cmap=True)
 
     for i, plot_data in enumerate(plot_datas):
-        ax = fig.add_subplot(gs[i])
+        ax = axes[i // 3][i % 3]
         ax.hexbin(
             x=plot_data.x,
             y=plot_data.y,
-            gridsize=plot_data.gridsize,
+            gridsize=int((plot_data.x.max() - plot_data.x.min()) * 20),
             cmap=cmap
         )
         ax.set_aspect('equal')
         ax.set_ylim(*plot_data.ylim)
         ax.set_xlim(*plot_data.xlim)
         ax.plot(plot_data.xlim, plot_data.ylim, "--", color=GREY)
-        ax.set_xlabel(plot_data.xlabel)
-        if i == 0:
+        if i // 3 == 1:
+            ax.set_xlabel(plot_data.xlabel)
+        else:
+            for tick in ax.xaxis.get_major_ticks():
+                tick.set_visible(False)
+        if i % 3 == 0:
             ax.set_ylabel(plot_data.ylabel)
         else:
             for tick in ax.yaxis.get_major_ticks():
@@ -125,7 +192,8 @@ def plot_data(plot_datas):
 
 if __name__ == "__main__":
     plot_composition_variability(
-        path_to_xy=snakemake.input.xy,
+        path_to_large_scales=snakemake.input.large_scales,
+        path_to_small_scale=snakemake.input.small_scale,
         path_to_scenario_results=snakemake.input.aggregate,
         path_to_plot=snakemake.output[0]
     )

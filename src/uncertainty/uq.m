@@ -24,7 +24,7 @@ BFName = 'GeoScale_uncertain-parameters.csv';
 % Import the previous session if availble, recalculate everything otherwise
 if ~CALCULATE
     uqlab(SFNAME);
-else 
+else
     uqlab
 end
 
@@ -97,7 +97,7 @@ else
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     
+%
 %               REGIONAL DATA ANALYSIS
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -132,7 +132,7 @@ mySens_Reg = uq_createAnalysis(SOpts);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     
+%
 %               MULTIFIDELITY DATA ANALYSIS
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -150,7 +150,7 @@ end
 
 %% And the PCE of the residual
 % Low fidelity version of the HF simulations
-YEDHF_LF = uq_evalModel(myPCE_LF,XEDHF); 
+YEDHF_LF = uq_evalModel(myPCE_LF,XEDHF);
 YEDRes = YEDHF - YEDHF_LF;
 PCEOpts.Name = 'Res PCE';
 PCEOpts.Degree = 1:5;
@@ -174,19 +174,19 @@ for ii = 1:15
     % get coefficients, bases, and their indices
     CLF = myPCE_LF.PCE(ii).Coefficients;
     CRes = myPCE_Res.PCE(ii).Coefficients;
-    
+
     % we only want the non-zero ones
     ALF = myPCE_LF.PCE(ii).Basis.Indices(CLF~=0,:);
     ARes = myPCE_Res.PCE(ii).Basis.Indices(CRes~=0,:);
     CLF = CLF(CLF~=0);
     CRes = CRes(CRes~=0);
-    
+
     % take their union
     MF(ii).Indices = union(ALF,ARes,'rows');
-    
+
     % Now loop over the bases
     P = size(MF(ii).Indices,1);
-    
+
     % Sparse expansions, so there should be no problems with the size of MF
     MF(ii).Coefficients = zeros(P,1);
     for pp = 1:size(MF(ii).Indices,1)
@@ -207,7 +207,7 @@ MFOpts.MetaType = 'PCE';
 MFOpts.Name = 'MF PCE';
 MFOpts.Method = 'Custom';
 % Copy over most of the data structure from the LF PCE (contains all
-% basis definitions and so on, saves some lines of code) 
+% basis definitions and so on, saves some lines of code)
 MFOpts.PCE = myPCE_LF.PCE;
 % Now overwrite the indices with the actual ones from the MF assembly
 for oo = 1:15
@@ -260,10 +260,33 @@ if CALCULATE
 end
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%               WRITE RESULTS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Sobol indices
+
+dlmwrite('./results/total-sobol-regional.csv',mySens_Reg.Results.Total,'delimiter',',','precision','%.16e');
+dlmwrite('./results/first-sobol-regional.csv',mySens_Reg.Results.FirstOrder,'delimiter',',','precision','%.16e');
+dlmwrite('./results/total-minus-first-sobol-regional.csv',mySens_Reg.Results.Total - mySens_Reg.Results.FirstOrder,'delimiter',',','precision','%.16e');
+
+dlmwrite('./results/total-sobol-continental-national.csv',mySens.Results.Total,'delimiter',',','precision','%.16e');
+dlmwrite('./results/first-sobol-continental-national.csv',mySens.Results.FirstOrder,'delimiter',',','precision','%.16e');
+dlmwrite('./results/total-minus-first-sobol-continental-national.csv',mySens.Results.Total - mySens.Results.FirstOrder,'delimiter',',','precision','%.16e');
+
+% Samples
+
+XX = uq_getSample(myInput, 1e5);
+YY = uq_evalModel(myPCE_Reg, XX);
+dlmwrite('./results/pce-samples-regional-scale.csv',YY,'delimiter',',','precision','%.16e');
+
+YY = uq_evalModel(MFPCE, XX);
+dlmwrite('./results/pce-samples-continental-national-scales.csv',YY,'delimiter',',','precision','%.16e');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     
+%
 %               PLOTTING
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -281,7 +304,7 @@ if PLOTED
     gplotmatrix(XEDLF, YEDLF,[],'k','o',3,[],[],InVarNames,Y_i);
 end
 
-if PLOTDIAG    
+if PLOTDIAG
     %% PLOT THE EFFECT OF THE MF SURROGATE
     uq_figure; uq_plot(YEDHF(:),YEDHF_LF(:),'+r')
     xl = xlim;
@@ -291,7 +314,7 @@ if PLOTDIAG
     ylim(xl);
     hold on; uq_plot(xl,xl,'--k','linewidth',1);
     set(gca,'XScale', 'log','YScale', 'log');
-    
+
     for ii = 1:NOut
         uq_figure;
         histogram((YEDHF_LF(:,ii)-YEDHF(:,ii))/std(YEDHF_LF(:,ii)),10);
@@ -301,7 +324,7 @@ if PLOTDIAG
         xl = xlim;
         xlim([-max(abs(xl)) max(abs(xl))])
     end
-    
+
     %% MF QUALITY ESTIMATION
     SelectedVar = 1;
     figure; plot(YEDHF(:,SelectedVar),YEDHF_LF(:,SelectedVar),'+r')
@@ -312,9 +335,9 @@ if PLOTDIAG
     hold on; plot(xl ,xl,'--k')
 end
 
-%% 
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     
+%
 %               SOBOL INDICES REGIONAL
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -330,7 +353,7 @@ if REG_PLOTSOBOL
     title('Total Sobol'' indices', 'FontWeight','normal')
     ss = bone(512);
     colormap(ss(end:-1:1,:))
-    
+
     %% PLOT FIRST ORDER INDICES
     uq_figure('filename', 'Figures/20190719_Sobol_FirstOrder.fig');
     imagesc(mySens_Reg.Results.FirstOrder');
@@ -341,7 +364,7 @@ if REG_PLOTSOBOL
     title('First Order Sobol'' indices', 'FontWeight','normal')
     ss = bone(512);
     colormap(ss(end:-1:1,:))
-    
+
     %% PLOT NON-LINEAR EFFECTS (Tot - first order)
     uq_figure('filename', 'Figures/20190719_Sobol_TotFirstDifference.fig');
     imagesc(mySens_Reg.Results.Total' - mySens_Reg.Results.FirstOrder');
@@ -354,9 +377,9 @@ if REG_PLOTSOBOL
     colormap(ss(end:-1:1,:))
 end
 
-%% 
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     
+%
 %               SOBOL INDICES MULTIFIDELITY
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -372,7 +395,7 @@ if PLOTSOBOL
     title('Total Sobol'' indices', 'FontWeight','normal')
     ss = bone(512);
     colormap(ss(end:-1:1,:))
-    
+
     %% PLOT FIRST ORDER INDICES
     uq_figure('filename', 'Figures/20190719_Sobol_FirstOrder.fig');
     imagesc(mySens.Results.FirstOrder');
@@ -383,7 +406,7 @@ if PLOTSOBOL
     title('First Order Sobol'' indices', 'FontWeight','normal')
     ss = bone(512);
     colormap(ss(end:-1:1,:))
-    
+
     %% PLOT NON-LINEAR EFFECTS (Tot - first order)
     uq_figure('filename', 'Figures/20190719_Sobol_TotFirstDifference.fig');
     imagesc(mySens.Results.Total' - mySens.Results.FirstOrder');
@@ -394,7 +417,7 @@ if PLOTSOBOL
     title('Total - First Order indices', 'FontWeight','normal')
     ss = bone(512);
     colormap(ss(end:-1:1,:))
-    
+
     %% PLOTTING THE SOBOL' INDICES AS BARS FOR DIFFERENT OUTPUTS
     % Let's say we want to see outputs 4 and 13, then:
     SelectedVars = [3 4];
@@ -402,7 +425,7 @@ if PLOTSOBOL
     uq_bar([mySens.Results.Total(:,SelectedVars)])
     legend(OutVarNames(SelectedVars))
     title('Total Comparison')
-    
+
     uq_figure('FileName','Figures/20190719_Sobol_SideBySide')
     uq_bar([mySens.Results.FirstOrder(:,SelectedVars)])
     legend(OutVarNames(SelectedVars))

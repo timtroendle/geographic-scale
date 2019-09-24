@@ -51,14 +51,17 @@ class PlotData:
     highlight_cols: list = field(default_factory=list)
 
 
-def sobol(path_to_data, path_to_plot):
-    plot_datas = prepare_data(path_to_data)
+def sobol(path_to_cont_and_nat_data, path_to_reg_data, path_to_plot):
+    plot_datas = prepare_data(path_to_cont_and_nat_data, path_to_reg_data)
     fig = plot_data(plot_datas)
     fig.savefig(path_to_plot, dpi=600)
 
 
-def prepare_data(path_to_data):
-    data = pd.read_csv(path_to_data, header=None)
+def prepare_data(path_to_cont_and_nat_data, path_to_reg_data):
+    data = pd.concat([
+        pd.read_csv(path_to_cont_and_nat_data, header=None).T,
+        pd.read_csv(path_to_reg_data, header=None).T
+    ])
     return [
         PlotData(
             name="a – Continental scale",
@@ -71,7 +74,12 @@ def prepare_data(path_to_data):
             yticklabels=ROWS
         ),
         PlotData(
-            name="c – Difference between continental and national scales",
+            name="c – Regional scale",
+            data=data.iloc[[15, 16, 17, 18, 19, 20]],
+            yticklabels=ROWS
+        ),
+        PlotData(
+            name="d – Difference between continental and national scales",
             data=data.iloc[[2, 3]],
             yticklabels=DIFFERENCE_ROWS,
             highlight_rows=[0, 2, 9],
@@ -82,7 +90,7 @@ def prepare_data(path_to_data):
 
 def plot_data(plot_datas):
     sns.set_context("paper")
-    fig = plt.figure(figsize=(8, 9))
+    fig = plt.figure(figsize=(8, 11.5))
     axes = fig.subplots(
         nrows=len(plot_datas),
         ncols=1,
@@ -135,6 +143,7 @@ def plot_data(plot_datas):
 
 if __name__ == "__main__":
     sobol(
-        path_to_data=snakemake.input.indices,
+        path_to_cont_and_nat_data=snakemake.input.indices_cont_and_nat,
+        path_to_reg_data=snakemake.input.indices_reg,
         path_to_plot=snakemake.output[0]
     )

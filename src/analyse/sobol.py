@@ -27,7 +27,7 @@ DIFFERENCE_ROWS = [
     "Relative system cost"
 ]
 COLUMNS = [
-    "Depreciation rate",
+    "Discount rate",
     "Cost solar",
     "Cost onshore wind",
     "Cost offshore wind",

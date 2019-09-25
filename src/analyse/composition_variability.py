@@ -51,6 +51,7 @@ COLUMN_HEADER = [
 
 @dataclass
 class PlotData:
+    panel_id: str
     title: str
     x: pd.Series
     y: pd.Series
@@ -80,7 +81,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
     )
     return [
         PlotData(
-            title="a – Total supply",
+            panel_id="a",
+            title="Total supply",
             ylabel="National scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
@@ -95,7 +97,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
                + hydro_cap),
         ),
         PlotData(
-            title="b - Wind",
+            panel_id="b",
+            title="Wind",
             ylabel="National scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
@@ -104,7 +107,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
             y=y["y-national-scale-wind-gw"],
         ),
         PlotData(
-            title="c - Bioenergy + storage",
+            panel_id="c",
+            title="Bioenergy + storage",
             ylabel="National scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
@@ -113,7 +117,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
             y=y["y-national-scale-biofuel-gw"] + y["y-national-scale-storage-gw"],
         ),
         PlotData(
-            title="d – Total supply",
+            panel_id="d",
+            title="Total supply",
             ylabel="Regional scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
@@ -128,7 +133,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
                + hydro_cap),
         ),
         PlotData(
-            title="e - Wind",
+            panel_id="e",
+            title="Wind",
             ylabel="Regional scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
@@ -137,7 +143,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
             y=y["y-regional-scale-wind-gw"],
         ),
         PlotData(
-            title="f - Bioenergy + storage",
+            panel_id="f",
+            title="Bioenergy + storage",
             ylabel="Regional scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
@@ -180,12 +187,14 @@ def plot_data(plot_datas):
         else:
             for tick in ax.xaxis.get_major_ticks():
                 tick.set_visible(False)
+            ax.annotate(plot_data.title, xy=(0.5, 1.2), xycoords="axes fraction",
+                        size='large', ha='center', va='center', fontweight='bold')
         if i % 3 == 0:
             ax.set_ylabel(plot_data.ylabel)
         else:
             for tick in ax.yaxis.get_major_ticks():
                 tick.set_visible(False)
-        ax.annotate(plot_data.title, xy=[0.0, 1.05], xycoords='axes fraction',
+        ax.annotate(plot_data.panel_id, xy=[-0.05, 1.05], xycoords='axes fraction',
                     fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
     return fig
 

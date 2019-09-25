@@ -55,6 +55,7 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
         cbar_kws={"label": "total system costs"},
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
+        linewidth=0.75,
         annot=True,
         fmt='.3g'
     )
@@ -70,6 +71,7 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
         cbar=False,
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
+        linewidth=0.75,
         annot=True,
         fmt='.3g'
     )
@@ -87,6 +89,7 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
         cbar_ax=ax4,
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
+        linewidth=0.75,
         annot=True,
         fmt='.3g'
     )

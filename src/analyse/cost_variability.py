@@ -89,7 +89,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale):
         PlotData(
             panel_id="b",
             title="",
-            ylabel="Normed cost national scale",
+            ylabel="Normed cost regional scale",
             xlabel="Normed cost continental scale",
             xlim=(0, max_value),
             ylim=(0, max_value),
@@ -106,7 +106,7 @@ def plot_data(plot_datas):
         nrows=1,
         ncols=2,
         sharex=True,
-        sharey=True
+        sharey=False
     )
 
     color_rgb = mpl.colors.colorConverter.to_rgb(COLOR)

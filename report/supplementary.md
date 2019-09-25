@@ -1,5 +1,5 @@
 ---
-title: 'Appropriate technology: The relationship between geographic scale, cost, and technology mix of fully renewable electricity systems in Europe'
+title: 'Cost and technology mix of self-sufficient and renewable electricity supply on continental, national, and regional scales in Europe'
 subtitle: 'Supplementary Information'
 author:
     - Tim Tröndle

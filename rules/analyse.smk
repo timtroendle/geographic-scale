@@ -164,9 +164,20 @@ rule plot_variability_of_composition:
         large_scales = "data/pce-samples-continental-national-scales.csv",
         small_scale = "data/pce-samples-regional-scale.csv",
         aggregate = rules.time_aggregated_results.output[0]
-    output: "build/output/{resolution}/variability.png"
+    output: "build/output/{resolution}/composition-variability.png"
     conda: "../envs/default.yaml"
     script: "../src/analyse/composition_variability.py"
+
+
+rule plot_variability_of_cost:
+    message: "Create plot of variability of system cost found in uncertainty analysis."
+    input:
+        src = "src/analyse/cost_variability.py",
+        large_scales = "data/pce-samples-continental-national-scales.csv",
+        small_scale = "data/pce-samples-regional-scale.csv",
+    output: "build/output/{resolution}/cost-variability.png"
+    conda: "../envs/default.yaml"
+    script: "../src/analyse/cost_variability.py"
 
 
 rule plot_timeseries:

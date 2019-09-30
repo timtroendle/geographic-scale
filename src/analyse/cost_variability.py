@@ -72,8 +72,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale):
 
     ], axis="columns")
     y.columns = COLUMN_HEADER
-    norm_value = y["y-continental-scale-cost-eur"].min()
-    max_value = y["y-regional-scale-cost-eur"].max() / norm_value
+    norm_value = y["y-continental-scale-cost-eur"].mean()
+    max_value = 2.5
 
     return [
         PlotData(

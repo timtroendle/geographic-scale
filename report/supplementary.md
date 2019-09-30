@@ -36,7 +36,7 @@ Lastly, we are using upper-bound estimations for the potentials for solar and wi
 
 **Supplementary Figure 2**:
 
-![**Variability of normed system cost in electricity systems of all scales considering uncertainty in input parameters. a,b,** Bivariate histogram of the joint distribution of variability within continental and national (**a**), and continental and regional scale systems (**b**). Darker colours indicate more occurrences of values within 100,000 samples of each surrogate model. System cost is normed by the lowest cost in the sample. For a detailed compilation of all considered input uncertainty, see Supplementary Table 5.](report/cost-variability.png){#fig:cost-variability .class tag="2"}
+![**Variability of normed system cost in electricity systems of all scales considering uncertainty in input parameters. a,b,** Bivariate histograms of the joint distributions of variability within continental and national (**a**), and continental and regional scale systems (**b**). Darker colours indicate more occurrences of values within 100,000 samples of each surrogate model. System cost is normed by average cost of the continental scale system. For a detailed compilation of all considered input uncertainty, see Supplementary Table 5.](report/cost-variability.png){#fig:cost-variability .class tag="2"}
 
 **Supplementary Figure 3**:
 

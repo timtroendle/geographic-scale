@@ -4,7 +4,6 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
-from matplotlib.patches import Rectangle
 import xarray as xr
 
 GREEN = "#679436"
@@ -12,8 +11,6 @@ RED = "#A01914"
 YELLOW = "#FABC3C"
 SYSTEM_SCALE_COLOR = "k"
 AUTARKY_EXTENT_COLOR = "k"
-HIGHLIGHT_COLORS = sns.light_palette(GREEN, n_colors=4, reverse=False)[1:]
-HIGHLIGHT_LINEWIDTH = 4
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
 
@@ -45,31 +42,41 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
     results = read_results(path_to_aggregated_results)
 
     sns.set_context("paper")
-    fig = plt.figure(figsize=(8, 3))
+    fig = plt.figure(figsize=(8, 4))
     pal = sns.light_palette(RED)
-    gs = gridspec.GridSpec(1, 4, width_ratios=[3, 2, 1, 0.1])
-    ax4 = fig.add_subplot(gs[3])
+    gs = gridspec.GridSpec(1, 5, width_ratios=[1.25, 0.5, 2, 1, 0.2])
+    ax4 = fig.add_subplot(gs[4])
     ax1 = fig.add_subplot(gs[0])
+
     sns.heatmap(
-        cost_heatmap(results, "Continental"),
+        results[results.autarky_layer == results.grid_scale].pivot(
+            index="autarky_layer",
+            columns="autarky_degree",
+            values="cost"
+        ),
         cmap=pal,
         ax=ax1,
         cbar=False,
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
-        linewidth=0.75,
+        linewidth=1.25,
+        yticklabels=["Continental scale", "National scale", "Regional scale"],
         annot=True,
+        square=True,
         fmt='.3g'
     )
+    plt.ylabel("")
     plt.xlabel("")
-    ax1.tick_params(axis="x", labelcolor=AUTARKY_EXTENT_COLOR, labelrotation=0)
-    ax1.annotate('a', xy=[-0.1, 1.05], xycoords='axes fraction',
-                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-    ax1.set_title("Continental", loc="left", color=SYSTEM_SCALE_COLOR)
+    plt.xticks([])
+    ax1.tick_params(axis="y", labelrotation=0)
 
-    ax2 = fig.add_subplot(gs[1])
+    ax2 = fig.add_subplot(gs[2])
     sns.heatmap(
-        cost_heatmap(results, "National"),
+        results[(results.autarky_layer != results.grid_scale) & (results.grid_scale == "Continental")].pivot(
+            columns="autarky_layer",
+            index="autarky_degree",
+            values="cost"
+        ).reindex(["≤30%", "≤15%", "0%"]),
         cmap=pal,
         ax=ax2,
         cbar=False,
@@ -77,19 +84,21 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
         vmax=results["cost"].max(),
         linewidth=0.75,
         annot=True,
+        square=True,
         fmt='.3g'
     )
-    plt.ylabel("")
+    plt.ylabel("Allowed net imports")
     plt.xlabel("")
-    plt.yticks([])
-    ax2.tick_params(axis="x", labelcolor=AUTARKY_EXTENT_COLOR, labelrotation=0)
-    ax2.annotate('b', xy=[-0.1 * 3 / 2, 1.05], xycoords='axes fraction',
-                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-    ax2.set_title("National", loc="left", color=SYSTEM_SCALE_COLOR)
+    ax2.tick_params(axis="y", labelrotation=0)
+    ax2.set_title("Continental")
 
-    ax3 = fig.add_subplot(gs[2])
+    ax3 = fig.add_subplot(gs[3])
     sns.heatmap(
-        cost_heatmap(results, "Regional"),
+        results[(results.autarky_layer != results.grid_scale) & (results.grid_scale == "National")].pivot(
+            columns="autarky_layer",
+            index="autarky_degree",
+            values="cost"
+        ).reindex(["≤30%", "≤15%", "0%"]),
         cmap=pal,
         ax=ax3,
         cbar_ax=ax4,
@@ -98,39 +107,52 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
         vmax=results["cost"].max(),
         linewidth=0.75,
         annot=True,
+        square=True,
         fmt='.3g'
     )
     plt.ylabel("")
-    plt.xlabel("")
     plt.yticks([])
-    ax3.tick_params(axis="x", labelcolor=AUTARKY_EXTENT_COLOR, labelrotation=0)
-    ax3.annotate('c', xy=[-0.1 * 3, 1.05], xycoords='axes fraction',
-                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-    ax3.set_title("Regional", loc="left", color=SYSTEM_SCALE_COLOR)
-
-    for color, ax in zip(HIGHLIGHT_COLORS, fig.axes[1:]): # highlight base cases
-        ax.add_patch(Rectangle((0.04, 2.04), 0.92, 0.92, fill=False, edgecolor=color, lw=HIGHLIGHT_LINEWIDTH))
+    plt.xlabel("")
+    ax3.tick_params(axis="y", labelrotation=0)
+    ax3.set_title("National")
 
     fig.text(
-        s="──────────────────────────────── System scale ────────────────────────────────",
+        s='a - Main cases',
+        x=.12,
         y=0.98,
-        x=0.45,
+        fontsize=PANEL_FONT_SIZE,
+        verticalalignment="top",
+        weight=PANEL_FONT_WEIGHT
+    )
+    fig.text(
+        s='b - Cases with lower level self-sufficiency',
+        x=.4,
+        y=0.98,
+        fontsize=PANEL_FONT_SIZE,
+        verticalalignment="top",
+        weight=PANEL_FONT_WEIGHT
+    )
+    fig.text(
+        s="─────────── System scale ────────────",
+        y=0.89,
+        x=0.63,
         color=SYSTEM_SCALE_COLOR,
         horizontalalignment="center",
         verticalalignment="top",
         weight="bold"
     )
     fig.text(
-        s="──────────────────────────── Self-sufficiency extent ───────────────────────────",
-        y=0.02,
-        x=0.45,
+        s="─────── Self-sufficiency extent ───────",
+        y=0.05,
+        x=0.63,
         color=AUTARKY_EXTENT_COLOR,
         horizontalalignment="center",
         verticalalignment="bottom",
         weight="bold"
     )
+
     fig.tight_layout()
-    plt.subplots_adjust(wspace=0.6, top=0.82, bottom=0.2)
+    plt.subplots_adjust(wspace=0.6, left=0.15, top=0.85, bottom=0.1)
     fig.savefig(path_to_costs, dpi=600, transparent=False)
 
 

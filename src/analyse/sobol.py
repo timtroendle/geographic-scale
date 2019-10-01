@@ -9,10 +9,12 @@ import pandas as pd
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
 GREEN = "#679436"
+BLUE = "#4F6DB8"
 GREEN_CMAP = sns.light_palette(GREEN, n_colors=5, reverse=False, as_cmap=True)
+BLUE_CMAP = sns.light_palette(BLUE, n_colors=5, reverse=False, as_cmap=True)
 HIGHLIGHT_COLOR = "#424242"
 HIGHLIGHT_LINEWIDTH = 4
-CMAP = GREEN_CMAP
+CMAP = BLUE_CMAP
 
 ROWS = [
     "System cost (€)",

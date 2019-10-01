@@ -28,15 +28,15 @@ DIFFERENCE_ROWS = [
 ]
 COLUMNS = [
     "Discount rate",
-    "Cost solar",
-    "Cost onshore wind",
-    "Cost offshore wind",
-    "Cost battery power",
-    "Cost battery energy",
-    "Cost hydrogen power",
-    "Cost hydrogen energy",
-    "Cost transmission",
-    "Cost bioenergy",
+    "Cost of solar",
+    "Cost of onshore wind",
+    "Cost of offshore wind",
+    "Cost of battery power",
+    "Cost of battery energy",
+    "Cost of hydrogen power",
+    "Cost of hydrogen energy",
+    "Cost of transmission",
+    "Cost of bioenergy",
     "Fuel cost bioenergy",
     "Availability bioenergy"
 ]

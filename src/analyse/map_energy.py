@@ -18,8 +18,10 @@ EDGE_WIDTH = 0.06
 EDGE_COLOR = "white"
 
 GREEN_PALETTE = sns.light_palette(GREEN, n_colors=6, reverse=True)
+BLUE_PALETTE = sns.light_palette(BLUE, n_colors=6, reverse=True)
 RED_PALETTE = sns.light_palette(RED, n_colors=6, reverse=False)
-COLORS = [GREEN_PALETTE[1], GREEN_PALETTE[4], RED_PALETTE[1], RED_PALETTE[4]]
+RDBU_PALETTE = matplotlib.cm.get_cmap("RdBu_r")
+COLORS = [RDBU_PALETTE(0), RDBU_PALETTE(0.35), RDBU_PALETTE(0.65), RDBU_PALETTE(0.99)]
 
 PATH_TO_FONT_AWESOME = Path(__file__).parent.parent / 'fonts' / 'fa-solid-900.ttf'
 LAYER_UNICODE = "\uf5fd"
@@ -48,6 +50,7 @@ class PlotData:
     column: str
     panel_id: str
     name: str
+    legend_title: str
     bins: list = field(default_factory=list)
     labels: list = field(default_factory=list)
 
@@ -83,6 +86,7 @@ def prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions):
             column="rel_gen",
             panel_id="a",
             name="Generation",
+            legend_title="Generation relative to demand",
             bins=[0.1, 1, 50],
             labels=["≤ 0.1", "0.1 - 3", "3 - 50", "≥ 50"]
         ),
@@ -91,8 +95,9 @@ def prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions):
             column="rel_trans",
             panel_id="b",
             name="Transmission",
-            bins=[1, 3, 50],
-            labels=["≤ 1", "1 - 3", "3 - 50", "≥ 50"]
+            legend_title="Transmission relative to demand",
+            bins=[0.1, 3, 50],
+            labels=["≤ 0.1", "0.1 - 3", "3 - 50", "≥ 50"]
         ),
     ]
 
@@ -157,12 +162,19 @@ def plot_legend(ax, plot_data):
         bbox_to_anchor=[0.45, 0.5],
         ncol=4,
         handletextpad=0.2,
-        columnspacing=1
+        columnspacing=1,
     )
     leg.draw_frame(False)
     sns.despine(ax=ax, top=True, bottom=True, left=True, right=True)
     ax.set_xticks([])
     ax.set_yticks([])
+    ax.annotate(
+        plot_data.legend_title,
+        xy=[0.5, 0.00],
+        xycoords='axes fraction',
+        ha='center',
+        va='center'
+    )
 
 
 def postprocess_combined_regions(da, region_pairs):

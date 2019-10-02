@@ -203,8 +203,10 @@ rule plot_sobol_indices:
         src = "src/analyse/sobol.py",
         indices_cont_and_nat = "data/{order}-sobol-continental-national.csv",
         indices_reg = "data/{order}-sobol-regional.csv"
-    wildcard_constraints: order = "((total)|(first)|(total-minus-first))"
-    output: "build/output/{resolution}/{order}-sobol.png"
+    wildcard_constraints:
+        order = "((total)|(first)|(total-minus-first))",
+        extent = "((all)|(diff))"
+    output: "build/output/{resolution}/{order}-sobol-{extent}.png"
     conda: "../envs/default.yaml"
     script: "../src/analyse/sobol.py"
 

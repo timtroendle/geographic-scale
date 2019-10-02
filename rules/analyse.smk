@@ -157,27 +157,27 @@ rule plot_system_composition:
     script: "../src/analyse/composition.py"
 
 
-rule plot_variability_of_composition:
-    message: "Create plot of variability of system composition found in uncertainty analysis."
+rule plot_uncertainty_of_composition:
+    message: "Create plot of uncertainty of system composition found in uncertainty analysis."
     input:
-        src = "src/analyse/composition_variability.py",
+        src = "src/analyse/composition_uncertainty.py",
         large_scales = "data/pce-samples-continental-national-scales.csv",
         small_scale = "data/pce-samples-regional-scale.csv",
         aggregate = rules.time_aggregated_results.output[0]
-    output: "build/output/{resolution}/composition-variability.png"
+    output: "build/output/{resolution}/composition-uncertainty.png"
     conda: "../envs/default.yaml"
-    script: "../src/analyse/composition_variability.py"
+    script: "../src/analyse/composition_uncertainty.py"
 
 
-rule plot_variability_of_cost:
-    message: "Create plot of variability of system cost found in uncertainty analysis."
+rule plot_uncertainty_of_cost:
+    message: "Create plot of uncertainty of system cost found in uncertainty analysis."
     input:
-        src = "src/analyse/cost_variability.py",
+        src = "src/analyse/cost_uncertainty.py",
         large_scales = "data/pce-samples-continental-national-scales.csv",
         small_scale = "data/pce-samples-regional-scale.csv",
-    output: "build/output/{resolution}/cost-variability.png"
+    output: "build/output/{resolution}/cost-uncertainty.png"
     conda: "../envs/default.yaml"
-    script: "../src/analyse/cost_variability.py"
+    script: "../src/analyse/cost_uncertainty.py"
 
 
 rule plot_timeseries:

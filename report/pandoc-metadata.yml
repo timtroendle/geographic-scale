@@ -1,5 +1,5 @@
 ---
-title: 'Cost and technology mix of self-sufficient and renewable electricity supply on continental, national, and regional scales in Europe'
+title: 'Cost and design of fully renewable electricity supply on continental, national, and regional scales in Europe'
 author:
     - Tim Tröndle
     - Johan Lilliestam
@@ -15,7 +15,7 @@ tags:
     - 'self-sufficiency'
     - 'cooperation'
 abstract: |
-    A renewable electricity system is a key enabler for Europe to meet its long-term climate obligations. However, such a future would require solving problems related to the variability of renewable generation. We here show that the availability and cost of such flexibility options needed to balance intermittent generation depends on the geographic scale at which they are implemented. Whereas fully renewable power supply is possible on all scales – continental, national, and regional – the total system costs for regionally self-sufficient electricity systems are 70% higher than those of a system spanning the European continent, as geographically constrained supply areas have limited access to flexibility options and require more use of expensive flexibility options like dispatchable renewable generation and storage. Depending on the regionally available resources, the cost varies strongly between regions, making renewable self-sufficiency economically unattractive in many cases. Allowing for electricity trade between regions, even if net-trade is zero, greatly reduces the cost to a level comparable to the continental supply. A global sensitivity analysis reveals that the trend in these findings is insensitive to technology cost uncertainty (TODO reconsider sentence).
+    A renewable electricity system is a key enabler for Europe to meet its long-term climate obligations. However, such a future would require solving problems related to the variability of renewable generation. We here show that the availability and cost of flexibility options needed to balance intermittent generation depends on the geographic scale at which they are implemented. Whereas fully renewable power supply is possible on all scales – continental, national, and regional – the total system cost for regionally self-sufficient electricity systems is 70% higher than those of a system spanning the European continent, as geographically constrained supply areas have limited access to flexibility options and require higher use of expensive flexibility options like dispatchable renewable generation and storage. Depending on the regionally available resources, the cost and technology mix varies strongly between regions, making renewable self-sufficiency economically unattractive in many cases. Allowing for electricity trade between regions, even if net-trade is zero, greatly reduces the cost to a level comparable to the continental supply. A global sensitivity analysis reveals that the trend in these findings is insensitive to technology cost uncertainty.
 bibliography:
     - 'literature.bib'
 csl: nature.csl

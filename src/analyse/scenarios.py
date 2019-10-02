@@ -117,7 +117,7 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
     ax3.set_title("National")
 
     fig.text(
-        s='a - Main cases',
+        s='a - Base cases',
         x=.12,
         y=0.98,
         fontsize=PANEL_FONT_SIZE,

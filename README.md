@@ -18,6 +18,14 @@ This repository contains the entire scientific project, including code and repor
 
 5. Provide the input data for Euro-Calliope, as defined in "Getting Ready" in  `./euro-calliope/README.md`.
 
+6. To run the sensitivity analysis (optional, involves manual steps to run see below), you need MATLAB and UQLab installed:
+
+    1. Install [MATLAB R2019a](https://de.mathworks.com/products/matlab.html).
+
+    2. [Register](https://www.uqlab.com/register) and [install](https://www.uqlab.com/install) UQLab.
+
+    3. Add UQLab's `core` folder to the [MATLAB search path on startup](https://ch.mathworks.com/help/matlab/matlab_env/add-folders-to-matlab-search-path-at-startup.html), to be able to call `UQLab` from outside its own folder.
+
 ## Run the analysis
 
     snakemake --use-conda
@@ -41,6 +49,38 @@ By providing an email address, you will be informed by mail when Snakemake finis
 If you prefer working locally, you can sync this repository to Euler and receive build changes by running `snakemake send` and `snakemake receive`.
 
 If you want to run on another cluster, read [snakemake's documentation on cluster execution](https://snakemake.readthedocs.io/en/stable/executable.html#cluster-execution) and take `config/euler` as a starting point.
+
+## Manual steps
+
+At the moment, the uncertainty quantification is not in the loop and needs to be run manually. The following files have to be created manually:
+
+* `./data/first-sobol-continental-national.csv`
+* `./data/first-sobol-regional.csv`
+* `./data/total-minus-first-sobol-continental-national.csv`
+* `./data/total-minus-first-first-sobol-regional.csv`
+* `./data/tota-sobol-continental-national.csv`
+* `./data/total-sobol-regional.csv`
+* `./data/pce-samples-continental-national-scales.csv`
+* `./data/pce-samples-regional-scale.csv`
+
+To replicate these files, do the following:
+
+1. Perform necessary simulation runs:
+    1. `snakemake --use-conda --configfile config/full.yaml build/output/national/uncertainty/continental-autarky-100-continental-grid/xy.csv build/output/national/uncertainty/national-autarky-100-national-grid/xy.csv build/output/regional/uncertainty/regional-autarky-100-regional-grid/xy.csv`
+    2. `snakemake --use-conda --configfile config/multi-fidelity.yaml build/output/regional/uncertainty/continental-autarky-100-continental-grid/xy.csv build/output/regional/uncertainty/national-autarky-100-national-grid/xy.csv`
+2. Manually merge results to necessary format for Matlab script:
+    1. Merge national resolution results for continental and national scale into `xy1-national-resolution-national-and-continental-scales.csv` (also add absolute and relative cost diff).
+    2. Merge regional resolution results for continental and national scale into `xy2-regional-resolution-national-and-continental-scales.csv` (also add absolute and relative cost diff).
+    3. Rename regional resolution results for regional scale to `xy3-regional-resolution-regional-scale.csv`.
+3. Add the following files into one single folder:
+    * `./src/uncertainty/uq.m`
+    * `./data/GeoScale_uncertain-parameters.csv`
+    * `xy1-national-resolution-national-and-continental-scales.csv`
+    * `xy2-regional-resolution-national-and-continental-scales.csv`
+    * `xy3-regional-resolution-regional-scale.csv`
+4. Change the value of `CALCULATE` to 1 in `uq.m`.
+4. Run the `uq.m` using Matlab (make sure you have UQLab installed).
+5. Copy the result files to their above mentioned locations within this repository.
 
 ## Run the tests
 

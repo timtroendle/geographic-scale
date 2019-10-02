@@ -14,13 +14,13 @@ def determine_y(path_to_results, scaling_factors, experiment_id, path_to_output)
     results = calliope.read_netcdf(path_to_results)
     pd.DataFrame(
         data={
-            "y-large-scale-cost-eur": [system_cost(results, scaling_factors)],
-            "y-large-scale-pv-gw": [pv_capacity(results, scaling_factors)],
-            "y-large-scale-wind-gw": [wind_capacity(results, scaling_factors)],
-            "y-large-scale-biofuel-gw": [biofuel_capacity(results, scaling_factors)],
-            "y-large-scale-storage-gw": [storage_capacity_power(results, scaling_factors)],
-            "y-large-scale-storage-gwh": [storage_capacity_energy(results, scaling_factors)],
-            "y-large-scale-transmission-gwkm": [transmission_capacity(results, scaling_factors)],
+            "y-cost-eur": [system_cost(results, scaling_factors)],
+            "y-pv-gw": [pv_capacity(results, scaling_factors)],
+            "y-wind-gw": [wind_capacity(results, scaling_factors)],
+            "y-biofuel-gw": [biofuel_capacity(results, scaling_factors)],
+            "y-storage-gw": [storage_capacity_power(results, scaling_factors)],
+            "y-storage-gwh": [storage_capacity_energy(results, scaling_factors)],
+            "y-transmission-gwkm": [transmission_capacity(results, scaling_factors)],
         },
         index=[experiment_id]
     ).to_csv(path_to_output, sep="\t", index=True, header=True)

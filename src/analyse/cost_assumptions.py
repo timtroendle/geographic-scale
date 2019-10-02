@@ -21,16 +21,16 @@ TECHS = {
     "ac_transmission": "AC transmission^",
 }
 COST_SOURCES = {
-    "open_field_pv": "[@JRC:2014] Table 7",
-    "wind_onshore_monopoly": "[@JRC:2014] Table 4",
-    "wind_offshore": "[@JRC:2014] Table 5",
-    "biofuel": "[@JRC:2014] Table 48, [@RuizCastello:2015]",
-    "hydro_run_of_river": "[@JRC:2014] Table 14",
-    "hydro_reservoir": "[@JRC:2014] Table 12",
-    "pumped_hydro": "[@Schmidt:2019]",
-    "battery": "[@Schmidt:2019]",
-    "hydrogen": "[@Schmidt:2019]",
-    "ac_transmission": "[@JRC:2014] Table 39",
+    "open_field_pv": "Ref. @JRC:2014 Table 7",
+    "wind_onshore_monopoly": "Ref. @JRC:2014 Table 4",
+    "wind_offshore": "Ref. @JRC:2014 Table 5",
+    "biofuel": "Ref. @JRC:2014 Table 48, ref. @RuizCastello:2015",
+    "hydro_run_of_river": "Ref. @JRC:2014 Table 14",
+    "hydro_reservoir": "Ref. @JRC:2014 Table 12",
+    "pumped_hydro": "Ref. @Schmidt:2019",
+    "battery": "Ref. @Schmidt:2019",
+    "hydrogen": "Ref. @Schmidt:2019",
+    "ac_transmission": "Ref. @JRC:2014 Table 39",
 }
 
 

@@ -15,7 +15,7 @@ header-includes: |
     <script src="https://kit.fontawesome.com/40d87b9e43.js"></script>
 fignos-caption-name: Supplementary Figure
 tablenos-caption-name: Supplementary Table
-date: draft-06-dev
+date: draft-06
 ---
 
 **Supplementary Note 1**:

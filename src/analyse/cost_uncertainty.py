@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 import pandas as pd
+import xarray as xr
 import seaborn as sns
 import numpy as np
 import matplotlib as mpl
@@ -18,6 +19,7 @@ PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
 
 HYDRO_TECHS = ["hydro_run_of_river", "hydro_reservoir"]
+BASE_SCENARIO = "continental-autarky-100-continental-grid"
 GW_TO_TW = 1e-3
 MW_TO_TW = 1e-6
 
@@ -59,28 +61,35 @@ class PlotData:
     ylim: tuple
 
 
-def plot_cost_variability(path_to_large_scales, path_to_small_scale, path_to_plot):
-    plot_datas = read_plot_data(path_to_large_scales, path_to_small_scale)
+def plot_cost_variability(path_to_large_scales, path_to_small_scale, path_to_scenario_results, path_to_plot):
+    plot_datas = read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_results)
     fig = plot_data(plot_datas)
     fig.savefig(path_to_plot, dpi=600)
 
 
-def read_plot_data(path_to_large_scales, path_to_small_scale):
+def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_results):
     y = pd.concat([
         pd.read_csv(path_to_large_scales, index_col=None, header=None),
         pd.read_csv(path_to_small_scale, index_col=None, header=None),
 
     ], axis="columns")
     y.columns = COLUMN_HEADER
-    norm_value = y["y-continental-scale-cost-eur"].mean()
-    max_value = 2.5
+    norm_value = (
+        xr
+        .open_dataset(path_to_scenario_results)
+        .cost
+        .sel(scenario=BASE_SCENARIO)
+        .sum(["locs", "techs"])
+        .item()
+    )
+    max_value = 3
 
     return [
         PlotData(
             panel_id="a",
             title="",
-            ylabel="Normed cost national scale",
-            xlabel="Normed cost continental scale",
+            ylabel="National scale",
+            xlabel="Continental scale",
             xlim=(0, max_value),
             ylim=(0, max_value),
             x=y["y-continental-scale-cost-eur"] / norm_value,
@@ -89,11 +98,21 @@ def read_plot_data(path_to_large_scales, path_to_small_scale):
         PlotData(
             panel_id="b",
             title="",
-            ylabel="Normed cost regional scale",
-            xlabel="Normed cost continental scale",
+            ylabel="Regional scale",
+            xlabel="Continental scale",
             xlim=(0, max_value),
             ylim=(0, max_value),
             x=y["y-continental-scale-cost-eur"] / norm_value,
+            y=y["y-regional-scale-cost-eur"] / norm_value,
+        ),
+        PlotData(
+            panel_id="c",
+            title="",
+            ylabel="Regional scale",
+            xlabel="National scale",
+            xlim=(0, max_value),
+            ylim=(0, max_value),
+            x=y["y-national-scale-cost-eur"] / norm_value,
             y=y["y-regional-scale-cost-eur"] / norm_value,
         )
     ]
@@ -101,10 +120,10 @@ def read_plot_data(path_to_large_scales, path_to_small_scale):
 
 def plot_data(plot_datas):
     sns.set_context("paper")
-    fig = plt.figure(figsize=(8, 4))
+    fig = plt.figure(figsize=(8, 3))
     axes = fig.subplots(
         nrows=1,
-        ncols=2,
+        ncols=3,
         sharex=True,
         sharey=False
     )
@@ -130,6 +149,7 @@ def plot_data(plot_datas):
         ax.annotate(plot_data.title, xy=(0.5, 1.2), xycoords="axes fraction",
                     size='large', ha='center', va='center', fontweight='bold')
         ax.set_ylabel(plot_data.ylabel)
+        ax.set_yticks([0, 1, 2, 3])
         ax.annotate(plot_data.panel_id, xy=[-0.05, 1.05], xycoords='axes fraction',
                     fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
     fig.tight_layout()
@@ -140,5 +160,6 @@ if __name__ == "__main__":
     plot_cost_variability(
         path_to_large_scales=snakemake.input.large_scales,
         path_to_small_scale=snakemake.input.small_scale,
+        path_to_scenario_results=snakemake.input.aggregate,
         path_to_plot=snakemake.output[0]
     )

@@ -175,6 +175,7 @@ rule plot_uncertainty_of_cost:
         src = "src/analyse/cost_uncertainty.py",
         large_scales = "data/pce-samples-continental-national-scales.csv",
         small_scale = "data/pce-samples-regional-scale.csv",
+        aggregate = rules.time_aggregated_results.output[0]
     output: "build/output/{resolution}/cost-uncertainty.png"
     conda: "../envs/default.yaml"
     script: "../src/analyse/cost_uncertainty.py"

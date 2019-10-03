@@ -21,7 +21,7 @@ GREEN_PALETTE = sns.light_palette(GREEN, n_colors=6, reverse=True)
 BLUE_PALETTE = sns.light_palette(BLUE, n_colors=6, reverse=True)
 RED_PALETTE = sns.light_palette(RED, n_colors=6, reverse=False)
 RDBU_PALETTE = matplotlib.cm.get_cmap("RdBu_r")
-COLORS = [RDBU_PALETTE(0), RDBU_PALETTE(0.35), RDBU_PALETTE(0.65), RDBU_PALETTE(0.99)]
+COLORS = [RDBU_PALETTE(0.1), RDBU_PALETTE(0.35), RDBU_PALETTE(0.65), RDBU_PALETTE(0.9)]
 
 PATH_TO_FONT_AWESOME = Path(__file__).parent.parent / 'fonts' / 'fa-solid-900.ttf'
 LAYER_UNICODE = "\uf5fd"

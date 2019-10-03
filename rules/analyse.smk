@@ -84,14 +84,14 @@ rule time_aggregated_results:
     script: "../src/analyse/time_aggregation.py"
 
 
-rule plot_scenario_space:
-    message: "Plot scenario space and results."
+rule plot_cost:
+    message: "Plot overview over cost."
     input:
-        src = "src/analyse/scenarios.py",
+        src = "src/analyse/cost.py",
         results = rules.time_aggregated_results.output[0]
-    output: "build/output/{resolution}/scenario-space.png"
+    output: "build/output/{resolution}/cost.png"
     conda: "../envs/default.yaml"
-    script: "../src/analyse/scenarios.py"
+    script: "../src/analyse/cost.py"
 
 
 rule plot_map_cost:

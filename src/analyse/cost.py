@@ -44,7 +44,7 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
     sns.set_context("paper")
     fig = plt.figure(figsize=(8, 4))
     pal = sns.light_palette(RED)
-    gs = gridspec.GridSpec(1, 5, width_ratios=[1.25, 0.5, 2, 1, 0.2])
+    gs = gridspec.GridSpec(1, 5, width_ratios=[1.15, 0.6, 2, 1, 0.2])
     ax4 = fig.add_subplot(gs[4])
     ax1 = fig.add_subplot(gs[0])
 

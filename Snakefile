@@ -76,6 +76,7 @@ rule report:
         "build/output/{resolution}/report/flows.png",
         "build/output/{resolution}/report/composition.png",
         "build/output/{resolution}/report/composition-uncertainty.png",
+        "build/output/{resolution}/report/cost-uncertainty.png",
         "build/output/{resolution}/report/timeseries.png",
     output: "build/output/{resolution}/report.{suffix}"
     params: options = pandoc_options
@@ -96,7 +97,6 @@ rule supplementary_material:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/supplementary.md",
         "report/biofuel-feedstocks.csv",
-        "build/output/{resolution}/report/cost-uncertainty.png",
         "build/output/{resolution}/report/total-sobol-all.png",
         "build/output/{resolution}/report/first-sobol-all.png",
         "build/output/{resolution}/report/total-minus-first-sobol-all.png",

@@ -114,7 +114,7 @@ rule supplementary_material:
         """
         cd report
         ln -s ../build/output/{wildcards.resolution}/report .
-        {PANDOC} supplementary.md {params.options} \
+        {PANDOC} supplementary.md {params.options} --table-of-contents \
         -o ../build/output/{wildcards.resolution}/supplementary.{wildcards.suffix}
         """
 

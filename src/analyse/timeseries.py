@@ -17,8 +17,8 @@ RED = "#A01914"
 BLUE = "#4F6DB8"
 YELLOW = "#FABC3C"
 NEUTRAL = "#637074"
-GREEN_PALETTE = sns.light_palette(GREEN, n_colors=5, reverse=True)
-RED_PALETTE = sns.light_palette(RED, n_colors=5, reverse=True)
+CHEAP_PALETTE = sns.light_palette(BLUE, n_colors=5, reverse=True)
+EXPENSIVE_PALETTE = sns.light_palette(RED, n_colors=5, reverse=True)
 NEUTRAL_PALETTE = sns.light_palette(NEUTRAL, n_colors=5, reverse=True)
 
 SUPPLY_TECHS = [
@@ -124,7 +124,7 @@ def plot_timeseries(plot_datas, resolution):
             "locs",
             "timesteps",
             ax=axes[i][0],
-            pal=GREEN_PALETTE,
+            pal=CHEAP_PALETTE,
             legend=True,
         )
         draw_areas(
@@ -132,7 +132,7 @@ def plot_timeseries(plot_datas, resolution):
             "locs",
             "timesteps",
             ax=axes[i][1],
-            pal=RED_PALETTE,
+            pal=EXPENSIVE_PALETTE,
             legend=True,
         )
         axes[i][0].set_ylabel(plot_data.ylabel)

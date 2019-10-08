@@ -4,7 +4,7 @@ import pandas as pd
 def uncertainty_parameters_overview(parameters, path_to_output):
     pd.DataFrame(
         data={
-            "Name": [p["short-name"] for p in parameters.values()],
+            "Name": [p["descriptive-name"] for p in parameters.values()],
             "Description": [p["description"] for p in parameters.values()],
             "Min": [p["min"] for p in parameters.values()],
             "Max": [p["max"] for p in parameters.values()],

@@ -30,42 +30,30 @@ DIFFERENCE_ROWS = [
     "Wind capacity",
     "Bioenergy and\nstorage capacity"
 ]
-COLUMNS = [
-    "Discount rate",
-    "Cost of solar",
-    "Cost of onshore wind",
-    "Cost of offshore wind",
-    "Cost of battery power",
-    "Cost of battery energy",
-    "Cost of hydrogen power",
-    "Cost of hydrogen energy",
-    "Cost of transmission",
-    "Cost of bioenergy",
-    "Fuel cost bioenergy",
-    "Availability bioenergy"
-]
 
 
 @dataclass
 class PlotData:
     name: str
     data: pd.DataFrame
-    yticklabels: str
+    xticklabels: list
+    yticklabels: list
     highlight_rows: list = field(default_factory=list)
     highlight_cols: list = field(default_factory=list)
 
 
-def sobol(path_to_cont_and_nat_data, path_to_reg_data, all_data, path_to_plot):
+def sobol(path_to_cont_and_nat_data, path_to_reg_data, all_data, parameters, path_to_plot):
+    uncertain_parameters = [param["descriptive-name"] for unused, param in parameters.items()]
     if all_data:
-        plot_datas = prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data)
+        plot_datas = prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters)
         fig = plot_all_data(plot_datas)
     else:
-        plot_datas = prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data)
+        plot_datas = prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters)
         fig = plot_diff_data(plot_datas)
     fig.savefig(path_to_plot, dpi=600)
 
 
-def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data):
+def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters):
     data = pd.concat([
         pd.read_csv(path_to_cont_and_nat_data, header=None).T,
         pd.read_csv(path_to_reg_data, header=None).T
@@ -74,27 +62,31 @@ def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data):
         PlotData(
             name="a – Continental scale",
             data=data.iloc[[0, 7, 9, 11, 13, 15]],
-            yticklabels=ROWS
+            yticklabels=ROWS,
+            xticklabels=uncertain_parameters
         ),
         PlotData(
             name="b – National scale",
             data=data.iloc[[1, 8, 10, 12, 14, 16]],
-            yticklabels=ROWS
+            yticklabels=ROWS,
+            xticklabels=uncertain_parameters
         ),
         PlotData(
             name="c – Regional scale",
             data=data.iloc[[18, 19, 20, 21, 22, 23]],
-            yticklabels=ROWS
+            yticklabels=ROWS,
+            xticklabels=uncertain_parameters
         ),
         PlotData(
             name="d – Relative difference between continental and national scales",
             data=data.iloc[[3, 4, 5, 6]],
             yticklabels=DIFFERENCE_ROWS,
+            xticklabels=uncertain_parameters
         )
     ]
 
 
-def prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data):
+def prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters):
     data = pd.concat([
         pd.read_csv(path_to_cont_and_nat_data, header=None).T,
         pd.read_csv(path_to_reg_data, header=None).T
@@ -104,6 +96,7 @@ def prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data):
             name="Relative difference between continental and national scales",
             data=data.iloc[[3, 4, 5, 6]],
             yticklabels=DIFFERENCE_ROWS,
+            xticklabels=uncertain_parameters
         )
     ]
 
@@ -134,7 +127,7 @@ def plot_all_data(plot_datas):
             cbar_ax=cbar_ax,
             cmap=CMAP,
             yticklabels=plot_data.yticklabels,
-            xticklabels=COLUMNS
+            xticklabels=plot_data.xticklabels
         )
         axes[i].annotate(
             plot_data.name,
@@ -188,7 +181,7 @@ def plot_diff_data(plot_datas):
             cbar_ax=cbar_ax,
             cmap=CMAP,
             yticklabels=plot_data.yticklabels,
-            xticklabels=COLUMNS
+            xticklabels=plot_data.xticklabels
         )
         ax.annotate(
             plot_data.name,
@@ -220,5 +213,6 @@ if __name__ == "__main__":
         path_to_cont_and_nat_data=snakemake.input.indices_cont_and_nat,
         path_to_reg_data=snakemake.input.indices_reg,
         all_data=snakemake.wildcards.extent == "all",
+        parameters=snakemake.params.parameters,
         path_to_plot=snakemake.output[0]
     )

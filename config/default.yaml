@@ -52,6 +52,7 @@ uncertainty:
     parameters:
         discount-rate:
             short-name: d_r
+            descriptive-name: Depreciation rate
             description: System- and sector-wide discount rate of investments.
             min: 0.016
             max: 0.138
@@ -68,7 +69,8 @@ uncertainty:
                 tech_groups.transmission.costs.monetary.interest_rate: 1
         installation-cost-pv:
             short-name: c_pv
-            description: Costs for installing photovoltaics capacity.
+            descriptive-name: Cost of solar
+            description: Cost of installing photovoltaics capacity.
             min: 280_000
             max: 580_000
             unit: EUR/MW
@@ -81,7 +83,8 @@ uncertainty:
                 # TODO do something about om_prod missing
         installation-cost-wind-onshore:
             short-name: c_wind
-            description: Costs for installing onshore wind capacity.
+            descriptive-name: Cost of onshore wind
+            description: Cost of installing onshore wind capacity.
             min: 800_000
             max: 1_700_000
             unit: EUR/MW
@@ -94,7 +97,8 @@ uncertainty:
                 # TODO do something about om_prod missing
         installation-cost-wind-offshore:
             short-name: c_offshore
-            description: Costs for installing offshore wind capacity.
+            descriptive-name: Cost of offshore wind
+            description: Cost of installing offshore wind capacity.
             min: 1_790_000
             max: 3_270_000
             unit: EUR/MW
@@ -107,7 +111,8 @@ uncertainty:
                 # TODO do something about om_prod missing
         installation-cost-short-term-storage-power:
             short-name: c_sts_p
-            description: Costs for installing battery power capacity (inverter etc.).
+            descriptive-name: Cost of battery power
+            description: Cost of installing battery power capacity (inverter etc.).
             min: 31_000
             max: 141_000
             unit: EUR/MW
@@ -118,7 +123,8 @@ uncertainty:
                 techs.battery.costs.monetary.energy_cap: 1
         installation-cost-short-term-storage-energy:
             short-name: c_sts_e
-            description: Costs for installing battery energy capacity.
+            descriptive-name: Cost of battery energy
+            description: Cost of installing battery energy capacity.
             min: 36_000
             max: 166_000
             unit: EUR/MWh
@@ -129,7 +135,8 @@ uncertainty:
                 techs.battery.costs.monetary.storage_cap: 1
         installation-cost-long-term-storage-power:
             short-name: c_lts_p
-            description: Costs for installing hydrogen power capacity (fuel cell etc.).
+            descriptive-name: Cost of hydrogen power
+            description: Cost of installing hydrogen power capacity (fuel cell etc.).
             min: 1_123_000
             max: 2_100_000
             unit: EUR/MW
@@ -140,7 +147,8 @@ uncertainty:
                 techs.hydrogen.costs.monetary.energy_cap: 1
         installation-cost-long-term-storage-energy:
             short-name: c_lts_e
-            description: Costs for installing hydrogen energy capacity.
+            descriptive-name: Cost of hydrogen energy
+            description: Cost of installing hydrogen energy capacity.
             min: 6_000
             max: 12_000
             unit: EUR/MWh
@@ -151,7 +159,8 @@ uncertainty:
                 techs.hydrogen.costs.monetary.storage_cap: 1
         installation-cost-ntc:
             short-name: c_ntc
-            description: Costs for installing net transfer capacity (high voltage ac transmission).
+            descriptive-name: Cost of transmission
+            description: Cost of installing net transfer capacity (high voltage ac transmission).
             min: 0.7
             max: 1.08
             unit: EUR/MW/m
@@ -162,7 +171,8 @@ uncertainty:
                 techs.ac_transmission.costs.monetary.energy_cap_per_distance: 1
         installation-cost-biofuel:
             short-name: c_bio
-            description: Costs for installing biofuel capacities.
+            descriptive-name: Cost of bioenergy
+            description: Cost of installing biofuel capacities.
             min: 1_380_000
             max: 3_450_000
             unit: EUR/MW
@@ -174,7 +184,8 @@ uncertainty:
                 techs.biofuel.costs.monetary.om_annual: 0.041
         fuel-cost-biofuel: # FIXME actually not independent, but varies together with `availability-biofuel`.
             short-name: c_fuel
-            description: Fuel costs biofuel (includes combustion efficiency and variable generation costs).
+            descriptive-name: Fuel cost bioenergy
+            description: Fuel cost biofuel (includes combustion efficiency and variable generation cost).
             min: 28.12 # includes 3.1 om_gen costs
             max: 33.68 # includes 3.1 om_gen costs
             unit: EUR/MWh
@@ -185,6 +196,7 @@ uncertainty:
                 techs.biofuel.costs.monetary.om_con: 1
         availability-biofuel:
             short-name: a_bio
+            descriptive-name: Availability bioenergy
             description: Interpolation between biofuel potential scenarios.
             min: 0 # represents low availability scenario
             max: 1 # represents high availability scenario

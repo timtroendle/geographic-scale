@@ -204,6 +204,7 @@ rule plot_sobol_indices:
         src = "src/analyse/sobol.py",
         indices_cont_and_nat = "data/{order}-sobol-continental-national.csv",
         indices_reg = "data/{order}-sobol-regional.csv"
+    params: parameters = config["uncertainty"]["parameters"]
     wildcard_constraints:
         order = "((total)|(first)|(total-minus-first))",
         extent = "((all)|(diff))"

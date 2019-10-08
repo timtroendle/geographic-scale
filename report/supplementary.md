@@ -42,7 +42,7 @@ Lastly, we use upper-bound estimates for the potentials for solar and wind gener
 
 # Supplementary Figure 1: Transmission network
 
-![**Possible locations of transmission capacities.** The blue lines visualise the connections between two regions that can hold transmission capacities. The amount of capacities installed on these connections is an output of the optimisation and depends on the considered case.](report/network.png){#fig:network .class}
+![**Possible locations of transmission capacities.** All lines visualise connections between two regions that can hold transmission capacities. International connections are coloured yellow, all others are coloured blue. The amount of capacities installed on these connections is an output of the optimisation and depends on the considered case.](report/network.png){#fig:network .class}
 
 # Supplementary Figure 2: Total Sobol' indices
 

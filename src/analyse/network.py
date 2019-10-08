@@ -8,8 +8,10 @@ import networkx as nx
 GREY = "#EBEBEB"
 RED = "#A01914"
 BLUE = "#4F6DB8"
+YELLOW = "#FABC3C"
 LINEWIDTH = 1.5
 LINECOLOR = BLUE
+INTERNATIONAL_LINE_COLOUR = YELLOW
 EPSG_3035_PROJ4 = "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs "
 
 MAP_MIN_X = 2500000
@@ -65,6 +67,10 @@ def plot_network(units, network_graph, ax):
         network_graph.edges[region, neighbour]["line"]
         for region, neighbour in network_graph.edges
     ], crs=units.crs).plot(ax=ax, linewidth=LINEWIDTH, color=LINECOLOR)
+    gpd.GeoSeries([
+        network_graph.edges[region, neighbour]["line"]
+        for region, neighbour in network_graph.edges if region[:3] != neighbour[:3] # hacky way to detect country code
+    ], crs=units.crs).plot(ax=ax, linewidth=LINEWIDTH, color=INTERNATIONAL_LINE_COLOUR)
 
 
 if __name__ == "__main__":

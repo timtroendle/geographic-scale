@@ -20,8 +20,12 @@ EDGE_COLOR = "white"
 GREEN_PALETTE = sns.light_palette(GREEN, n_colors=6, reverse=True)
 BLUE_PALETTE = sns.light_palette(BLUE, n_colors=6, reverse=True)
 RED_PALETTE = sns.light_palette(RED, n_colors=6, reverse=False)
-RDBU_PALETTE = matplotlib.cm.get_cmap("RdBu_r")
-COLORS = [RDBU_PALETTE(0.1), RDBU_PALETTE(0.35), RDBU_PALETTE(0.65), RDBU_PALETTE(0.9)]
+RED_TO_BLUE = [ # from https://gka.github.io using lighntess correction
+    '#002d6e', '#375aa2', '#6f8ad1', '#a7bffa',
+    '#f5f5f5', '#fdad97', '#e36b55', '#b23125', '#720000'
+]
+RDBU_PALETTE = matplotlib.colors.LinearSegmentedColormap.from_list("signature-BlRd", RED_TO_BLUE)
+COLORS = [RDBU_PALETTE(0.1), RDBU_PALETTE(0.4), RDBU_PALETTE(0.6), RDBU_PALETTE(0.9)]
 
 PATH_TO_FONT_AWESOME = Path(__file__).parent.parent / 'fonts' / 'fa-solid-900.ttf'
 LAYER_UNICODE = "\uf5fd"

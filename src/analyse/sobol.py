@@ -10,8 +10,7 @@ PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
 GREEN = "#679436"
 BLUE = "#4F6DB8"
-GREEN_CMAP = sns.light_palette(GREEN, n_colors=5, reverse=False, as_cmap=True)
-BLUE_CMAP = sns.light_palette(BLUE, n_colors=5, reverse=False, as_cmap=True)
+BLUE_CMAP = sns.light_palette(BLUE, n_colors=10, reverse=False, as_cmap=False)
 HIGHLIGHT_COLOR = "#424242"
 HIGHLIGHT_LINEWIDTH = 4
 CMAP = BLUE_CMAP

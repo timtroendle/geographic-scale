@@ -10,7 +10,11 @@ import matplotlib.pyplot as plt
 
 RED = "#A01914"
 BLUE = "#4F6DB8"
-CMAP = 'RdBu_r'
+RED_TO_BLUE = [ # from https://gka.github.io using lightness correction
+    '#002d6e', '#375aa2', '#6f8ad1', '#a7bffa',
+    '#f5f5f5', '#fdad97', '#e36b55', '#b23125', '#720000'
+]
+CMAP = matplotlib.colors.LinearSegmentedColormap.from_list("signature-BlRd", RED_TO_BLUE)
 NORM = matplotlib.colors.Normalize(vmin=-1, vmax=3)
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"

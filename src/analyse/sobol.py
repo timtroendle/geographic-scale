@@ -35,7 +35,6 @@ DIFFERENCE_ROWS = [
 class PlotData:
     name: str
     data: pd.DataFrame
-    xticklabels: list
     yticklabels: list
     highlight_rows: list = field(default_factory=list)
     highlight_cols: list = field(default_factory=list)
@@ -57,47 +56,38 @@ def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_para
         pd.read_csv(path_to_cont_and_nat_data, header=None).T,
         pd.read_csv(path_to_reg_data, header=None).T
     ])
+    data.columns = uncertain_parameters
+    data = data[data.iloc[3].T.sort_values(ascending=False).index] # sort index by relevance
+
     return [
         PlotData(
             name="a – Continental scale",
             data=data.iloc[[0, 7, 9, 11, 13, 15]],
-            yticklabels=ROWS,
-            xticklabels=uncertain_parameters
+            yticklabels=ROWS
         ),
         PlotData(
             name="b – National scale",
             data=data.iloc[[1, 8, 10, 12, 14, 16]],
-            yticklabels=ROWS,
-            xticklabels=uncertain_parameters
+            yticklabels=ROWS
         ),
         PlotData(
             name="c – Regional scale",
             data=data.iloc[[18, 19, 20, 21, 22, 23]],
-            yticklabels=ROWS,
-            xticklabels=uncertain_parameters
+            yticklabels=ROWS
         ),
         PlotData(
             name="d – Relative difference between continental and national scales",
             data=data.iloc[[3, 4, 5, 6]],
-            yticklabels=DIFFERENCE_ROWS,
-            xticklabels=uncertain_parameters
+            yticklabels=DIFFERENCE_ROWS
         )
     ]
 
 
 def prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters):
-    data = pd.concat([
-        pd.read_csv(path_to_cont_and_nat_data, header=None).T,
-        pd.read_csv(path_to_reg_data, header=None).T
-    ])
-    return [
-        PlotData(
-            name="Relative difference between continental and national scales",
-            data=data.iloc[[3, 4, 5, 6]],
-            yticklabels=DIFFERENCE_ROWS,
-            xticklabels=uncertain_parameters
-        )
-    ]
+    all_data = prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters)
+    data = all_data[-1]
+    data.name = "Relative difference between continental and national scales"
+    return [data]
 
 
 def plot_all_data(plot_datas):
@@ -125,8 +115,7 @@ def plot_all_data(plot_datas):
             cbar=cbar,
             cbar_ax=cbar_ax,
             cmap=CMAP,
-            yticklabels=plot_data.yticklabels,
-            xticklabels=plot_data.xticklabels
+            yticklabels=plot_data.yticklabels
         )
         axes[i].annotate(
             plot_data.name,
@@ -179,8 +168,7 @@ def plot_diff_data(plot_datas):
             cbar=cbar,
             cbar_ax=cbar_ax,
             cmap=CMAP,
-            yticklabels=plot_data.yticklabels,
-            xticklabels=plot_data.xticklabels
+            yticklabels=plot_data.yticklabels
         )
         ax.annotate(
             plot_data.name,

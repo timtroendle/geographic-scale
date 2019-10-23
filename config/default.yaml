@@ -52,7 +52,7 @@ uncertainty:
     parameters:
         discount-rate:
             short-name: d_r
-            descriptive-name: Depreciation rate
+            descriptive-name: Discount rate
             description: System- and sector-wide discount rate of investments.
             min: 0.016
             max: 0.138

@@ -77,7 +77,7 @@ h1:first-child, h2:first-child, h3:first-child, h4:first-child {
 
 p.author {
     font-style: italic;
-    font-size: smaller;
+    font-size: 85%; /* used to be: smaller */
     line-height: .3em;
 }
 
@@ -185,7 +185,7 @@ li>p+p {
 }
 
 form, legend, label {
-    font-size: smaller;
+    font-size: 85%; /* used to be: smaller */
     line-height: 18px
 }
 
@@ -234,7 +234,7 @@ table {
     border-bottom: solid 1px #000;
     margin-top: 18px;
     width: 100%;
-    font-size: smaller;
+    font-size: 85%; /* used to be: smaller */
 }
 
 table th, table td {

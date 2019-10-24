@@ -1,0 +1,35 @@
+sheet	col	row	longname	input	keystrokes	comment
+			open-file	build-by-euler/output/national/aggregation.nc	o	
+aggregation		7	dive-row		^J	
+cost	tech_group		freq-col		F	
+cost_tech_group_freq		キsupply	select-row		s	
+cost_tech_group_freq		キstorage	select-row		s	
+cost_tech_group_freq		キsupply_plus	select-row		s	
+cost_tech_group_freq		キtransmission	select-row		s	
+cost_tech_group_freq			quit-sheet		q	
+cost			dup-selected		"	
+cost_selectedref	scenario		key-col		!	
+cost_selectedref	techs		key-col		!	
+cost_selectedref	cost		aggregate-col	sum	+	
+cost_selectedref			freq-keys		gF	
+cost_selectedref_scenario-techs_freq			sheets		S	
+sheets	name	キcost_selectedref_scenario-techs_freq	edit-cell	agg_cost	e	
+sheets		キaggregation	open-row		^J	
+aggregation		2	dive-row		^J	
+carrier_prod	tech_group		freq-col		F	
+carrier_prod_tech_group_freq		キsupply	select-row		s	
+carrier_prod_tech_group_freq		キstorage	select-row		s	
+carrier_prod_tech_group_freq		キsupply_plus	select-row		s	
+carrier_prod_tech_group_freq		キtransmission	select-row		s	
+carrier_prod_tech_group_freq			quit-sheet		q	
+carrier_prod			dup-selected		"	
+carrier_prod_selectedref	carrier_prod		aggregate-col	sum	+	
+carrier_prod_selectedref	scenario		key-col		!	
+carrier_prod_selectedref	techs		key-col		!	
+carrier_prod_selectedref			freq-keys		gF	
+carrier_prod_selectedref_scenario-techs_freq			sheets		S	
+sheets	name	キcarrier_prod_selectedref_scenario-techs_freq	edit-cell	agg_gen	e	
+sheets		キagg_gen	select-row		s	
+sheets		キagg_cost	select-row		s	
+sheets			join-sheets	inner	&	
+agg_gen+agg_cost	sum_cost		addcol-expr	sum_cost/sum_carrier_prod	=	

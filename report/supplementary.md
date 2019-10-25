@@ -20,13 +20,23 @@ This document contains supplementary information for:
 
 Tim Tröndle, Johan Lilliestam, Stefano Marelli and Stefan Pfenninger (YEAR). Cost and design of fully renewable electricity supply on continental, national, and regional scales in Europe. DOI: XXXXXXXXXXXXX
 
+<div class="pagebreak"> </div>
+
 # Supplementary Note 1: Code and data availability
 
 The code and reproducible workflow used to perform this analysis is available online TODO ADD.
 
 Furthermore, the resulting data is available online as well TODO ADD.
 
-# Supplementary Note 2: Effect of model simplifications
+# Supplementary Note 2: Effect of hydropower model choices on our results
+
+The way in which we model hydropower generation in Europe leads to peculiarities in results on the regional scale. Here, we find the lowest and the highest system cost in regions with large hydropower installations. These cost peculiarities are consequences of two model design choices: we keep hydropower capacities fixed at today's level and we assume they are amortised. In the following, we justify these two model design choices and discuss their relevance for our results.
+
+We assume hydropower capacities are amortised to avoid the need to model overnight cost. Overnight cost of hydropower capacities can vary strongly between projects and are thus difficult to model. Ignoring overnight cost can lead to low levelised cost of electricity in regions with large hydropower capacities. Cost is particularly low when dams provide local flexibility and other forms of more expensive flexibility provision can be avoided. Thus, our model choice leads to low cost in some regions and it also leads to slightly optimistic absolute system cost. But because we fix capacities to current levels for all Europe in all cases, the ignored overnight cost imply no benefit to any case and thus do not affect relative cost.
+
+We fix hydropower capacities to current levels because significant capacity expansion in Europe is unlikely[@LacalArantegui:2014]. In regions in which hydropower generation exceeds local electricity demand largely, this model choice can lead to high cost in the regional-scale case. However, on average, the impact is small. While on the continental scale levelised cost of electricity of hydropower ranges from 31 to 55 EUR per MWh, it ranges from 33 to 61 EUR per MWh on the regional scale. In fact, 35% of the hydropower potential on the regional scale is curtailed. This corresponds to 2% of total electricity system cost. Thus, if we allowed for capacity reduction on the regional scale, its cost could reduce by up to 2%. This magnitude has no significant affect on our main results.
+
+# Supplementary Note 3: Effect of model simplifications
 
 There are four aspects which our analysis does not consider and which may impact our findings. Some are likely to increase attractiveness of small-scale systems, others are likely to increase attractiveness of large-scale systems.
 
@@ -38,37 +48,29 @@ We also do not model the distribution grid in any way. The cost of the distribut
 
 Lastly, we use upper-bound estimates for the potentials for solar and wind generation in our analysis, which is beneficial for systems with smaller scales. We use rather vast technical potentials which are likely not fully achievable[@Trondle:2019]. Considering social restrictions would likely lead to smaller potentials for open field photovoltaics and thus the need to install capacities on rooftops. This would increase cost especially for small-scale systems which rely more strongly on solar electricity. Furthermore, applying any restrictions on our upper-bound potential estimates would result in less regions able to cover demand locally with renewable electricity. It would thus create the need for these regions to enlarge their electricity grid and connect with neighbouring regions. Of course, this effect would be even more pronounced should the heat and transports sectors be coupled to the electricity sector.
 
-# Supplementary Note 3: Affect of hydropower model choices on our results
-
-The way in which we model hydropower generation in Europe leads to peculiarities in results on the regional scale. Here, we find the lowest and the highest system cost in regions with large hydropower installations. These cost peculiarities are consequences of two model design choices: we keep hydropower capacities fixed at today's level and we assume they are amortised. In the following, we justify these two model design choices and discuss their relevance for our results.
-
-We assume hydropower capacities are amortised to avoid the need to model overnight cost. Overnight cost of hydropower capacities can vary strongly between projects and are thus difficult to model. Ignoring overnight cost can lead to low levelised cost of electricity in regions with large hydropower capacities. Cost is particularly low when dams provide local flexibility and other forms of more expensive flexibility provision can be avoided. Thus, our model choice leads to low cost in some regions and it also leads to slightly optimistic absolute system cost. But because we fix capacities to current levels for all Europe in all cases, the ignored overnight cost imply no benefit to any case and thus do not affect relative cost.
-
-We fix hydropower capacities to current levels because significant capacity expansion in Europe is unlikely[@LacalArantegui:2014]. In regions in which hydropower generation exceeds local electricity demand largely, this model choice can lead to high cost in the regional-scale case. However, on average, the impact is small. While on the continental scale levelised cost of electricity of hydropower ranges from 31 to 55 EUR per MWh, it ranges from 33 to 61 EUR per MWh on the regional scale. In fact, 35% of the hydropower potential on the regional scale is curtailed. This corresponds to 2% of total electricity system cost. Thus, if we allowed for capacity reduction on the regional scale, its cost could reduce by up to 2%. This magnitude has no significant affect on our main results.
-
 <div class="pagebreak"> </div>
 
-# Supplementary Figure 1: Transmission network
-
-![**Possible locations of transmission capacities.** All lines visualise connections between two regions that can hold transmission capacities. International connections are coloured yellow, all others are coloured blue. The amount of capacities installed on these connections is an output of the optimisation and depends on the considered case.](report/network.png){#fig:network .class}
-
-<div class="pagebreak"> </div>
-
-# Supplementary Figure 2: Total Sobol' indices
+# Supplementary Figure 1: Total Sobol' indices
 
 ![**Total Sobol' indices for combinations of all considered input uncertainties and selected model outputs of continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/total-sobol-all.png){#fig:total-sobol .class}
 
 <div class="pagebreak"> </div>
 
-# Supplementary Figure 3: First-order Sobol' indices
+# Supplementary Figure 2: First-order Sobol' indices
 
 ![**First-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/first-sobol-all.png){#fig:first-sobol .class}
 
 <div class="pagebreak"> </div>
 
-# Supplementary Figure 4: Difference Sobol' indices
+# Supplementary Figure 3: Difference Sobol' indices
 
 ![**Total minus first-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/total-minus-first-sobol-all.png){#fig:higher-sobol .class}
+
+<div class="pagebreak"> </div>
+
+# Supplementary Figure 4: Transmission network
+
+![**Possible locations of transmission capacities.** All lines visualise connections between two regions that can hold transmission capacities. International connections are coloured yellow, all others are coloured blue. The amount of capacities installed on these connections is an output of the optimisation and depends on the considered case.](report/network.png){#fig:network .class}
 
 <div class="pagebreak"> </div>
 
@@ -78,13 +80,13 @@ We fix hydropower capacities to current levels because significant capacity expa
 
 <div class="pagebreak"> </div>
 
-# Supplementary Table 1: Biomass feedstocks
+# Supplementary Table 1: Input parameter uncertainty
 
 ```table
 ---
-caption: 'Biomass feedstocks we consider, together with the proxy we use to derive regional from national values. {#tbl:biomass-feedstocks}'
-alignment: LR
-include: biofuel-feedstocks.csv
+caption: 'Uncertain input parameters. For all parameters we assume a uniform distribution. {#tbl:overview-uncertain-parameters}'
+alignment: LLLLLL
+include: report/overview-uncertain-parameters.csv
 include-encoding: UTF-8
 markdown: True
 ---
@@ -92,21 +94,7 @@ markdown: True
 
 <div class="pagebreak"> </div>
 
-# Supplementary Table 2: Technology cost assumptions
-
-```table
----
-caption: 'Assumptions on technology cost. ^AC transmission overnight cost is given in €/kW/1000km {#tbl:overview-cost-assumptions}'
-alignment: LRRRRRR
-include: report/overview-cost-assumptions.csv
-include-encoding: UTF-8
-markdown: True
----
-```
-
-<div class="pagebreak"> </div>
-
-# Supplementary Table 3: Generation and storage capacities
+# Supplementary Table 2: Generation and storage capacities
 
 ```table
 ---
@@ -120,7 +108,7 @@ markdown: True
 
 <div class="pagebreak"> </div>
 
-# Supplementary Table 4: Transmission capacities
+# Supplementary Table 3: Transmission capacities
 
 ```table
 ---
@@ -134,13 +122,27 @@ markdown: True
 
 <div class="pagebreak"> </div>
 
-# Supplementary Table 5: Input parameter uncertainty
+# Supplementary Table 4: Biomass feedstocks
 
 ```table
 ---
-caption: 'Uncertain input parameters. For all parameters we assume a uniform distribution. {#tbl:overview-uncertain-parameters}'
-alignment: LLLLLL
-include: report/overview-uncertain-parameters.csv
+caption: 'Biomass feedstocks we consider, together with the proxy we use to derive regional from national values. {#tbl:biomass-feedstocks}'
+alignment: LR
+include: biofuel-feedstocks.csv
+include-encoding: UTF-8
+markdown: True
+---
+```
+
+<div class="pagebreak"> </div>
+
+# Supplementary Table 5: Technology cost assumptions
+
+```table
+---
+caption: 'Assumptions on technology cost. ^AC transmission overnight cost is given in €/kW/1000km {#tbl:overview-cost-assumptions}'
+alignment: LRRRRRR
+include: report/overview-cost-assumptions.csv
 include-encoding: UTF-8
 markdown: True
 ---

@@ -46,25 +46,37 @@ We assume hydropower capacities are amortised to avoid the need to model overnig
 
 We fix hydropower capacities to current levels because significant capacity expansion in Europe is unlikely[@LacalArantegui:2014]. In regions in which hydropower generation exceeds local electricity demand largely, this model choice can lead to high cost in the regional-scale case. However, on average, the impact is small. While on the continental scale levelised cost of electricity of hydropower ranges from 31 to 55 EUR per MWh, it ranges from 33 to 61 EUR per MWh on the regional scale. In fact, 35% of the hydropower potential on the regional scale is curtailed. This corresponds to 2% of total electricity system cost. Thus, if we allowed for capacity reduction on the regional scale, its cost could reduce by up to 2%. This magnitude has no significant affect on our main results.
 
+<div class="pagebreak"> </div>
+
 # Supplementary Figure 1: Transmission network
 
 ![**Possible locations of transmission capacities.** All lines visualise connections between two regions that can hold transmission capacities. International connections are coloured yellow, all others are coloured blue. The amount of capacities installed on these connections is an output of the optimisation and depends on the considered case.](report/network.png){#fig:network .class}
+
+<div class="pagebreak"> </div>
 
 # Supplementary Figure 2: Total Sobol' indices
 
 ![**Total Sobol' indices for combinations of all considered input uncertainties and selected model outputs of continental-, national-, and regional-scale electricity systems.** Total Sobol' indices  determine the magnitude with which the variability of one model input explains the variability of one model output given assumptions on input variability. The x-axis comprises all twelve input parameters whose uncertainty we consider. **a,** Sobol' indices of input parameters considering total system cost and total installed capacities of the continental-scale system. **b,** Sobol' indices of input parameters considering total system cost and total installed capacities of the national-scale system. **c,** Sobol' indices of input parameters considering total system cost and total installed capacities of the regional-scale system. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. Framed Sobol' indices are referenced in the text.](report/total-sobol-all.png){#fig:total-sobol .class}
 
+<div class="pagebreak"> </div>
+
 # Supplementary Figure 3: First-order Sobol' indices
 
 ![**First-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of continental-, national-, and regional-scale electricity systems.** First-order Sobol' indices determine the magnitude with which the variability of one model input explains the variability of one model output given assumptions on input variability. The x-axis comprises all twelve input parameters whose uncertainty we consider. **a,** Sobol' indices of input parameters considering total system cost and total installed capacities of the continental-scale system. **b,** Sobol' indices of input parameters considering total system cost and total installed capacities of the national-scale system. **c,** Sobol' indices of input parameters considering total system cost and total installed capacities of the regional-scale system. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. Framed Sobol' indices are referenced in the text.](report/first-sobol-all.png){#fig:first-sobol .class}
 
-# Supplementary Figure 4: Total minus first-order Sobol' indices
+<div class="pagebreak"> </div>
+
+# Supplementary Figure 4: Difference Sobol' indices
 
 ![**Total minus first-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of continental-, national-, and regional-scale electricity systems.** Total minus first-order Sobol' indices determine the magnitude with which the variability of one model input explains the variability of one model output given assumptions on input variability. The x-axis comprises all twelve input parameters whose uncertainty we consider. **a,** Sobol' indices of input parameters considering total system cost and total installed capacities of the continental-scale system. **b,** Sobol' indices of input parameters considering total system cost and total installed capacities of the national-scale system. **b,** Sobol' indices of input parameters considering total system cost and total installed capacities of the regional-scale system. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. Framed Sobol' indices are referenced in the text.](report/total-minus-first-sobol-all.png){#fig:higher-sobol .class}
+
+<div class="pagebreak"> </div>
 
 # Supplementary Figure 5: Distribution of time series across regions
 
 ![**Distribution of time series for all regions of the regional-scale electricity system. a,b,c,d,e,f,** Distribution of time series for all regions with low flexibility cost (combined cost of bioenergy, hydrogen, and battery storage) (**a,b,c**) and all regions whose flexibility cost lies within the highest decile (**d,e,f**). **a,b,** Combined wind and solar weekly generation potential time series relative to local demand. Seasonal fluctuations are more pronounced for the case with higher cost due to higher shares of solar electricity. Regions with high solar shares are often urban regions with low or no wind potential. **c,d,** Weekly generation time series from biomass combustion relative to demand. Generation has a more pronounced seasonality and is generally larger in regions with higher flexibility cost. **e,f,** Weekly time series of hydrogen storage levels relative to installed storage capacity. In regions with higher cost, hydrogen storage is used primarily to balance seasonal fluctuations, instead of balancing fluctuations within weeks or months as it is done for lower cost regions, leading to fewer storage cycles and higher cost.](report/timeseries.png){#fig:timeseries .class}
+
+<div class="pagebreak"> </div>
 
 # Supplementary Table 1: Biomass feedstocks
 
@@ -78,6 +90,8 @@ markdown: True
 ---
 ```
 
+<div class="pagebreak"> </div>
+
 # Supplementary Table 2: Technology cost assumptions
 
 ```table
@@ -89,6 +103,8 @@ include-encoding: UTF-8
 markdown: True
 ---
 ```
+
+<div class="pagebreak"> </div>
 
 # Supplementary Table 3: Generation and storage capacities
 
@@ -102,6 +118,8 @@ markdown: True
 ---
 ```
 
+<div class="pagebreak"> </div>
+
 # Supplementary Table 4: Transmission capacities
 
 ```table
@@ -114,6 +132,8 @@ markdown: True
 ---
 ```
 
+<div class="pagebreak"> </div>
+
 # Supplementary Table 5: Input parameter uncertainty
 
 ```table
@@ -125,5 +145,7 @@ include-encoding: UTF-8
 markdown: True
 ---
 ```
+
+<div class="pagebreak"> </div>
 
 # Supplementary References

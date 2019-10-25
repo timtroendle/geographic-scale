@@ -15,7 +15,7 @@ HIGHLIGHT_COLOR = "#424242"
 HIGHLIGHT_LINEWIDTH = 4
 CMAP = BLUE_CMAP
 
-ROWS = [
+OUTPUTS = [
     "System cost (€)",
     "Solar (MW)",
     "Wind (MW)",
@@ -23,7 +23,7 @@ ROWS = [
     "Storage (MW)",
     "Storage (MWh)"
 ]
-DIFFERENCE_ROWS = [
+DIFF_OUTPUTS = [
     "System cost",
     "Total supply",
     "Wind capacity",
@@ -35,9 +35,9 @@ DIFFERENCE_ROWS = [
 class PlotData:
     name: str
     data: pd.DataFrame
-    yticklabels: list
     highlight_rows: list = field(default_factory=list)
     highlight_cols: list = field(default_factory=list)
+    ax: plt.Axes = None
 
 
 def sobol(path_to_cont_and_nat_data, path_to_reg_data, all_data, parameters, path_to_plot):
@@ -46,8 +46,8 @@ def sobol(path_to_cont_and_nat_data, path_to_reg_data, all_data, parameters, pat
         plot_datas = prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters)
         fig = plot_all_data(plot_datas)
     else:
-        plot_datas = prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters)
-        fig = plot_diff_data(plot_datas)
+        plot_data = prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters)
+        fig = plot_diff_data(plot_data)
     fig.savefig(path_to_plot, dpi=600)
 
 
@@ -55,109 +55,59 @@ def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_para
     data = pd.concat([
         pd.read_csv(path_to_cont_and_nat_data, header=None).T,
         pd.read_csv(path_to_reg_data, header=None).T
-    ])
+    ], ignore_index=True)
     data.columns = uncertain_parameters
-    data = data[data.iloc[3].T.sort_values(ascending=False).index] # sort index by relevance
 
     return [
         PlotData(
             name="a – Continental scale",
-            data=data.iloc[[0, 7, 9, 11, 13, 15]],
-            yticklabels=ROWS
+            data=data.iloc[[0, 7, 9, 11, 13, 15]].set_index(pd.Index(OUTPUTS)).T,
         ),
         PlotData(
             name="b – National scale",
-            data=data.iloc[[1, 8, 10, 12, 14, 16]],
-            yticklabels=ROWS
+            data=data.iloc[[1, 8, 10, 12, 14, 16]].set_index(pd.Index(OUTPUTS)).T,
         ),
         PlotData(
             name="c – Regional scale",
-            data=data.iloc[[18, 19, 20, 21, 22, 23]],
-            yticklabels=ROWS
+            data=data.iloc[[18, 19, 20, 21, 22, 23]].set_index(pd.Index(OUTPUTS)).T,
         ),
         PlotData(
             name="d – Relative difference between continental and national scales",
-            data=data.iloc[[3, 4, 5, 6]],
-            yticklabels=DIFFERENCE_ROWS
+            data=data.iloc[[3, 4, 5, 6]].set_index(pd.Index(DIFF_OUTPUTS)),
         )
     ]
 
 
 def prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters):
-    all_data = prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters)
-    data = all_data[-1]
-    data.name = "Relative difference between continental and national scales"
-    return [data]
+    all_plot_datas = prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters)
+    plot_data = all_plot_datas[-1]
+    plot_data.data = plot_data.data[plot_data.data.iloc[0].T.sort_values(ascending=False).index] # sort index by relevance
+    plot_data.name = "Relative difference between continental and national scales"
+    return plot_data
 
 
 def plot_all_data(plot_datas):
     sns.set_context("paper")
-    fig = plt.figure(figsize=(8, 12.5))
+    fig = plt.figure(figsize=(8, 9))
     axes = fig.subplots(
-        nrows=len(plot_datas),
-        ncols=1,
-        sharex=True,
-        sharey=False,
-        gridspec_kw={'height_ratios': [len(plot_data.data.index) for plot_data in plot_datas]}
+        nrows=2,
+        ncols=3,
+        sharex=False,
+        sharey=True,
+        gridspec_kw={'height_ratios': [20, 10]}
     )
-    fig.subplots_adjust(right=0.9)
-    cbar_ax = fig.add_axes([0.9, 0.25, 0.015, 0.65])
+    cbar_ax = fig.add_axes([0.925, 0.25, 0.015, 0.65])
+    gs = axes[1, 0].get_gridspec()
+    plot_datas[0].ax = axes[0][0]
+    plot_datas[1].ax = axes[0][1]
+    plot_datas[2].ax = axes[0][2]
+    for ax in axes[1, :]:
+        ax.remove()
+    plot_datas[3].ax = fig.add_subplot(gs[1, :])
 
     for i, plot_data in enumerate(plot_datas):
         cbar = True if i == 0 else False
-        sns.heatmap(
-            plot_data.data,
-            ax=axes[i],
-            vmin=0,
-            vmax=1,
-            square=True,
-            linewidth=0.75,
-            cbar=cbar,
-            cbar_ax=cbar_ax,
-            cmap=CMAP,
-            yticklabels=plot_data.yticklabels
-        )
-        axes[i].annotate(
-            plot_data.name,
-            xy=[0, 1 + 0.05 * 6 / len(plot_data.data.index)],
-            xycoords='axes fraction',
-            fontsize=PANEL_FONT_SIZE,
-            weight=PANEL_FONT_WEIGHT
-        )
-
-        for (row, column) in product(plot_data.highlight_rows, plot_data.highlight_cols):
-            axes[i].add_patch(
-                Rectangle(
-                    (row + 0.04, column + 0.04),
-                    0.92,
-                    0.92,
-                    fill=False,
-                    edgecolor=HIGHLIGHT_COLOR,
-                    lw=HIGHLIGHT_LINEWIDTH
-                )
-            )
-        axes[i].xaxis.set_tick_params(bottom=False)
-        axes[i].yaxis.set_tick_params(left=False)
-    fig.tight_layout(rect=[0, 0, 0.95, 1])
-    return fig
-
-
-def plot_diff_data(plot_datas):
-    assert len(plot_datas) == 1
-    sns.set_context("paper")
-    fig = plt.figure(figsize=(8, 4))
-    ax = fig.subplots(
-        nrows=len(plot_datas),
-        ncols=1,
-        sharex=True,
-        sharey=False,
-        gridspec_kw={'height_ratios': [len(plot_data.data.index) for plot_data in plot_datas]}
-    )
-    fig.subplots_adjust(right=0.6, bottom=0.26)
-    cbar_ax = fig.add_axes([0.9, 0.25, 0.015, 0.65])
-
-    for i, plot_data in enumerate(plot_datas):
-        cbar = True if i == 0 else False
+        ax = plot_data.ax
         sns.heatmap(
             plot_data.data,
             ax=ax,
@@ -167,8 +117,7 @@ def plot_diff_data(plot_datas):
             linewidth=0.75,
             cbar=cbar,
             cbar_ax=cbar_ax,
-            cmap=CMAP,
-            yticklabels=plot_data.yticklabels
+            cmap=CMAP
         )
         ax.annotate(
             plot_data.name,
@@ -177,20 +126,42 @@ def plot_diff_data(plot_datas):
             fontsize=PANEL_FONT_SIZE,
             weight=PANEL_FONT_WEIGHT
         )
-
-        for (row, column) in product(plot_data.highlight_rows, plot_data.highlight_cols):
-            ax.add_patch(
-                Rectangle(
-                    (row + 0.04, column + 0.04),
-                    0.92,
-                    0.92,
-                    fill=False,
-                    edgecolor=HIGHLIGHT_COLOR,
-                    lw=HIGHLIGHT_LINEWIDTH
-                )
-            )
         ax.xaxis.set_tick_params(bottom=False)
         ax.yaxis.set_tick_params(left=False)
+    fig.tight_layout(h_pad=0.7, rect=[0, 0, 0.9, 1])
+    plot_datas[0].ax.invert_yaxis() # not sure why this is necessary; looks like a matplotlib bug
+    plot_datas[1].ax.invert_yaxis()
+    return fig
+
+
+def plot_diff_data(plot_data):
+    sns.set_context("paper")
+    fig = plt.figure(figsize=(8, 4))
+    ax = fig.subplots(nrows=1, ncols=1)
+    fig.subplots_adjust(right=0.6, bottom=0.26)
+    cbar_ax = fig.add_axes([0.9, 0.25, 0.015, 0.65])
+
+    sns.heatmap(
+        plot_data.data,
+        ax=ax,
+        vmin=0,
+        vmax=1,
+        square=True,
+        linewidth=0.75,
+        cbar=True,
+        cbar_ax=cbar_ax,
+        cmap=CMAP,
+    )
+    ax.annotate(
+        plot_data.name,
+        xy=[0, 1 + 0.05 * 6 / len(plot_data.data.index)],
+        xycoords='axes fraction',
+        fontsize=PANEL_FONT_SIZE,
+        weight=PANEL_FONT_WEIGHT
+    )
+
+    ax.xaxis.set_tick_params(bottom=False)
+    ax.yaxis.set_tick_params(left=False)
     fig.tight_layout(rect=[0, 0, 0.95, 1])
     return fig
 

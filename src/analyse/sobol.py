@@ -1,9 +1,7 @@
 from dataclasses import dataclass, field
-from itertools import product
 
 import seaborn as sns
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
 import pandas as pd
 
 PANEL_FONT_SIZE = 10

@@ -70,7 +70,7 @@ rule report:
         "report/report.md",
         "report/pandoc-metadata.yml",
         "build/output/{resolution}/report/total-sobol-diff.png",
-        "build/output/{resolution}/report/scenario-space.png",
+        "build/output/{resolution}/report/cost.png",
         "build/output/{resolution}/report/map-cost.png",
         "build/output/{resolution}/report/map-energy.png",
         "build/output/{resolution}/report/flows.png",

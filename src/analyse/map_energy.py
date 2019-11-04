@@ -37,8 +37,6 @@ MAP_MIN_Y = 1400000
 MAP_MAX_X = 6600000
 MAP_MAX_Y = 5500000
 
-SCENARIO = "continental-autarky-100-continental-grid"
-LAYER = "Continental"
 SUPPLY_TECHS = [
     'wind_onshore_monopoly', 'biofuel',
     'roof_mounted_pv', 'hydro_reservoir', 'wind_offshore',
@@ -53,19 +51,20 @@ class PlotData:
     shapes: gpd.GeoDataFrame
     column: str
     panel_id: str
+    scale: str
     name: str
     legend_title: str
     bins: list = field(default_factory=list)
     labels: list = field(default_factory=list)
 
 
-def create_map(path_to_shapes, connected_regions, path_to_aggregated_results, path_to_plot):
-    plot_datas = prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions)
+def create_map(path_to_shapes, connected_regions, scenario, path_to_aggregated_results, path_to_plot):
+    plot_datas = prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions, scenario)
     fig = plot_data(plot_datas)
     fig.savefig(path_to_plot, dpi=600)
 
 
-def prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions):
+def prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions, scenario):
     shapes = (
         gpd
         .read_file(path_to_shapes)
@@ -73,7 +72,7 @@ def prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions):
         .set_index("id")
         .rename(index=lambda idx: idx.replace(".", "-"))
     )
-    results = xr.open_dataset(path_to_aggregated_results).sel(scenario=SCENARIO)
+    results = xr.open_dataset(path_to_aggregated_results).sel(scenario=scenario)
     rel_gen = (
         postprocess_combined_regions(results.carrier_prod.sel(techs=SUPPLY_TECHS).sum("techs"), connected_regions)
         / postprocess_combined_regions(-results.carrier_con.sel(techs=DEMAND_TECH), connected_regions)
@@ -89,21 +88,27 @@ def prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions):
             shapes=shapes,
             column="rel_gen",
             panel_id="a",
+            scale=scale(scenario),
             name="Generation",
             legend_title="Generation relative to demand",
-            bins=[0.1, 1, 50],
+            bins=[0.1, 3, 50],
             labels=["≤ 0.1", "0.1 - 3", "3 - 50", "≥ 50"]
         ),
         PlotData(
             shapes=shapes,
             column="rel_trans",
             panel_id="b",
+            scale=scale(scenario),
             name="Transmission",
             legend_title="Transmission relative to demand",
             bins=[0.1, 3, 50],
             labels=["≤ 0.1", "0.1 - 3", "3 - 50", "≥ 50"]
         ),
     ]
+
+
+def scale(scenario_name):
+    return scenario_name.split("-")[-2].capitalize()
 
 
 def plot_data(plot_datas):
@@ -149,7 +154,7 @@ def plot_map(ax, plot_data):
         fontproperties=matplotlib.font_manager.FontProperties(fname=PATH_TO_FONT_AWESOME.as_posix()),
         color="black"
     )
-    ax.annotate(LAYER, xy=[0.2, 0.95], xycoords='axes fraction')
+    ax.annotate(plot_data.scale, xy=[0.2, 0.95], xycoords='axes fraction')
     ax.annotate(plot_data.name, xy=[0.2, 0.90], xycoords='axes fraction')
     ax.annotate(plot_data.panel_id, xy=[0.05, 0.95], xycoords='axes fraction',
                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
@@ -203,5 +208,6 @@ if __name__ == "__main__":
         path_to_shapes=snakemake.input.shapes,
         path_to_aggregated_results=snakemake.input.results,
         connected_regions=snakemake.params.connected_regions,
+        scenario=snakemake.wildcards.scenario,
         path_to_plot=snakemake.output[0]
     )

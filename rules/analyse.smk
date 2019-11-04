@@ -117,9 +117,17 @@ rule plot_map_energy:
         results = rules.time_aggregated_results.output[0]
     params:
         connected_regions = config["connected-regions"]
-    output: "build/output/{resolution}/map-energy.png"
+    output: "build/output/{resolution}/map-energy-{scenario}.png"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/map_energy.py"
+
+
+rule map_energy_for_report:
+    message: "Copy map for report."
+    input: "build/output/{resolution}/map-energy-continental-autarky-100-continental-grid.png"
+    output: "build/output/{resolution}/report/map-energy.png"
+    conda: "../envs/default.yaml"
+    shell: "ln {input} {output}"
 
 
 rule plot_network_map:

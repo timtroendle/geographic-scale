@@ -1,20 +1,70 @@
 """Collect time aggregated results."""
+from dataclasses import dataclass
 from pathlib import Path
 
 import calliope
 import geopandas as gpd
 import xarray as xr
 
-VARIABLE_SCALING_FACTOR = {
-    "energy_cap": lambda sf: 1 / sf["power"],
-    "storage_cap": lambda sf: 1 / sf["power"],
-    "carrier_prod": lambda sf: 1 / sf["power"],
-    "carrier_con": lambda sf: 1 / sf["power"],
-    "total_levelised_cost": lambda sf: sf["power"] / sf["monetary"],
-    "capacity_factor": lambda sf: 1,
-    "resource": lambda sf: 1,
-    "cost": lambda sf: 1 / sf["monetary"]
-}
+
+@dataclass
+class Variable:
+    name: str
+    scaling_factor: callable
+    unit: str
+    description: str
+
+
+VARIABLES = [
+    Variable(
+        name="energy_cap",
+        scaling_factor=lambda sf: 1 / sf["power"],
+        unit="MW",
+        description="installed capacity"
+    ),
+    Variable(
+        name="storage_cap",
+        scaling_factor=lambda sf: 1 / sf["power"],
+        unit="MWh",
+        description="installed storage capacity"
+    ),
+    Variable(
+        name="carrier_prod",
+        scaling_factor=lambda sf: 1 / sf["power"],
+        unit="MWh",
+        description="generated electricity"
+    ),
+    Variable(
+        name="carrier_con",
+        scaling_factor=lambda sf: 1 / sf["power"],
+        unit="MWh",
+        description="consumed electricity"
+    ),
+    Variable(
+        name="total_levelised_cost",
+        scaling_factor=lambda sf: sf["power"] / sf["monetary"],
+        unit="EUR/MWh",
+        description="total levelised cost"
+    ),
+    Variable(
+        name="capacity_factor",
+        scaling_factor=lambda sf: 1,
+        unit="-",
+        description="capacity factors of supply, storage, and transmission"
+    ),
+    Variable(
+        name="resource",
+        scaling_factor=lambda sf: 1,
+        unit="-",
+        description="resource that technology is based upon"
+    ),
+    Variable(
+        name="cost",
+        scaling_factor=lambda sf: 1 / sf["monetary"],
+        unit="EUR",
+        description="technology cost"
+    )
+]
 
 
 def excavate_all_results(paths_to_scenarios, path_to_units, scaling_factors, path_to_output):
@@ -30,8 +80,8 @@ def excavate_all_results(paths_to_scenarios, path_to_units, scaling_factors, pat
                 .to_xarray())
     exporter = CalliopeExporter(scenarios, units, scaling_factors)
     ds = xr.Dataset({
-        variable_name: exporter(variable_name)
-        for variable_name in VARIABLE_SCALING_FACTOR.keys()
+        variable.name: exporter(variable)
+        for variable in VARIABLES
     })
     ds.coords["country_code"] = units.country_code
     ds.coords["tech_group"] = list(scenarios.values())[0].get_formatted_array("inheritance")
@@ -46,16 +96,16 @@ class CalliopeExporter:
         self.__units = units
         self.__scaling_factors = scaling_factors
 
-    def __call__(self, variable_name):
-        if variable_name not in VARIABLE_SCALING_FACTOR.keys():
-            raise ValueError(f"Unknown variable name: {variable_name}.")
+    def __call__(self, variable):
+        if variable not in VARIABLES:
+            raise ValueError(f"Unknown variable: {variable}.")
         return xr.concat([
-            self._read(model, variable_name).expand_dims(scenario=[name], axis=0)
+            self._read(model, variable).expand_dims(scenario=[name], axis=0)
             for name, model in self.__scenarios.items()
         ], dim="scenario")
 
-    def _read(self, model, variable_name):
-        data = model.get_formatted_array(variable_name)
+    def _read(self, model, variable):
+        data = model.get_formatted_array(variable.name)
         if "carriers" in data.dims:
             data = data.squeeze("carriers").drop("carriers")
         if "costs" in data.dims:
@@ -68,7 +118,10 @@ class CalliopeExporter:
                         .groupby(data.techs.where(~data.techs.str.contains("ac_transmission"), "ac_transmission"))
                         .sum("techs"))
             data = data.dropna(dim="techs", how="all")
-        return data * VARIABLE_SCALING_FACTOR[variable_name](self.__scaling_factors)
+        data = data * variable.scaling_factor(self.__scaling_factors)
+        data.attrs["unit"] = variable.unit
+        data.attrs["description"] = variable.description
+        return data
 
 
 if __name__ == "__main__":

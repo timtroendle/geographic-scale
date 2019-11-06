@@ -1,0 +1,15 @@
+# build files to ignore when receiving from Euler
+output/national/uncertainty/*.nc
+output/regional/uncertainty/*.nc
+output/national/**/*.nc
+output/regional/**/*.nc
+output/**/*.png
+output/**/*.docx
+output/**/*.pdf
+output/**/*.html
+output/**/report/
+output/**/**-autarky-**-**-grid/
+output/national/*.csv
+output/national/*.nc
+output/regional/timeseries-selection.nc
+logs/

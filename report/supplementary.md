@@ -13,7 +13,7 @@ csl: nature.csl
 link-citations: True
 fignos-caption-name: Supplementary Figure
 tablenos-caption-name: Supplementary Table
-date: draft-09-dev
+date: 2019-11-08
 ---
 
 This document contains supplementary information for:

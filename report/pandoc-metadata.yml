@@ -19,5 +19,5 @@ bibliography:
     - 'literature.bib'
 csl: nature.csl
 link-citations: True
-date: draft-09-dev
+date: 2019-11-08
 ---

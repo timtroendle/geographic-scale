@@ -4,6 +4,7 @@ output/regional/uncertainty/*.nc
 output/national/**/*.nc
 output/regional/**/*.nc
 output/**/*.png
+output/**/*.svg
 output/**/*.docx
 output/**/*.pdf
 output/**/*.html
@@ -11,5 +12,5 @@ output/**/report/
 output/**/**-autarky-**-**-grid/
 output/national/*.csv
 output/national/*.nc
-output/regional/timeseries-selection.nc
+output/regional/timeseries-selection-svg.nc
 logs/

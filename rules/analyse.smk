@@ -89,7 +89,7 @@ rule plot_cost:
     input:
         src = "src/analyse/cost.py",
         results = rules.time_aggregated_results.output[0]
-    output: "build/output/{resolution}/cost.png"
+    output: "build/output/{resolution}/cost.{plot_suffix}"
     conda: "../envs/default.yaml"
     script: "../src/analyse/cost.py"
 
@@ -124,8 +124,8 @@ rule plot_map_energy:
 
 rule map_energy_for_report:
     message: "Copy map for report."
-    input: "build/output/{resolution}/map-energy-continental-autarky-100-continental-grid.png"
-    output: "build/output/{resolution}/report/map-energy.png"
+    input: "build/output/{resolution}/map-energy-continental-autarky-100-continental-grid.{plot_suffix}"
+    output: "build/output/{resolution}/report/map-energy.{plot_suffix}"
     conda: "../envs/default.yaml"
     shell: "ln {input} {output}"
 
@@ -136,7 +136,7 @@ rule plot_network_map:
         src = "src/analyse/network.py",
         units = eurocalliope("build/data/{resolution}/units.geojson"),
         results = "build/output/{resolution}/continental-autarky-100-continental-grid/results.nc"
-    output: "build/output/{resolution}/network.png"
+    output: "build/output/{resolution}/network.{plot_suffix}"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/network.py"
 
@@ -150,7 +150,7 @@ rule plot_electricity_flows:
         results = "build/output/{resolution}/continental-autarky-100-continental-grid/results.nc"
     params:
         scaling_factor = config["scaling-factors"]["power"]
-    output: "build/output/{resolution}/flows.png"
+    output: "build/output/{resolution}/flows.{plot_suffix}"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/flows.py"
 
@@ -160,7 +160,7 @@ rule plot_system_composition:
     input:
         src = "src/analyse/composition.py",
         results = rules.aggregated_results.output[0]
-    output: "build/output/{resolution}/composition.png"
+    output: "build/output/{resolution}/composition.{plot_suffix}"
     conda: "../envs/default.yaml"
     script: "../src/analyse/composition.py"
 
@@ -172,7 +172,7 @@ rule plot_uncertainty_of_composition:
         large_scales = "data/pce-samples-continental-national-scales.csv",
         small_scale = "data/pce-samples-regional-scale.csv",
         aggregate = rules.time_aggregated_results.output[0]
-    output: "build/output/{resolution}/composition-uncertainty.png"
+    output: "build/output/{resolution}/composition-uncertainty.{plot_suffix}"
     conda: "../envs/default.yaml"
     script: "../src/analyse/composition_uncertainty.py"
 
@@ -184,7 +184,7 @@ rule plot_uncertainty_of_cost:
         large_scales = "data/pce-samples-continental-national-scales.csv",
         small_scale = "data/pce-samples-regional-scale.csv",
         aggregate = rules.time_aggregated_results.output[0]
-    output: "build/output/{resolution}/cost-uncertainty.png"
+    output: "build/output/{resolution}/cost-uncertainty.{plot_suffix}"
     conda: "../envs/default.yaml"
     script: "../src/analyse/cost_uncertainty.py"
 
@@ -200,8 +200,8 @@ rule plot_timeseries:
         scaling_factors = config["scaling-factors"],
         resolution = config["report"]["timeseries-plot"]["resolution"]
     output:
-        plot = "build/output/{resolution}/timeseries.png",
-        units = "build/output/{resolution}/timeseries-selection.nc"
+        plot = "build/output/{resolution}/timeseries.{plot_suffix}",
+        units = "build/output/{resolution}/timeseries-selection-{plot_suffix}.nc"
     conda: "../envs/calliope.yaml"
     script: "../src/analyse/timeseries.py"
 
@@ -216,7 +216,7 @@ rule plot_sobol_indices:
     wildcard_constraints:
         order = "((total)|(first)|(total-minus-first))",
         extent = "((all)|(diff))"
-    output: "build/output/{resolution}/{order}-sobol-{extent}.png"
+    output: "build/output/{resolution}/{order}-sobol-{extent}.{plot_suffix}"
     conda: "../envs/default.yaml"
     script: "../src/analyse/sobol.py"
 

@@ -3,7 +3,8 @@ PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablen
 configfile: "./config/default.yaml"
 wildcard_constraints:
     resolution = "((continental)|(national)|(regional))", # supported spatial resolutions
-    scenario = "({})".format("|".join([f"({scenario})" for scenario in config["scenarios"]]))
+    scenario = "({})".format("|".join([f"({scenario})" for scenario in config["scenarios"]])),
+    plot_suffix = "((png)|(svg))"
 onstart:
     shell("mkdir -p build/logs/uncertainty")
 onsuccess:
@@ -34,7 +35,7 @@ rule all:
 rule copy_report_file:
     message: "Copy file {input[0]} into dedicated report folder."
     input: "build/output/{resolution}/{filename}.{suffix}"
-    wildcard_constraints: suffix = "((csv)|(png))"
+    wildcard_constraints: suffix = "((csv)|(png)|(svg))"
     output: "build/output/{resolution}/report/{filename}.{suffix}"
     shell: "cp {input} {output}"
 
@@ -69,15 +70,13 @@ rule report:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/report.md",
         "report/pandoc-metadata.yml",
-        "build/output/{resolution}/report/total-sobol-diff.png",
-        "build/output/{resolution}/report/cost.png",
+        "build/output/{resolution}/report/total-sobol-diff.svg",
+        "build/output/{resolution}/report/cost.svg",
         "build/output/{resolution}/report/map-cost.png",
         "build/output/{resolution}/report/map-energy.png",
-        "build/output/{resolution}/report/flows.png",
-        "build/output/{resolution}/report/composition.png",
+        "build/output/{resolution}/report/composition.svg",
         "build/output/{resolution}/report/composition-uncertainty.png",
         "build/output/{resolution}/report/cost-uncertainty.png",
-        "build/output/{resolution}/report/timeseries.png",
     output: "build/output/{resolution}/report.{suffix}"
     params: options = pandoc_options
     conda: "envs/pdf.yaml"
@@ -97,15 +96,15 @@ rule supplementary_material:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/supplementary.md",
         "report/biofuel-feedstocks.csv",
-        "build/output/{resolution}/report/total-sobol-all.png",
-        "build/output/{resolution}/report/first-sobol-all.png",
-        "build/output/{resolution}/report/total-minus-first-sobol-all.png",
+        "build/output/{resolution}/report/total-sobol-all.svg",
+        "build/output/{resolution}/report/first-sobol-all.svg",
+        "build/output/{resolution}/report/total-minus-first-sobol-all.svg",
         "build/output/{resolution}/report/overview-scenario-results-1.csv",
         "build/output/{resolution}/report/overview-scenario-results-2.csv",
         "build/output/{resolution}/report/overview-uncertain-parameters.csv",
         "build/output/{resolution}/report/overview-cost-assumptions.csv",
         "build/output/{resolution}/report/network.png",
-        "build/output/{resolution}/report/timeseries.png"
+        "build/output/{resolution}/report/timeseries.svg"
     params: options = pandoc_options
     output: "build/output/{resolution}/supplementary.{suffix}"
     conda: "envs/pdf.yaml"

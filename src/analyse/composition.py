@@ -58,7 +58,7 @@ def composition(path_to_aggregated_results, path_to_output):
 
     ax = fig.add_subplot(gs[0:3])
     ax.plot([0, 0], [0, 0], color=ERROR_BAR_COLOR, lw=ERROR_BAR_LINEWIDTH,
-            label='Range with enforced national\nor regional self-sufficiency')
+            label='Range with net national or\nregional self-sufficiency')
     plot_variables(data.copy(), GENERATION_CAPACITIES, ax, scaling_factor=1e-3)
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(handles[1:] + [handles[0]], labels[1:] + [labels[0]])

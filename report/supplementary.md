@@ -18,15 +18,15 @@ date: draft-09-dev
 
 This document contains supplementary information for:
 
-Tim Tröndle, Johan Lilliestam, Stefano Marelli and Stefan Pfenninger (YEAR). Cost and design of fully renewable electricity supply on continental, national, and regional scales in Europe. DOI: XXXXXXXXXXXXX
+Tim Tröndle, Johan Lilliestam, Stefano Marelli and Stefan Pfenninger (<mark>YEAR</mark>). Cost and design of fully renewable electricity supply on continental, national, and regional scales in Europe. DOI: <mark>XXXXXXXXXXXXX</mark>
 
 <div class="pagebreak"> </div>
 
 # Supplementary Note 1: Code and data availability
 
-The code and reproducible workflow used to perform this analysis is available online TODO ADD.
+The code and reproducible workflow used to perform this analysis is available online <mark>(for review process provided as related manuscript files)</mark>.
 
-Furthermore, the resulting data is available online as well TODO ADD.
+Furthermore, the resulting data is available online as well <mark>(for review process provided as related manuscript files)</mark>.
 
 # Supplementary Note 2: Effect of hydropower model choices on our results
 

@@ -129,6 +129,10 @@ def _set_up_variables(units):
                  _transmission_capacity),
         Variable("Capacity|Gross export", "GW",
                  _transmission_capacity),
+        Variable("Capacity|Gross import national level", "GW",
+                 lambda model, sf: _transmission_capacity_national(model, units, sf)),
+        Variable("Capacity|Gross export national level", "GW",
+                 lambda model, sf: _transmission_capacity_national(model, units, sf)),
         Variable("Capacity|Transmission", "TW km",
                  _transmission_capacity_length),
         Variable("Energy|Wind onshore", "TWh",
@@ -248,6 +252,18 @@ def _transmission_capacity(model, scaling_factors):
     return capacity.item()
 
 
+def _transmission_capacity_national(model, units, scaling_factors):
+    network_graph = _create_graph_capacity(
+        model=model,
+        units=units,
+        capacity=_capacity(model, scaling_factors["power"])
+    )
+
+    return sum(network_graph.edges[region, neighbour]["capacity"]
+               for region, neighbour in network_graph.edges
+               if network_graph.nodes[region]["country_code"] != network_graph.nodes[neighbour]["country_code"])
+
+
 def _transmission_capacity_length(model, scaling_factors):
     capacity = _capacity(model, scaling_factors["power"]) * 1e-3 # to TW
     capacity = capacity.sel(techs=capacity.techs.str.contains("ac_transmission"))
@@ -280,7 +296,7 @@ def _transmission_generation(model, scaling_factors):
 
 
 def _gross_import_national_level(model, units, scaling_factors):
-    import_graph = _create_graph(model=model, units=units, scaling_factor=scaling_factors["energy"])
+    import_graph = _create_graph_generation(model=model, units=units, scaling_factor=scaling_factors["energy"])
 
     def only_imports(node, neighbour):
         exchange = import_graph.adj[node][neighbour]["timeseries"][node][neighbour]
@@ -294,7 +310,7 @@ def _gross_import_national_level(model, units, scaling_factors):
 
 
 def _net_import_national_level(model, units, scaling_factors):
-    import_graph = _create_graph(model=model, units=units, scaling_factor=scaling_factors["energy"])
+    import_graph = _create_graph_generation(model=model, units=units, scaling_factor=scaling_factors["energy"])
     national_exchanges = [
         sum([import_graph.adj[node][neighbour]["timeseries"][node][neighbour].sum("timesteps").item()
              for neighbour in import_graph.adj[node]])
@@ -335,7 +351,22 @@ def _transmission_consumption(model, scaling_factors):
                        .item())
 
 
-def _create_graph(model, units, scaling_factor): # FIXME almost duplicate from flows.py
+def _create_graph_capacity(units, model, capacity):
+    g = nx.Graph()
+    g.add_nodes_from((k, {"country_code": v}) for (k, v) in units["country_code"].to_dict().items())
+    try:
+        lines = [(line.split(":")[0], line.split(":")[-1])
+                 for line in model._model_data.loc_techs_transmission.values
+                 if model.inputs.energy_cap_max.sel(loc_techs=line) > 0]
+        lines = [(a, b, {"capacity": capacity.sel(locs=a, techs=f"ac_transmission:{b}").item()})
+                 for a, b in lines]
+        g.add_edges_from(lines)
+    except AttributeError:
+        pass # there are no lines
+    return g
+
+
+def _create_graph_generation(model, units, scaling_factor): # FIXME almost duplicate from flows.py
     graph = nx.Graph()
     nodes = [country_code for country_code in units.country_code.unique()]
     graph.add_nodes_from(nodes)

@@ -141,20 +141,6 @@ rule plot_network_map:
     script: "../src/analyse/network.py"
 
 
-rule plot_electricity_flows:
-    message: "Create map of electricity flows."
-    input:
-        src = "src/analyse/flows.py",
-        units = eurocalliope("build/data/{resolution}/units.geojson"),
-        countries = eurocalliope("build/data/national/units.geojson"),
-        results = "build/output/{resolution}/continental-autarky-100-continental-grid/results.nc"
-    params:
-        scaling_factor = config["scaling-factors"]["power"]
-    output: "build/output/{resolution}/flows.{plot_suffix}"
-    conda: "../envs/geo.yaml"
-    script: "../src/analyse/flows.py"
-
-
 rule plot_system_composition:
     message: "Create plot of system composition of all scenarios."
     input:

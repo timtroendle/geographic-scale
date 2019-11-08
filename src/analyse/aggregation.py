@@ -366,7 +366,7 @@ def _create_graph_capacity(units, model, capacity):
     return g
 
 
-def _create_graph_generation(model, units, scaling_factor): # FIXME almost duplicate from flows.py
+def _create_graph_generation(model, units, scaling_factor):
     graph = nx.Graph()
     nodes = [country_code for country_code in units.country_code.unique()]
     graph.add_nodes_from(nodes)
@@ -399,7 +399,7 @@ def _create_graph_generation(model, units, scaling_factor): # FIXME almost dupli
     return graph
 
 
-def _link_timeseries(result, units, country_code_a, country_code_b, scaling_factor): # FIXME duplicate from flows.py
+def _link_timeseries(result, units, country_code_a, country_code_b, scaling_factor):
     gen = _transmission_carrier_prod(result, scaling_factor)
     con = _transmission_carrier_con(result, scaling_factor)
     nodes_a = units[units.country_code == country_code_a].index
@@ -410,7 +410,7 @@ def _link_timeseries(result, units, country_code_a, country_code_b, scaling_fact
 
 
 @functools.lru_cache(maxsize=1, typed=False)
-def _transmission_carrier_prod(model, scaling_factor): # FIXME almost duplicate from flows.py
+def _transmission_carrier_prod(model, scaling_factor):
     gen = _generation(model, scaling_factor)
     gen = gen.sel(techs=gen.techs.str.contains("ac_transmission"))
     return (gen.assign_coords(techs=[tech.item().split(":")[-1] for tech in gen.techs])
@@ -418,7 +418,7 @@ def _transmission_carrier_prod(model, scaling_factor): # FIXME almost duplicate 
 
 
 @functools.lru_cache(maxsize=1, typed=False)
-def _transmission_carrier_con(model, scaling_factor): # FIXME almost duplicate from flows.py
+def _transmission_carrier_con(model, scaling_factor):
     con = _consumption(model, scaling_factor) * -1
     con = con.sel(techs=con.techs.str.contains("ac_transmission"))
     return (con.assign_coords(techs=[tech.item().split(":")[-1] for tech in con.techs])

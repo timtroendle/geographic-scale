@@ -182,7 +182,7 @@ uncertainty:
             calliope-params:
                 techs.biofuel.costs.monetary.energy_cap: 1
                 techs.biofuel.costs.monetary.om_annual: 0.041
-        fuel-cost-biofuel: # FIXME actually not independent, but varies together with `availability-biofuel`.
+        fuel-cost-biofuel: # TODO actually not independent, but varies together with `availability-biofuel`.
             short-name: c_fuel
             descriptive-name: Fuel cost bioenergy
             description: Fuel cost biofuel (includes combustion efficiency and variable generation cost).

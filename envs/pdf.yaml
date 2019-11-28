@@ -12,4 +12,4 @@ dependencies:
         - pandoc-tablenos==1.4.2
         - pandoc-fignos==1.4.2
         - pantable==0.12.2
-        - weasyprint==50
+        - weasyprint==49

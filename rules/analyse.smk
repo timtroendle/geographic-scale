@@ -116,18 +116,13 @@ rule plot_map_energy:
         shapes = eurocalliope("build/data/{resolution}/units.geojson"),
         results = rules.time_aggregated_results.output[0]
     params:
-        connected_regions = config["connected-regions"]
-    output: "build/output/{resolution}/map-energy-{scenario}.png"
+        connected_regions = config["connected-regions"],
+        scenarios = ["continental-autarky-100-continental-grid",
+                     "national-autarky-100-continental-grid",
+                     "regional-autarky-100-continental-grid"]
+    output: "build/output/{resolution}/map-energy.png"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/map_energy.py"
-
-
-rule map_energy_for_report:
-    message: "Copy map for report."
-    input: "build/output/{resolution}/map-energy-continental-autarky-100-continental-grid.{plot_suffix}"
-    output: "build/output/{resolution}/report/map-energy.{plot_suffix}"
-    conda: "../envs/default.yaml"
-    shell: "ln {input} {output}"
 
 
 rule plot_network_map:

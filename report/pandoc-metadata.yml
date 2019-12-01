@@ -13,8 +13,16 @@ tags:
     - 'geographic scale'
     - 'self-sufficiency'
     - 'cooperation'
+    - 'regional equity'
 abstract: |
     Wind and solar power are available throughout Europe with sufficient resource to enable full electricity sector decarbonisation. However, the extent to which geographic integration from the regional to continental scale is necessary for this is still unclear. We examine the cost and design of 497 regional, 33 national, and a single continental electricity system. We show that the uneven distribution of renewable resources and flexibility options makes fully self-sufficient regional-scale systems 70% more expensive with 45% more generation capacity required than a continent-spanning system in which generation and transmission are concentrated in windy and sunny regions. However, if integrated in a continental grid, regional net self-sufficiency is only 20% more expensive than a fully optimised continent-wide system. Fully renewable and nationally or regionally self-sufficient electricity supply is possible and, if integrated in a larger grid, economically comparable to a system with generation concentrated at the best locations in Europe.
+highlights:
+    - Fully renewable electricity supply in Europe is possible without vast transmission expansion.
+    - Cost of case without vast transmission expansion is only 20% above cost minimal case.
+    - There is a trade-off between minimised transmission capacity and minimised generation capacity.
+    - A just regional distribution of generation comes with low extra costs, in contrast to transmission.
+    - Strong international connections are important to reach cost benefits.
+    - Several very different fully renewable designs are possible and economically comparable.
 bibliography:
     - 'literature.bib'
 csl: joule.csl

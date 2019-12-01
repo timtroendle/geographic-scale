@@ -65,6 +65,14 @@ $if(publication)$
     </a>
 </p>
 $endif$
+$if(highlights)$
+<h1 id="highlights">Highlights</h1>
+    <ul>
+    $for(highlights)$
+    <li class="highlights">$highlights$</li>
+    $endfor$
+    </ul>
+$endif$
 $if(abstract)$
 <h1 id="abstract">Abstract</h1>
 $abstract$

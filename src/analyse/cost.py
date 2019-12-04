@@ -4,12 +4,18 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
+from matplotlib.patches import Rectangle
 import xarray as xr
 
 RED = "#A01914"
+ANTHRACITE = "#424242"
 SYSTEM_SCALE_COLOR = "k"
 AUTARKY_EXTENT_COLOR = "k"
 PALETTE = sns.light_palette(RED)
+HIGHLIGHT_COLOR = ANTHRACITE
+HIGHLIGHT_LINEWIDTH = 4
+HIGHLIGHT_LINESTYLE = "-"
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
 
@@ -42,123 +48,111 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
 
     sns.set_context("paper")
     fig = plt.figure(figsize=(8, 4))
-    axes = fig.subplots(
-        nrows=9,
-        ncols=2,
-        sharex=False,
-        sharey=False,
-        gridspec_kw={
-            'height_ratios': [1, 4, 1, 1, 4, 1, 1, 4, 0.01],
-            'width_ratios': [2, 3]
-        }
-    )
-    base_case_box(results, "Continental", axes[1][0])
-    base_case_box(results, "National", axes[4][0])
-    base_case_box(results, "Regional", axes[7][0])
-    for row in [0, 2, 3, 5, 6, 8]:
-        axes[row, 0].remove()
-
-    cbar_axes = fig.add_axes([0.86, 0.1, 0.015, 0.8])
-    gs1 = axes[0, 1].get_gridspec()
-    gs2 = axes[3, 1].get_gridspec()
-    for row in range(0, 9):
-        axes[row, 1].remove()
-    special_case_box(results, "Continental", fig.add_subplot(gs1[0:3, 1]))
-    special_case_box(results, "National", fig.add_subplot(gs2[3:6, 1]), xlabels=True, cbar_axes=cbar_axes)
+    gs = gridspec.GridSpec(1, 4, width_ratios=[2, 0.6, 1.2, 0.1])
+    ax_a = fig.add_subplot(gs[0])
+    ax_b = fig.add_subplot(gs[2])
+    cbar_ax = fig.add_subplot(gs[3])
+    base_case_box(results, ax_a, cbar_ax)
+    special_case_box(results, ax_b)
 
     fig.text(
         s='a - Base cases',
-        x=.21,
+        x=.05,
         y=0.98,
         fontsize=PANEL_FONT_SIZE,
         verticalalignment="top",
         weight=PANEL_FONT_WEIGHT
     )
     fig.text(
-        s='b - Cases with lower level self-sufficiency',
-        x=.42,
+        s='b - Cases with net imports',
+        x=.45,
         y=0.98,
         fontsize=PANEL_FONT_SIZE,
         verticalalignment="top",
         weight=PANEL_FONT_WEIGHT
     )
-    fig.text(
-        s="─────────── System scale ────────────",
-        y=0.46,
-        x=0.08,
-        color=SYSTEM_SCALE_COLOR,
-        horizontalalignment="center",
-        verticalalignment="center",
-        weight="bold",
-        rotation="vertical"
-    )
-    fig.text(
-        s="─ Self-sufficiency extent ─",
-        y=0.64,
-        x=0.8,
-        color=AUTARKY_EXTENT_COLOR,
-        horizontalalignment="center",
-        verticalalignment="center",
-        weight="bold",
-        rotation="vertical"
-    )
+    for xy in ((0.04, 2.04), (0.04, 1.04), (1.04, 2.04)):
+        ax_a.add_patch(Rectangle(
+            xy,
+            0.92,
+            0.92,
+            fill=False,
+            edgecolor=HIGHLIGHT_COLOR,
+            lw=HIGHLIGHT_LINEWIDTH,
+            ls=HIGHLIGHT_LINESTYLE)
+        )
+    for xy in ((0.04, 2.04), (0.04, 1.03), (0.04, 0.04)):
+        ax_b.add_patch(Rectangle(
+            xy,
+            0.92,
+            0.92,
+            fill=False,
+            edgecolor=HIGHLIGHT_COLOR,
+            lw=HIGHLIGHT_LINEWIDTH - 2,
+            ls=HIGHLIGHT_LINESTYLE)
+        )
     plt.subplots_adjust(
-        left=0.22,
-        bottom=0.10,
-        right=0.66,
+        left=0.08,
+        bottom=0.15,
+        right=0.92,
         top=0.88,
-        wspace=0.55,
-        hspace=0.0
+        wspace=0.2,
+        hspace=0.2
     )
     fig.savefig(path_to_costs, dpi=600, transparent=False)
 
 
-def base_case_box(results, scale, ax):
-    sns.heatmap(
-        results[(results.autarky_layer == scale) & (results.grid_scale == scale)].pivot(
-            index="autarky_layer",
-            columns="grid_scale",
-            values="cost"
-        ),
-        cmap=PALETTE,
-        ax=ax,
-        cbar=False,
-        vmin=results["cost"].min(),
-        vmax=results["cost"].max(),
-        linewidth=1.25,
-        yticklabels=[f"{scale}"],
-        annot=True,
-        square=True,
-        fmt='.3g'
-    )
-    ax.set_ylabel("")
-    ax.set_xlabel("")
-    ax.set_xticks([])
-    ax.tick_params(axis="y", labelrotation=0)
-
-
-def special_case_box(results, scale, ax, xlabels=False, cbar_axes=None):
-    cbar = cbar_axes is not None
+def base_case_box(results, ax, cbar_ax):
     cbar_ticks = np.linspace(
         start=results["cost"].min(),
         stop=results["cost"].max(),
         num=len(PALETTE) + 1
     )
     sns.heatmap(
-        results[(results.autarky_layer != results.grid_scale) & (results.grid_scale == scale)].pivot(
-            columns="autarky_layer",
-            index="autarky_degree",
+        results[results.autarky_degree == "0%"].pivot(
+            index="autarky_layer",
+            columns="grid_scale",
             values="cost"
-        ).reindex(["≤30%", "≤15%", "0%"]).T,
-        cmap=PALETTE,
-        ax=ax,
-        cbar=cbar,
-        cbar_ax=cbar_axes,
+        ).reindex(index=["Continental", "National", "Regional"]),
+        cbar=True,
+        cbar_ax=cbar_ax,
         cbar_kws={
             "label": "Cost relative to lowest cost\n continental-scale system",
             "ticks": cbar_ticks,
             "format": "%.1f"
         },
+        cmap=PALETTE,
+        vmin=results["cost"].min(),
+        vmax=results["cost"].max(),
+        linewidth=1.25,
+        annot=True,
+        square=True,
+        ax=ax,
+        fmt='.3g'
+    )
+    ax.set_xlabel("Balancing scale")
+    ax.set_ylabel("Supply scale")
+    ax.set_yticklabels(ax.get_yticklabels(), rotation=90, va="center")
+
+
+def special_case_box(results, ax):
+    results = results.copy()
+    results["case_name"] = pd.Series(-1, index=results.index)
+    case1_mask = (results.grid_scale == "Continental") & (results.autarky_layer == "National")
+    case2_mask = (results.grid_scale == "Continental") & (results.autarky_layer == "Regional")
+    case3_mask = (results.grid_scale == "National") & (results.autarky_layer == "Regional")
+    for i, mask in enumerate([case1_mask, case2_mask, case3_mask]):
+        results.loc[mask, "case_name"] = i
+
+    sns.heatmap(
+        results[results.case_name.isin([0, 1, 2])].pivot(
+            index="case_name",
+            columns="autarky_degree",
+            values="cost"
+        ).reindex(columns=["0%", "≤15%", "≤30%"]),
+        cmap=PALETTE,
+        ax=ax,
+        cbar=False,
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
         linewidth=0.75,
@@ -166,36 +160,15 @@ def special_case_box(results, scale, ax, xlabels=False, cbar_axes=None):
         square=True,
         fmt='.3g'
     )
+    ax.set_xlabel("Allowed net imports")
     ax.set_ylabel("")
     ax.tick_params(axis="y", labelrotation=0, reset=True)
-    ax.yaxis.tick_right()
-    if xlabels:
-        ax.set_xlabel("Allowed net imports")
-    else:
-        ax.set_xlabel("")
-        ax.set_xticks([])
-
-
-def cost_heatmap(data, grid_scale):
-    if grid_scale == "Continental":
-        columns = ["Continental", "National", "Regional"]
-    elif grid_scale == "National":
-        columns = ["National", "Regional"]
-    elif grid_scale == "Regional":
-        columns = ["Regional"]
-    else:
-        raise ValueError("Grid scale must be in {}.".format(
-            ["Regional", "National", "Continental"])
-        )
-
-    pivoted_data = data[data["grid_scale"] == grid_scale].pivot(
-        columns="autarky_layer",
-        index="autarky_degree",
-        values="cost"
-    )
-    pivoted_data.columns.name = "Self-sufficiency layer"
-    pivoted_data.index.name = "Allowed net imports"
-    return pivoted_data[columns].reindex(["≤30%", "≤15%", "0%"])
+    ax.yaxis.tick_left()
+    ax.set_yticklabels([
+        "National supply\ncontinental balancing",
+        "Regional supply\ncontinental balancing",
+        "Regional supply\nnational balancing"
+    ])
 
 
 def read_results(path_to_agregrated_results):

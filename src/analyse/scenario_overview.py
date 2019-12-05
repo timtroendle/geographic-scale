@@ -67,9 +67,9 @@ def main(path_to_aggregated_results, path_to_output_table1, path_to_output_table
 def nice_scenario_name(scenario_name):
     autarky_scale, _, autarky_level, grid_scale, _ = scenario_name.split("-")
     if autarky_scale == grid_scale:
-        return f"{autarky_scale.capitalize()} base case"
+        return f"Entirely {autarky_scale} case"
     else:
-        return (f"{grid_scale.capitalize()} scale with {autarky_scale} self-sufficiency "
+        return (f"{grid_scale.capitalize()} scale balancing, {autarky_scale} scale supply "
                 f"and {100 - int(autarky_level)}% net imports")
 
 

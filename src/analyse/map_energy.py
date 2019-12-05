@@ -138,21 +138,21 @@ def plot_data(plot_datas):
     plot_legend(axes[1][3], plot_datas[3])
 
     axes[1][0].annotate(
-        "Continental \nself-sufficiency",
+        "Continental supply",
         xy=[0.5, -0.1],
         xycoords='axes fraction',
         ha='center',
         va='center',
     )
     axes[1][1].annotate(
-        "National net \nself-sufficiency",
+        "National supply",
         xy=[0.5, -0.1],
         xycoords='axes fraction',
         ha='center',
         va='center',
     )
     axes[1][2].annotate(
-        "Regional net \nself-sufficiency",
+        "Regional supply",
         xy=[0.5, -0.1],
         xycoords='axes fraction',
         ha='center',

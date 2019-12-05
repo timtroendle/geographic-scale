@@ -47,8 +47,8 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
     results = read_results(path_to_aggregated_results)
 
     sns.set_context("paper")
-    fig = plt.figure(figsize=(8, 4))
-    gs = gridspec.GridSpec(1, 4, width_ratios=[2, 0.6, 1.2, 0.1])
+    fig = plt.figure(figsize=(8, 3.5))
+    gs = gridspec.GridSpec(1, 4, width_ratios=[2, 0.4, 1, 0.1])
     ax_a = fig.add_subplot(gs[0])
     ax_b = fig.add_subplot(gs[2])
     cbar_ax = fig.add_subplot(gs[3])
@@ -57,7 +57,7 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
 
     fig.text(
         s='a - Base cases',
-        x=.05,
+        x=0.065,
         y=0.98,
         fontsize=PANEL_FONT_SIZE,
         verticalalignment="top",
@@ -65,7 +65,7 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
     )
     fig.text(
         s='b - Cases with net imports',
-        x=.45,
+        x=0.45,
         y=0.98,
         fontsize=PANEL_FONT_SIZE,
         verticalalignment="top",
@@ -81,7 +81,7 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
             lw=HIGHLIGHT_LINEWIDTH,
             ls=HIGHLIGHT_LINESTYLE)
         )
-    for xy in ((0.04, 2.04), (0.04, 1.03), (0.04, 0.04)):
+    for xy in ((0.04, 2.04), (0.04, 1.04), (0.04, 0.04)):
         ax_b.add_patch(Rectangle(
             xy,
             0.92,
@@ -92,11 +92,11 @@ def plot_costs(path_to_aggregated_results, path_to_costs):
             ls=HIGHLIGHT_LINESTYLE)
         )
     plt.subplots_adjust(
-        left=0.08,
-        bottom=0.15,
-        right=0.92,
+        left=0.05,
+        bottom=0.2,
+        right=0.88,
         top=0.88,
-        wspace=0.2,
+        wspace=0.3,
         hspace=0.2
     )
     fig.savefig(path_to_costs, dpi=600, transparent=False)

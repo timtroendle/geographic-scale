@@ -40,6 +40,11 @@ MAIN_SCENARIOS = [
     "national-autarky-100-national-grid",
     "regional-autarky-100-regional-grid"
 ]
+OTHER_SCENARIOS = [
+    "national-autarky-100-continental-grid",
+    "regional-autarky-100-continental-grid",
+    "regional-autarky-100-national-grid",
+]
 SCALE_ORDER = OrderedDict([
     ("Continental scale", -0.25),
     ("National scale", 0),
@@ -58,7 +63,7 @@ def composition(path_to_aggregated_results, path_to_output):
 
     ax = fig.add_subplot(gs[0:3])
     ax.plot([0, 0], [0, 0], color=ERROR_BAR_COLOR, lw=ERROR_BAR_LINEWIDTH,
-            label='Range with net national or\nregional self-sufficiency')
+            label='Range including cases with\nsupply on lower scales')
     plot_variables(data.copy(), GENERATION_CAPACITIES, ax, scaling_factor=1e-3)
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(handles[1:] + [handles[0]], labels[1:] + [labels[0]])
@@ -109,7 +114,9 @@ def plot_variables(data, variables, ax, scaling_factor=1):
     )
     x_values = [patch.get_x() + patch.get_width() / 2 for patch in ax.patches]
     for i, (scale, variable) in enumerate(product(SCALE_ORDER.keys(), variable_order.keys())):
-        group = data[(data["Scale"] == scale) & (data["Variable"] == variable)]
+        group = data[(data["Scale"] == scale)
+                     & (data["Variable"] == variable)
+                     & data["Scenario"].isin(MAIN_SCENARIOS + OTHER_SCENARIOS)]
         min_value = group.Value.min()
         max_value = group.Value.max()
         ax.vlines(

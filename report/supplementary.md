@@ -1,5 +1,5 @@
 ---
-title: 'Cost and design of fully renewable electricity supply on continental, national, and regional scales in Europe'
+title: 'Fully renewable European electricity system designs to balance capacity expansion, transmission needs, and cost'
 subtitle: 'Supplemental Information'
 author:
     - Tim Tröndle (Lead Contact)
@@ -18,7 +18,7 @@ date: 2019-12-04-dev
 
 This document contains supplemental information for:
 
-Tim Tröndle, Johan Lilliestam, Stefano Marelli and Stefan Pfenninger (<mark>YEAR</mark>). Cost and design of fully renewable electricity supply on continental, national, and regional scales in Europe. DOI: <mark>XXXXXXXXXXXXX</mark>
+Tim Tröndle, Johan Lilliestam, Stefano Marelli and Stefan Pfenninger (<mark>YEAR</mark>). Fully renewable European electricity system designs to balance capacity expansion, transmission needs, and cost. DOI: <mark>XXXXXXXXXXXXX</mark>
 
 <div class="pagebreak"> </div>
 

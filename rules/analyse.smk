@@ -89,7 +89,9 @@ rule plot_cost:
     input:
         src = "src/analyse/cost.py",
         results = rules.time_aggregated_results.output[0]
-    output: "build/output/{resolution}/cost.{plot_suffix}"
+    output:
+        base = "build/output/{resolution}/cost.{plot_suffix}",
+        special = "build/output/{resolution}/cost-special-cases.{plot_suffix}",
     conda: "../envs/default.yaml"
     script: "../src/analyse/cost.py"
 

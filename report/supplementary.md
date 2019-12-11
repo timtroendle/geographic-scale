@@ -28,7 +28,11 @@ The code and reproducible workflow used to perform this analysis is available on
 
 Furthermore, the resulting data is available online as well <mark>(for review process provided within submission)</mark>.
 
-# Note S2: Effect of hydropower model choices on our results
+# Note S2: Impact of net imports into supply area on cost
+
+To confirm the inferior impact of supply options on total cost, we assess the cost of nine further cases, in which we relax the supply scale by permitting net imports to satisfy national or regional electricity demand. This relaxation has a small impact on cost (Figure S1), with 10 percentage points or less cost reduction between net self-sufficiency (0 net imports, cases from Figure 1) and allowing up to 30% net imports. This reinforces the finding from Figure 1: geographic scale has a particularly large impact on cost because of the possibilities for balancing, not mainly because of supply options.
+
+# Note S3: Effect of hydropower model choices on our results
 
 The way in which we model hydropower generation in Europe leads to peculiarities in results on the regional scale. Here, we find the lowest and the highest system cost in regions with large hydropower installations. These cost peculiarities are consequences of two model design choices: we keep hydropower capacities fixed at today's level and we assume they are amortised. In the following, we justify these two model design choices and discuss their relevance for our results.
 
@@ -36,7 +40,7 @@ We assume hydropower capacities are amortised to avoid the need to model overnig
 
 We fix hydropower capacities to current levels because significant capacity expansion in Europe is unlikely[@LacalArantegui:2014]. In regions in which hydropower generation exceeds local electricity demand largely, this model choice can lead to high cost in the regional-scale case. However, on average, the impact is small. While on the continental scale levelised cost of electricity of hydropower ranges from 31 to 55 EUR per MWh, it ranges from 33 to 61 EUR per MWh on the regional scale. In fact, 35% of the hydropower potential on the regional scale is curtailed. This corresponds to 2% of total electricity system cost. Thus, if we allowed for capacity reduction on the regional scale, its cost could reduce by up to 2%. This magnitude has no significant affect on our main results.
 
-# Note S3: Effect of model simplifications
+# Note S4: Effect of model simplifications
 
 There are three aspects which our analysis does not consider and which may impact our findings. Some are likely to increase attractiveness of small-scale systems, others are likely to increase attractiveness of large-scale systems.
 
@@ -48,33 +52,39 @@ We also do not model the distribution grid in any way. The cost of the distribut
 
 <div class="pagebreak"> </div>
 
-# Figure S1: Total Sobol' indices
+# Figure S1: System cost in cases including net imports
 
-![**Total Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/total-sobol-all.svg){#fig:total-sobol .class tag="S1"}
-
-<div class="pagebreak"> </div>
-
-# Figure S2: First-order Sobol' indices
-
-![**First-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/first-sobol-all.svg){#fig:first-sobol .class tag="S2"}
+![**System cost of nine electricity systems in Europe with national or regional net supply, and continental or national balancing, relative to lowest cost, continental-scale system.** Cost of variations of three cases from Figure 1 in which net imports into the national or regional supply area are allowed to certain degrees (x-axis), from no net imports (0%, corresponds to cases from Figure 1) to imports covering up to 30% of national or regional electricity demand. Cost are relative to the entirely continental case in Figure 1.](report/cost-special-cases.svg){#fig:cost .class tag="S1"}
 
 <div class="pagebreak"> </div>
 
-# Figure S3: Difference Sobol' indices
+# Figure S2: Total Sobol' indices
 
-![**Total minus first-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/total-minus-first-sobol-all.svg){#fig:higher-sobol .class tag="S3"}
-
-<div class="pagebreak"> </div>
-
-# Figure S4: Transmission network
-
-![**Possible locations of transmission capacities.** All lines visualise connections between two regions that can hold transmission capacities. International connections are coloured yellow, all others are coloured blue. The amount of capacities installed on these connections is an output of the optimisation and depends on the considered case.](report/network.png){#fig:network .class  tag="S4"}
+![**Total Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/total-sobol-all.svg){#fig:total-sobol .class tag="S2"}
 
 <div class="pagebreak"> </div>
 
-# Figure S5: Distribution of time series across regions
+# Figure S3: First-order Sobol' indices
 
-![**Distribution of time series for all regions of the entirely regional-scale electricity system. a,b,c,d,e,f,** Distribution of time series for all regions with low flexibility cost (combined cost of bioenergy, hydrogen, and battery storage) (**a,b,c**) and all regions whose flexibility cost lies within the highest decile (**d,e,f**). **a,b,** Combined wind and solar weekly generation potential time series relative to local demand. Seasonal fluctuations are more pronounced for the case with higher cost due to higher shares of solar electricity. Regions with high solar shares are often urban regions with low or no wind potential. **c,d,** Weekly generation time series from biomass combustion relative to demand. Generation has a more pronounced seasonality and is generally larger in regions with higher flexibility cost. **e,f,** Weekly time series of hydrogen storage levels relative to installed storage capacity. In regions with higher cost, hydrogen storage is used primarily to balance seasonal fluctuations, instead of balancing fluctuations within weeks or months as it is done for lower cost regions, leading to fewer storage cycles and higher cost.](report/timeseries.svg){#fig:timeseries .class tag="S5"}
+![**First-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/first-sobol-all.svg){#fig:first-sobol .class tag="S3"}
+
+<div class="pagebreak"> </div>
+
+# Figure S4: Difference Sobol' indices
+
+![**Total minus first-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/total-minus-first-sobol-all.svg){#fig:higher-sobol .class tag="S4"}
+
+<div class="pagebreak"> </div>
+
+# Figure S5: Transmission network
+
+![**Possible locations of transmission capacities.** All lines visualise connections between two regions that can hold transmission capacities. International connections are coloured yellow, all others are coloured blue. The amount of capacities installed on these connections is an output of the optimisation and depends on the considered case.](report/network.png){#fig:network .class  tag="S5"}
+
+<div class="pagebreak"> </div>
+
+# Figure S6: Distribution of time series across regions
+
+![**Distribution of time series for all regions of the entirely regional-scale electricity system. a,b,c,d,e,f,** Distribution of time series for all regions with low flexibility cost (combined cost of bioenergy, hydrogen, and battery storage) (**a,b,c**) and all regions whose flexibility cost lies within the highest decile (**d,e,f**). **a,b,** Combined wind and solar weekly generation potential time series relative to local demand. Seasonal fluctuations are more pronounced for the case with higher cost due to higher shares of solar electricity. Regions with high solar shares are often urban regions with low or no wind potential. **c,d,** Weekly generation time series from biomass combustion relative to demand. Generation has a more pronounced seasonality and is generally larger in regions with higher flexibility cost. **e,f,** Weekly time series of hydrogen storage levels relative to installed storage capacity. In regions with higher cost, hydrogen storage is used primarily to balance seasonal fluctuations, instead of balancing fluctuations within weeks or months as it is done for lower cost regions, leading to fewer storage cycles and higher cost.](report/timeseries.svg){#fig:timeseries .class tag="S6"}
 
 <div class="pagebreak"> </div>
 

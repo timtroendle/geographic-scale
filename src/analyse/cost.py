@@ -42,64 +42,42 @@ AUTARKY_LEVEL_MAP = {
 }
 
 
-def plot_costs(path_to_aggregated_results, path_to_costs):
+def plot_costs(path_to_aggregated_results, path_to_base_plot, path_to_special_plot):
     """Plot scenario space and results."""
     results = read_results(path_to_aggregated_results)
 
-    sns.set_context("paper")
-    fig = plt.figure(figsize=(8, 3.5))
-    gs = gridspec.GridSpec(1, 4, width_ratios=[2, 0.4, 1, 0.1])
-    ax_a = fig.add_subplot(gs[0])
-    ax_b = fig.add_subplot(gs[2])
-    cbar_ax = fig.add_subplot(gs[3])
-    base_case_box(results, ax_a, cbar_ax)
-    special_case_box(results, ax_b)
-
-    fig.text(
-        s='a - Base cases',
-        x=0.065,
-        y=0.98,
-        fontsize=PANEL_FONT_SIZE,
-        verticalalignment="top",
-        weight=PANEL_FONT_WEIGHT
-    )
-    fig.text(
-        s='b - Cases with net imports',
-        x=0.45,
-        y=0.98,
-        fontsize=PANEL_FONT_SIZE,
-        verticalalignment="top",
-        weight=PANEL_FONT_WEIGHT
-    )
-    for xy in ((0.04, 2.04), (0.04, 1.04), (1.04, 2.04)):
-        ax_a.add_patch(Rectangle(
-            xy,
-            0.92,
-            0.92,
-            fill=False,
-            edgecolor=HIGHLIGHT_COLOR,
-            lw=HIGHLIGHT_LINEWIDTH,
-            ls=HIGHLIGHT_LINESTYLE)
-        )
-    for xy in ((0.04, 2.04), (0.04, 1.04), (0.04, 0.04)):
-        ax_b.add_patch(Rectangle(
-            xy,
-            0.92,
-            0.92,
-            fill=False,
-            edgecolor=HIGHLIGHT_COLOR,
-            lw=HIGHLIGHT_LINEWIDTH - 2,
-            ls=HIGHLIGHT_LINESTYLE)
-        )
+    fig, ax, cbar_ax = set_up_figure()
+    base_case_box(results, ax, cbar_ax)
     plt.subplots_adjust(
-        left=0.05,
+        left=0.20,
         bottom=0.2,
-        right=0.88,
+        right=0.66,
         top=0.88,
-        wspace=0.3,
+        wspace=0.0,
         hspace=0.2
     )
-    fig.savefig(path_to_costs, dpi=600, transparent=False)
+    fig.savefig(path_to_base_plot, dpi=600, transparent=False)
+
+    fig, ax, cbar_ax = set_up_figure()
+    special_case_box(results, ax, cbar_ax)
+    plt.subplots_adjust(
+        left=0.20,
+        bottom=0.2,
+        right=0.70,
+        top=0.88,
+        wspace=0.0,
+        hspace=0.2
+    )
+    plt.show()
+    fig.savefig(path_to_special_plot, dpi=600, transparent=False)
+
+
+def set_up_figure():
+    fig = plt.figure(figsize=(8, 3.5))
+    gs = gridspec.GridSpec(1, 2, width_ratios=[5, 0.1])
+    ax = fig.add_subplot(gs[0])
+    cbar_ax = fig.add_subplot(gs[1])
+    return fig, ax, cbar_ax
 
 
 def base_case_box(results, ax, cbar_ax):
@@ -135,7 +113,12 @@ def base_case_box(results, ax, cbar_ax):
     ax.set_yticklabels(ax.get_yticklabels(), rotation=90, va="center")
 
 
-def special_case_box(results, ax):
+def special_case_box(results, ax, cbar_ax):
+    cbar_ticks = np.linspace(
+        start=results["cost"].min(),
+        stop=results["cost"].max(),
+        num=len(PALETTE) + 1
+    )
     results = results.copy()
     results["case_name"] = pd.Series(-1, index=results.index)
     case1_mask = (results.grid_scale == "Continental") & (results.autarky_layer == "National")
@@ -152,7 +135,13 @@ def special_case_box(results, ax):
         ).reindex(columns=["0%", "≤15%", "≤30%"]),
         cmap=PALETTE,
         ax=ax,
-        cbar=False,
+        cbar=True,
+        cbar_ax=cbar_ax,
+        cbar_kws={
+            "label": "Cost relative to lowest cost\n continental-scale system",
+            "ticks": cbar_ticks,
+            "format": "%.1f"
+        },
         vmin=results["cost"].min(),
         vmax=results["cost"].max(),
         linewidth=0.75,
@@ -194,5 +183,6 @@ def parse_scenario_name(scenario_name):
 if __name__ == "__main__":
     plot_costs(
         path_to_aggregated_results=snakemake.input.results,
-        path_to_costs=snakemake.output[0]
+        path_to_base_plot=snakemake.output.base,
+        path_to_special_plot=snakemake.output.special
     )

@@ -1,5 +1,5 @@
 ---
-title: 'Fully renewable European electricity system designs to balance capacity expansion, transmission needs, and cost'
+title: 'Trade-offs between geographic scale, cost, and system design for fully renewable electricity in Europe'
 author:
     - Tim Tröndle (Lead Contact)
     - Johan Lilliestam
@@ -15,13 +15,12 @@ tags:
     - 'cooperation'
     - 'regional equity'
 abstract: |
-    Renewable electricity resources are abundant across Europe, and the potential is sufficient to enable full electricity sector decarbonisation on different scales, from the regional to the continental, with self-sufficient or interconnected units. We show that a continental-scale, fully renewable electricity system is cheapest, but also that national- and regional-scale systems are both possible at cost penalties relative to the continent-wide optimised system of 20% or less. The key to low cost is transmission, but it is not necessary to vastly expand the transmission system. When electricity is transmitted only to balance fluctuations and not to satisfy local demand using better resources in distant parts of Europe, transmission needs are comparable to today’s. The largest differences across system designs concern land use and thus social acceptance: in the continental system, generation capacity is strongly concentrated on the European periphery where the best resources are, necessitating large transmission expansion. Regional systems, in contrast, have more dispersed generation near demand. The key design trade-off for a fully renewable European electricity supply therefore stems not from the effect of geographic scale on system cost, but from the effect of geographic scale on the spatial distribution of required generation and transmission infrastructure.
+    Renewable electricity resources are abundant across Europe, and the potential is sufficient to enable full electricity sector decarbonisation on different scales, from the regional to the continental, with self-sufficient or interconnected units. We show that a continental-scale, fully renewable electricity system is cheapest, but also that national- and regional-scale supply systems are possible at cost penalties of 20% or less. The key to low cost is transmission, but it is not necessary to vastly expand the transmission system. When electricity is transmitted only to balance fluctuations within national or regional net self-sufficient supply units, transmission needs are comparable to today’s. The largest differences across system designs concern land use and thus social acceptance: in the continental system, generation capacity is strongly concentrated on the European periphery where the best resources are, necessitating large transmission expansion. Regional systems, in contrast, have more dispersed generation near demand, where land-use pressure is already high. The key design trade-off for a fully renewable European electricity supply is therefore not the effect of geographic scale on system cost, but the effect of geographic scale on the spatial distribution of required generation and transmission infrastructure.
 highlights:
-    - Very different renewable European electricity designs have comparable cost.
-    - Continent-wide optimised system is cheapest but needs large grid expansion.
-    - A continent composed of regional-scale supply systems is only 20% more expensive.
+    - Continent-wide renewable electricity supply is cheapest but needs large grid expansion.
+    - Regionally net self-sufficient systems are 20% more expensive, if continentally interconnected.
+    - Regional or national systems without interconnections are much more expensive.
     - Key trade-off is between geographic scale and distribution of generation and transmission.
-    - International connections are important for low-cost renewable electricity.
 bibliography:
     - 'literature.bib'
 csl: joule.csl

@@ -1,5 +1,5 @@
 ---
-title: 'Fully renewable European electricity system designs to balance capacity expansion, transmission needs, and cost'
+title: 'Trade-offs between geographic scale, cost, and system design for fully renewable electricity in Europe'
 subtitle: 'Supplemental Information'
 author:
     - Tim Tröndle (Lead Contact)
@@ -18,7 +18,7 @@ date: 2019-12-11-dev
 
 This document contains supplemental information for:
 
-Tim Tröndle, Johan Lilliestam, Stefano Marelli and Stefan Pfenninger (<mark>YEAR</mark>). Fully renewable European electricity system designs to balance capacity expansion, transmission needs, and cost. DOI: <mark>XXXXXXXXXXXXX</mark>
+Tim Tröndle, Johan Lilliestam, Stefano Marelli and Stefan Pfenninger (<mark>YEAR</mark>). Trade-offs between geographic scale, cost, and system design for fully renewable electricity in Europe. DOI: <mark>XXXXXXXXXXXXX</mark>
 
 <div class="pagebreak"> </div>
 

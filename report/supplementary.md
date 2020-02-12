@@ -13,6 +13,7 @@ csl: joule.csl
 link-citations: True
 fignos-caption-name: Figure
 tablenos-caption-name: Table
+lang: en-GB
 date: 2020-04-yy-dev
 ---
 

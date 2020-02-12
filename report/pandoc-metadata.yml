@@ -28,5 +28,6 @@ bibliography:
     - 'literature.bib'
 csl: joule.csl
 link-citations: True
+lang: en-GB
 date: 2020-04-yy-dev
 ---

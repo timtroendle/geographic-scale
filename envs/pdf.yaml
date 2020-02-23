@@ -7,9 +7,9 @@ dependencies:
     - pandoc=2.7.3
     - cairosvg=2.4.2
     - cairocffi==1.1.0
+    - weasyprint==51
     - pip=19.0.3
     - pip:
-        - pandoc-tablenos==1.4.2
-        - pandoc-fignos==1.4.2
+        - pandoc-tablenos==2.1.1
+        - pandoc-fignos==2.2.0
         - pantable==0.12.2
-        - weasyprint==49

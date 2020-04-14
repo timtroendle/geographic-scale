@@ -80,6 +80,9 @@ uncertainty:
             calliope-params:
                 tech_groups.pv.costs.monetary.energy_cap: 1
                 tech_groups.pv.costs.monetary.om_annual: 0.017
+                # FIXME This is inconsistent with current rooftop PV cost.
+                # Either make deterministic rooftop PV cost equal to utility scale PV cost.
+                # Or: add rooftop PV cost explicitely into the uncertainty analysis.
                 # TODO do something about om_prod missing
         installation-cost-wind-onshore:
             short-name: c_wind

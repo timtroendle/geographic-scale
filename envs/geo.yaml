@@ -5,7 +5,8 @@ dependencies:
     - python=3.7
     - ipython=7.5.0
     - numpy=1.16.2
-    - pandas=0.24.2
+    - pandas=0.25.1
+    - calliope=0.6.5
     - matplotlib=3.1.0
     - seaborn=0.9.0
     - gdal=2.4
@@ -14,9 +15,6 @@ dependencies:
     - descartes=1.1.0
     - mapclassify=2.1.1
     - jinja2=2.10.1
-    - xarray=0.12.2
+    - xarray=0.14.1
     - netcdf4=1.5.0.1
     - networkx=2.3
-    - pip=19.0.3
-    - pip:
-        - git+git://github.com/calliope-project/calliope.git@bcb56107bf3664c7ba38c6d2eca7bb72e393a2a5 # TODO install development version. Remove after release of 0.6.5

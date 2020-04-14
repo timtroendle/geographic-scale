@@ -3,7 +3,7 @@
 EULER_URL = "euler.ethz.ch"
 EULER_BASE_DIR = "~/Develop/geographical-scale/"
 EULER_BUILD_DIR = EULER_BASE_DIR + "build/"
-LOCAL_EULER_RESULTS = "./build-by-euler/"
+LOCAL_EULER_RESULTS = "./build/euler/"
 LOCAL_PUBLICATION_RESULTS = "./build/euler/publish/"
 SYNCIGNORE = ".syncignore"
 SYNCIGNORE_BUILD = ".syncignore-build"

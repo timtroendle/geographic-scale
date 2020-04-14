@@ -68,7 +68,6 @@ def plot_costs(path_to_aggregated_results, path_to_base_plot, path_to_special_pl
         wspace=0.0,
         hspace=0.2
     )
-    plt.show()
     fig.savefig(path_to_special_plot, dpi=600, transparent=False)
 
 

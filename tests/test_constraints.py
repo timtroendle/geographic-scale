@@ -2,6 +2,7 @@ import pytest
 import pandas as pd
 
 DEMAND_TECH = "demand_elec"
+EPSILON = 0.001 # 0.1 %
 
 
 @pytest.fixture
@@ -66,4 +67,4 @@ def test_net_imports(net_imports_per_autarkic_group, demand_per_autarkic_group, 
         i / -d
         for i, d in zip(net_imports_per_autarkic_group, demand_per_autarkic_group)
     ])
-    assert (rel_net_imports_per_autarkic_group <= rel_net_import_threshold).all()
+    assert (rel_net_imports_per_autarkic_group <= (rel_net_import_threshold + EPSILON)).all()

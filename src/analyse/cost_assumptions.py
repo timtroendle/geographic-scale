@@ -47,7 +47,7 @@ def main(path_to_model, scaling_factors, path_to_output):
                        .mean("locs")
                        .fillna(0)
                        .drop("costs")) * eur_per_kw
-    energy_cap.loc["ac_transmission"] = transmission_cost(model, eur_per_kw)
+    energy_cap.loc["ac_transmission"] = transmission_investment_cost(model, eur_per_kw)
     annual_cost = (model.get_formatted_array("cost_om_annual")
                         .squeeze("costs")
                         .reindex(techs=list(TECHS.keys()))
@@ -55,6 +55,7 @@ def main(path_to_model, scaling_factors, path_to_output):
                         .mean("locs")
                         .fillna(0)
                         .drop("costs")) * eur_per_kw
+    annual_cost.loc["ac_transmission"] = transmission_annual_cost(model, eur_per_kw)
     storage_cap = (model.get_formatted_array("cost_storage_cap")
                         .squeeze("costs")
                         .reindex(techs=list(TECHS.keys()))
@@ -100,8 +101,16 @@ def main(path_to_model, scaling_factors, path_to_output):
     )
 
 
-def transmission_cost(model, scaling_factor):
+def transmission_investment_cost(model, scaling_factor):
     cost = model.get_formatted_array("cost_energy_cap").squeeze("costs") * scaling_factor
+    distance = model.get_formatted_array("distance") * M_TO_1000KM
+    rel_costs = (cost / distance).to_series().dropna()
+    assert math.isclose(rel_costs.std(), 0, abs_tol=EPSILON)
+    return rel_costs.iloc[0]
+
+
+def transmission_annual_cost(model, scaling_factor):
+    cost = model.get_formatted_array("cost_om_annual").squeeze("costs") * scaling_factor
     distance = model.get_formatted_array("distance") * M_TO_1000KM
     rel_costs = (cost / distance).to_series().dropna()
     assert math.isclose(rel_costs.std(), 0, abs_tol=EPSILON)

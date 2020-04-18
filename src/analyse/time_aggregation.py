@@ -1,6 +1,5 @@
 """Collect time aggregated results."""
 from dataclasses import dataclass
-from pathlib import Path
 
 import calliope
 import geopandas as gpd
@@ -70,7 +69,7 @@ VARIABLES = [
 def excavate_all_results(paths_to_scenarios, path_to_units, scaling_factors, path_to_output):
     """Collect time aggregated results of all scenarios."""
     scenarios = {
-        Path(path_to_scenario).parent.name: calliope.read_netcdf(path_to_scenario)
+        calliope.read_netcdf(path_to_scenario).results.attrs["scenario"]: calliope.read_netcdf(path_to_scenario)
         for path_to_scenario in paths_to_scenarios
     }
     units = (gpd.read_file(path_to_units)

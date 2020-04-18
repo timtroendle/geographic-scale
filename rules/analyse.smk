@@ -15,7 +15,7 @@ rule run_national:
     input:
         model = "build/model/national/model.yaml"
     params: override_dict = CALLIOPE_OVERRIDE_DICT
-    output: "build/output/national/{scenario}/results.nc"
+    output: "build/output/national/runs/{scenario}.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """
@@ -29,7 +29,7 @@ rule run_regional: # this is a copy of run_national which is necessary to have d
     input:
         model = "build/model/regional/model.yaml"
     params: override_dict = CALLIOPE_OVERRIDE_DICT
-    output: "build/output/regional/{scenario}/results.nc"
+    output: "build/output/regional/runs/{scenario}.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """ # because runs take a lot of computation time, don't fail when suboptimal
@@ -47,7 +47,7 @@ rule test:
         "tests/test_constraints.py",
         "tests/test_assumptions.py",
         results = expand(
-            "build/output/{{resolution}}/{scenario}/results.nc",
+            "build/output/{{resolution}}/runs/{scenario}.nc",
             scenario=config["scenarios"]
         ),
         biofuel_potentials = eurocalliope("build/data/{{resolution}}/biofuel/{scenario}/potential-mwh-per-year.csv".format(
@@ -64,7 +64,7 @@ rule aggregated_results:
     message: "Create csv overview over all results."
     input:
         src = "src/analyse/aggregation.py",
-        scenarios = expand("build/output/{{resolution}}/{scenario}/results.nc", scenario=config["scenarios"]),
+        scenarios = expand("build/output/{{resolution}}/runs/{scenario}.nc", scenario=config["scenarios"]),
         units = eurocalliope("build/data/{resolution}/units.geojson")
     params: scaling_factors = config["scaling-factors"]
     conda: "../envs/geo.yaml"
@@ -76,7 +76,7 @@ rule time_aggregated_results:
     message: "Create NetCDF overview over all results."
     input:
         src = "src/analyse/time_aggregation.py",
-        scenarios = expand("build/output/{{resolution}}/{scenario}/results.nc", scenario=config["scenarios"]),
+        scenarios = expand("build/output/{{resolution}}/runs/{scenario}.nc", scenario=config["scenarios"]),
         units = eurocalliope("build/data/{resolution}/units.geojson")
     params: scaling_factors = config["scaling-factors"]
     conda: "../envs/geo.yaml"
@@ -132,7 +132,7 @@ rule plot_network_map:
     input:
         src = "src/analyse/network.py",
         units = eurocalliope("build/data/{resolution}/units.geojson"),
-        results = "build/output/{resolution}/continental-autarky-100-continental-grid/results.nc"
+        results = "build/output/{resolution}/runs/continental-autarky-100-continental-grid.nc"
     output: "build/output/{resolution}/network.{plot_suffix}"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/network.py"
@@ -176,7 +176,7 @@ rule plot_timeseries:
     message: "Create plot of timeseries on {wildcards.resolution} resolution."
     input:
         src = "src/analyse/timeseries.py",
-        result = "build/output/{resolution}/regional-autarky-100-regional-grid/results.nc",
+        result = "build/output/{resolution}/runs/regional-autarky-100-regional-grid.nc",
         units = eurocalliope("build/data/{resolution}/units.csv")
     params:
         connected_regions = config["connected-regions"],
@@ -220,7 +220,7 @@ rule overview_cost_assumptions:
     message: "Create table of key cost assumptions."
     input:
         src = "src/analyse/cost_assumptions.py",
-        model = "build/output/{resolution}/regional-autarky-70-continental-grid/results.nc"
+        model = "build/output/{resolution}/runs/regional-autarky-70-continental-grid.nc"
     params: scaling_factors = config["scaling-factors"]
     output: "build/output/{resolution}/overview-cost-assumptions.csv"
     conda: "../envs/calliope.yaml"

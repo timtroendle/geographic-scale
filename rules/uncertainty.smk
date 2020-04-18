@@ -99,9 +99,9 @@ rule weather_run:
         "Run weather sensitivity using scenario {wildcards.scenario} and {wildcards.resolution} resolution."
     input:
         model = "build/model/{resolution}/model.yaml",
-        elec_ts = "build/model/{resolution}/uncertainty/electricity-demand.csv",
-        ror_ts = "build/model/{resolution}/uncertainty/capacityfactors-hydro-ror.csv",
-        reservoir_ts = "build/model/{resolution}/uncertainty/capacityfactors-hydro-reservoir-inflow.csv"
+        elec_ts = "build/model/{resolution}/weather-uncertainty/electricity-demand.csv",
+        ror_ts = "build/model/{resolution}/weather-uncertainty/capacityfactors-hydro-ror.csv",
+        reservoir_ts = "build/model/{resolution}/weather-uncertainty/capacityfactors-hydro-reservoir-inflow.csv"
     params:
         override_dict = {
             **config["weather-uncertainty"]["calliope-parameters"],
@@ -109,12 +109,12 @@ rule weather_run:
                 "model.subset_time": [f"{config['weather-uncertainty']['start-year']}-01-01", f"{config['year']}-12-31"],
                 "model.time.function": "resample",
                 "model.time.function_options": {'resolution': f'{config["weather-uncertainty"]["resolution"]["time"]}'},
-                "techs.demand_elec.constraints.resource": "file=./uncertainty/electricity-demand.csv",
-                "techs.hydro_run_of_river.constraints.resource": "file=./uncertainty/capacityfactors-hydro-ror.csv",
-                "techs.hydro_reservoir.constraints.resource": "file=./uncertainty/capacityfactors-hydro-reservoir-inflow.csv"
+                "techs.demand_elec.constraints.resource": "file=./weather-uncertainty/electricity-demand.csv",
+                "techs.hydro_run_of_river.constraints.resource": "file=./weather-uncertainty/capacityfactors-hydro-ror.csv",
+                "techs.hydro_reservoir.constraints.resource": "file=./weather-uncertainty/capacityfactors-hydro-reservoir-inflow.csv"
             }
         }
-    output: "build/output/{resolution}/uncertainty/weather-{scenario}.nc"
+    output: "build/output/{resolution}/runs/uncertainty/weather-{scenario}.nc"
     conda: "../envs/calliope.yaml"
     shell:
         """
@@ -186,7 +186,7 @@ rule repeat_timeseries:
         src = "src/uncertainty/repeat.py",
         timeseries = "build/model/{resolution}/{timeseries}.csv"
     params: start = config["weather-uncertainty"]["start-year"]
-    output: "build/model/{resolution}/uncertainty/{timeseries}.csv"
+    output: "build/model/{resolution}/weather-uncertainty/{timeseries}.csv"
     conda: "../envs/default.yaml"
     script: "../src/uncertainty/repeat.py"
 
@@ -195,8 +195,8 @@ rule weather_diff:
     message: "Determine cost difference between large scale and small scale system for long weather."
     input:
         src = "src/uncertainty/weather_diff.py",
-        large_scale = "build/output/{{resolution}}/uncertainty/weather-{}.nc".format(config["weather-uncertainty"]["scenarios"]["large-scale"]),
-        small_scale = "build/output/{{resolution}}/uncertainty/weather-{}.nc".format(config["weather-uncertainty"]["scenarios"]["small-scale"])
+        large_scale = "build/output/{{resolution}}/runs/uncertainty/weather-{}.nc".format(config["weather-uncertainty"]["scenarios"]["large-scale"]),
+        small_scale = "build/output/{{resolution}}/runs/uncertainty/weather-{}.nc".format(config["weather-uncertainty"]["scenarios"]["small-scale"])
     output: "build/output/{resolution}/uncertainty/weather-diff.txt"
     conda: "../envs/default.yaml"
     script: "../src/uncertainty/weather_diff.py"
@@ -206,8 +206,8 @@ rule normal_diff:
     message: "Determine cost difference between large scale and small scale system for resolution {wildcards.resolution}."
     input:
         src = "src/uncertainty/weather_diff.py",
-        large_scale = "build/output/{{resolution}}/{}/results.nc".format(config["weather-uncertainty"]["scenarios"]["large-scale"]),
-        small_scale = "build/output/{{resolution}}/{}/results.nc".format(config["weather-uncertainty"]["scenarios"]["small-scale"])
+        large_scale = "build/output/{{resolution}}/runs/{}.nc".format(config["weather-uncertainty"]["scenarios"]["large-scale"]),
+        small_scale = "build/output/{{resolution}}/runs/{}.nc".format(config["weather-uncertainty"]["scenarios"]["small-scale"])
     output: "build/output/{resolution}/uncertainty/normal-diff.txt"
     conda: "../envs/default.yaml"
     script: "../src/uncertainty/weather_diff.py"

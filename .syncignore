@@ -7,6 +7,7 @@ __pycache__
 .DS_Store
 build
 build-by-euler
+backup-build-by-euler
 data/automatic
 notebooks
 .git

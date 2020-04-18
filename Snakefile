@@ -26,7 +26,7 @@ rule all:
     message: "Run entire analysis and compile report."
     input:
         "build/logs/{resolution}/test-report.html".format(resolution=config["resolution"]["space"]),
-        "build/output/{resolution}/report.docx".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/report.pdf".format(resolution=config["resolution"]["space"]),
         "build/output/{resolution}/supplementary.pdf".format(resolution=config["resolution"]["space"]),
         "build/output/{resolution}/uncertainty/weather-diff-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"])
 

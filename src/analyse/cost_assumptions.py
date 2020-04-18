@@ -110,11 +110,16 @@ def transmission_investment_cost(model, scaling_factor):
 
 
 def transmission_annual_cost(model, scaling_factor):
-    cost = model.get_formatted_array("cost_om_annual").squeeze("costs") * scaling_factor
-    distance = model.get_formatted_array("distance") * M_TO_1000KM
-    rel_costs = (cost / distance).to_series().dropna()
-    assert math.isclose(rel_costs.std(), 0, abs_tol=EPSILON)
-    return rel_costs.iloc[0]
+    rel_cost = (
+        model
+        .get_formatted_array("cost_om_annual_investment_fraction")
+        .squeeze("costs")
+        .to_series()
+        .dropna()
+    )
+    assert math.isclose(rel_cost.std(), 0, abs_tol=EPSILON)
+    investment_cost = transmission_investment_cost(model, scaling_factor)
+    return rel_cost.iloc[0] * investment_cost
 
 
 def transmission_lifetime(model):

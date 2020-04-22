@@ -7,6 +7,7 @@ dependencies:
     - ipython=7.5.0
     - numpy=1.16.2
     - pandas=0.25.1
+    - pyomo=5.6.8 # to avoid https://github.com/calliope-project/calliope/issues/309
     - calliope=0.6.5
     - gurobi=8.1.1
     - matplotlib=3.1.0

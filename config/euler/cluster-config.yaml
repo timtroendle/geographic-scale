@@ -9,7 +9,7 @@ run_national:
     cores: 6
     memory: 10000
 run_regional:
-    runtime: 2879
+    runtime: 5760
     cores: 6
     memory: 45000
 national_uncertainty_run:

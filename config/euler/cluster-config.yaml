@@ -41,8 +41,8 @@ test_uncertainty_runs:
 overview_cost_assumptions:
     runtime: 60
 aggregated_results:
-    runtime: 60
+    runtime: 120
     memory: 128000
 time_aggregated_results:
-    runtime: 30
+    runtime: 120
     memory: 48000

@@ -9,8 +9,6 @@ a large scale system and a small scale system.
 """
 import pandas as pd
 
-experiment_design = pd.read_csv(config["uncertainty"]["experiment-design"], index_col=0, sep="\t")
-experiment_design.index = experiment_design.index.astype(str)
 localrules: all_uncertainty, x, weather_diff, normal_diff, weather_diff_diff
 
 
@@ -18,6 +16,27 @@ rule all_uncertainty:
     message: "Perform entire uncertainty analysis."
     input:
         weather = "build/output/{resolution}/uncertainty/weather-diff-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"]),
+
+
+def ed_index(number_samples):
+    """Creates complete index for experimental design based on number of samples."""
+    return [f"_{x:03d}" for x in range(int(number_samples))]
+
+
+rule experimental_design:
+    message: "{wildcards.experiment}--{wildcards.number_samples}: Sample input for uncertainty analysis {wildcards.number_samples} times using UQLab."
+    input:
+        src = "src/uncertainty/experimental_design.m",
+        parameters = "build/uncertainty/uncertain-parameters.csv"
+    output: "build/uncertainty/{experiment}--{number_samples}/experimental-design.csv"
+    run:
+        import pandas as pd
+
+        shell("""matlab -nodisplay -nodesktop -r \"cd src/uncertainty/; experimental_design('../../{input[1]}', '../../{output}', {wildcards.number_samples}); exit; \" """)
+
+        ed = pd.read_csv(output[0])
+        ed.index = ed_index(wildcards.number_samples)
+        ed.to_csv(output[0], index=True, header=True)
 
 
 rule biofuel_availability:
@@ -38,30 +57,57 @@ rule biofuel_availability:
         }).mul(params.efficiency).to_csv(output[0], header=True, index=True)
 
 
+rule biofuel_costs:
+    message: "Merge biofuel cost scenarios."
+    input:
+        low = eurocalliope("build/data/{resolution}/biofuel/low/costs-eur-per-mwh.csv"),
+        medium = eurocalliope("build/data/{resolution}/biofuel/medium/costs-eur-per-mwh.csv"),
+        high = eurocalliope("build/data/{resolution}/biofuel/high/costs-eur-per-mwh.csv")
+    params:
+        efficiency = config["parameters"]["biofuel-efficiency"],
+        om_prod = 3.1
+    output: "build/uncertainty/{resolution}/c_bio.csv"
+    run:
+        import pandas as pd
+
+        (
+            pd
+            .Series(
+                index=["low", "medium", "high"],
+                data=[pd.read_csv(x, header=None).iloc[0, 0] for x in [input.low, input.medium, input.high]],
+                name="fuel_cost_eur_per_mwh"
+            )
+            .div(params.efficiency)
+            .add(params.om_prod)
+            .to_csv(output[0], header=True, index=True)
+        )
+
+
 rule x:
-    message: "Preprocess x {wildcards.id} to something usable by Calliope."
+    message: "{wildcards.experiment}--{wildcards.number_samples}: Preprocess x {wildcards.id} to something usable by Calliope."
     input:
         src = "src/uncertainty/x.py",
-        biofuel = rules.biofuel_availability.output[0]
+        biofuel_potentials = rules.biofuel_availability.output[0],
+        biofuel_costs = rules.biofuel_costs.output[0],
+        experimental_design = rules.experimental_design.output[0]
     params:
-        x = lambda wildcards: experiment_design.loc[str(wildcards.id), :],
         parameter_definitions = config["uncertainty"]["parameters"],
         scaling_factors = config["scaling-factors"]
-    output: "build/uncertainty/{resolution}/{id}-x.yaml"
+    output: "build/uncertainty/{resolution}/{experiment}--{number_samples}/{id}-x.yaml"
     conda: "../envs/default.yaml"
     script: "../src/uncertainty/x.py"
 
 
 rule national_uncertainty_run:
     message:
-        "Experiment {wildcards.id} using scenario {wildcards.scenario} and national resolution."
+        "{wildcards.experiment}--{wildcards.number_samples}: Experiment {wildcards.id} using scenario {wildcards.scenario} and national resolution."
     input:
         model = "build/model/national/model.yaml",
-        parameters = "build/uncertainty/national/{id}-x.yaml"
+        parameters = "build/uncertainty/national/{experiment}--{number_samples}/{id}-x.yaml"
     params:
         subset_time = config["uncertainty"]["subset_time"],
         time_resolution = config["uncertainty"]["resolution"]["time"],
-    output: "build/output/national/uncertainty/{scenario}/{id}.nc"
+    output: protected("build/output/national/runs/uncertainty/{experiment}--{number_samples}/{scenario}/{id}.nc")
     conda: "../envs/calliope.yaml"
     shell:
         """
@@ -75,14 +121,14 @@ rule national_uncertainty_run:
 
 rule regional_uncertainty_run:
     message:
-        "Experiment {wildcards.id} using scenario {wildcards.scenario} and regional resolution."
+        "{wildcards.experiment}--{wildcards.number_samples}: Experiment {wildcards.id} using scenario {wildcards.scenario} and regional resolution."
     input:
         model = "build/model/regional/model.yaml",
-        parameters = "build/uncertainty/regional/{id}-x.yaml"
+        parameters = "build/uncertainty/regional/{experiment}--{number_samples}/{id}-x.yaml"
     params:
         subset_time = config["uncertainty"]["subset_time"],
         time_resolution = config["uncertainty"]["resolution"]["time"],
-    output: "build/output/regional/uncertainty/{scenario}/{id}.nc"
+    output: protected("build/output/regional/runs/uncertainty/{experiment}--{number_samples}/{scenario}/{id}.nc")
     conda: "../envs/calliope.yaml"
     shell:
         """
@@ -124,11 +170,11 @@ rule weather_run:
 
 
 rule y:
-    message: "Calculate y for experiment {wildcards.id} of {wildcards.scenario} on {wildcards.resolution} resolution."
+    message: "{wildcards.experiment}--{wildcards.number_samples}: Calculate y {wildcards.id} of {wildcards.scenario} on {wildcards.resolution} resolution."
     input:
         src = "src/uncertainty/y.py",
-        result = "build/output/{resolution}/uncertainty/{scenario}/{id}.nc"
-    output: "build/output/{resolution}/uncertainty/{scenario}/{id}-y.tsv"
+        result = "build/output/{resolution}/runs/uncertainty/{experiment}--{number_samples}/{scenario}/{id}.nc"
+    output: "build/output/{resolution}/uncertainty/{experiment}--{number_samples}/{scenario}/{id}-y.tsv"
     params:
         scaling_factors = config["scaling-factors"],
         experiment_id = lambda wildcards: wildcards.id
@@ -136,21 +182,29 @@ rule y:
     script: "../src/uncertainty/y.py"
 
 
+def ys_in_experimental_design(wildcards):
+    # returns paths of all ys of the experimental design
+    path_to_ys = "build/output/{resolution}/uncertainty/{experiment}--{number_samples}/{scenario}/{{id}}-y.tsv".format(**wildcards)
+    experimental_design_index = ed_index(wildcards["number_samples"])
+    return [path_to_ys.format(id=idx) for idx in experimental_design_index]
+
+
 rule xy:
-    message: "Gather all y of {wildcards.scenario} on {wildcards.resolution} resolution and combine with x."
+    message: "{wildcards.experiment}--{wildcards.number_samples}: Gather all y of {wildcards.scenario} on {wildcards.resolution} resolution and combine with x."
     input:
-        y = expand("build/output/{{resolution}}/uncertainty/{{scenario}}/{id}-y.tsv", id=experiment_design.index)
-    output: "build/output/{resolution}/uncertainty/{scenario}/xy.csv"
-    params: x = experiment_design
+        x = rules.experimental_design.output[0],
+        y = ys_in_experimental_design
+    output: "build/output/{resolution}/uncertainty/{experiment}--{number_samples}/{scenario}/xy.csv"
     run:
         import pandas as pd
 
+        x = pd.read_csv(input.x, index_col=0)
         all_ys = pd.concat(
             [pd.read_csv(path_to_y, sep="\t", index_col=0) for path_to_y in input.y],
             axis="index"
         )
         all_data = pd.concat(
-            [params.x, all_ys],
+            [x, all_ys],
             axis="columns"
         ).to_csv(
             output[0],
@@ -159,23 +213,99 @@ rule xy:
         )
 
 
+rule all_experimental_designs:
+    message: "Create all experiment designs."
+    input:
+        low_fidelity = "build/uncertainty/{experiment}--{number_samples}/experimental-design.csv".format(
+            experiment=config["uncertainty"]["experiment-parameters"]["name"],
+            number_samples=config["uncertainty"]["experiment-parameters"]["number-samples"]["low-fidelity"],
+        ),
+        high_fidelity = "build/uncertainty/{experiment}--{number_samples}/experimental-design.csv".format(
+            experiment=config["uncertainty"]["experiment-parameters"]["name"],
+            number_samples=config["uncertainty"]["experiment-parameters"]["number-samples"]["high-fidelity"],
+        )
+
+
+rule all_experiments:
+    message: "Run all experiments and merge results."
+    input:
+        src = "src/uncertainty/merge_xys.py",
+        mf_lf_1 = "build/output/{resolution}/uncertainty/{experiment}--{number_samples}/{scenario}/xy.csv".format(
+            experiment=config["uncertainty"]["experiment-parameters"]["name"],
+            number_samples=config["uncertainty"]["experiment-parameters"]["number-samples"]["low-fidelity"],
+            scenario=config["uncertainty"]["experiment-parameters"]["multi-fidelity-1"]["scenario"],
+            resolution=config["uncertainty"]["experiment-parameters"]["multi-fidelity-1"]["low-fidelity"]
+        ),
+        mf_hf_1 = "build/output/{resolution}/uncertainty/{experiment}--{number_samples}/{scenario}/xy.csv".format(
+            experiment=config["uncertainty"]["experiment-parameters"]["name"],
+            number_samples=config["uncertainty"]["experiment-parameters"]["number-samples"]["high-fidelity"],
+            scenario=config["uncertainty"]["experiment-parameters"]["multi-fidelity-1"]["scenario"],
+            resolution=config["uncertainty"]["experiment-parameters"]["multi-fidelity-1"]["high-fidelity"]
+        ),
+        mf_lf_2 = "build/output/{resolution}/uncertainty/{experiment}--{number_samples}/{scenario}/xy.csv".format(
+            experiment=config["uncertainty"]["experiment-parameters"]["name"],
+            number_samples=config["uncertainty"]["experiment-parameters"]["number-samples"]["low-fidelity"],
+            scenario=config["uncertainty"]["experiment-parameters"]["multi-fidelity-2"]["scenario"],
+            resolution=config["uncertainty"]["experiment-parameters"]["multi-fidelity-1"]["low-fidelity"]
+        ),
+        mf_hf_2 = "build/output/{resolution}/uncertainty/{experiment}--{number_samples}/{scenario}/xy.csv".format(
+            experiment=config["uncertainty"]["experiment-parameters"]["name"],
+            number_samples=config["uncertainty"]["experiment-parameters"]["number-samples"]["high-fidelity"],
+            scenario=config["uncertainty"]["experiment-parameters"]["multi-fidelity-2"]["scenario"],
+            resolution=config["uncertainty"]["experiment-parameters"]["multi-fidelity-2"]["high-fidelity"]
+        ),
+        sf = "build/output/{resolution}/uncertainty/{experiment}--{number_samples}/{scenario}/xy.csv".format(
+            experiment=config["uncertainty"]["experiment-parameters"]["name"],
+            number_samples=config["uncertainty"]["experiment-parameters"]["number-samples"]["low-fidelity"],
+            scenario=config["uncertainty"]["experiment-parameters"]["single-fidelity"]["scenario"],
+            resolution=config["uncertainty"]["experiment-parameters"]["single-fidelity"]["resolution"]
+        )
+    output:
+        mf_lf = 'build/uncertainty/{}/xy-mf-lf.csv'.format(config["uncertainty"]["experiment-parameters"]["name"]),
+        mf_hf = 'build/uncertainty/{}/xy-mf-hf.csv'.format(config["uncertainty"]["experiment-parameters"]["name"]),
+        sf = 'build/uncertainty/{}/xy-sf.csv'.format(config["uncertainty"]["experiment-parameters"]["name"])
+    conda: "../envs/default.yaml"
+    script: "../src/uncertainty/merge_xys.py"
+
+
+rule uncertainty_analysis:
+    message: "Determine Sobol' indices and sample y using UQLab."
+    input:
+        src = "src/uncertainty/uq.m",
+        mf_lf = rules.all_experiments.output.mf_lf,
+        mf_hf = rules.all_experiments.output.mf_hf,
+        sf = rules.all_experiments.output.sf,
+        parameters = "build/uncertainty/uncertain-parameters.csv"
+    output: # ALL OUTPUTS HARDCODED IN SCRIPT!!
+        total_sobol_sf = "build/uncertainty/{}/total-sobol-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
+        first_sobol_sf = "build/uncertainty/{}/first-sobol-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
+        total_minus_first_sobol_sf = "build/uncertainty/{}/total-minus-first-sobol-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
+        total_sobol_mf = "build/uncertainty/{}/total-sobol-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
+        first_sobol_mf = "build/uncertainty/{}/first-sobol-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
+        total_minus_first_sobol_mf = "build/uncertainty/{}/total-minus-first-sobol-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
+        samples_sf = "build/uncertainty/{}/pce-samples-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
+        samples_mf = "build/uncertainty/{}/pce-samples-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"])
+    shell:
+        """
+        matlab -nodisplay -nodesktop -r \"cd src/uncertainty/; uq('../../{{input.mf_lf}}', '../../{{input.mf_hf}}', '../../{{input.sf}}', '../../{{input.parameters}}', '../../build/uncertainty/{}/'); exit; \"
+        """.format(config["uncertainty"]["experiment-parameters"]["name"])
+
+
+
 rule test_uncertainty_runs:
-    message: "Run tests for uncertainty runs of {wildcards.scenario} on {wildcards.resolution} resolution."
+    message: "{wildcards.experiment}--{wildcards.number_samples}: Run tests for uncertainty runs of {wildcards.scenario} on {wildcards.resolution} resolution."
     input:
         "src/analyse/test_runner.py",
         "tests/test_feasibility.py",
         "tests/test_constraints.py",
         "tests/test_assumptions.py",
-        results = expand(
-            "build/output/{{resolution}}/uncertainty/{{scenario}}/{id}.nc",
-            id=experiment_design.index
-        ),
+        results = ys_in_experimental_design,
         biofuel_potentials = eurocalliope("build/data/{{resolution}}/biofuel/{bioscenario}/potential-mwh-per-year.csv".format(
             bioscenario=config["parameters"]["jrc-biofuel"]["scenario"]
         )),
         units = eurocalliope("build/data/{resolution}/units.csv")
     params: scaling_factors = config["scaling-factors"]
-    output: "build/output/{resolution}/uncertainty/{scenario}/test-report.html"
+    output: "build/output/{resolution}/uncertainty/{wildcards.experiment}--{wildcards.number_samples}/{scenario}/test-report.html"
     conda: "../envs/test.yaml"
     script: "../src/analyse/test_runner.py"
 
@@ -233,6 +363,8 @@ rule overview_uncertainty_parameters:
     message: "Create table of uncertainty parameters."
     input: src = "src/uncertainty/overview_parameters.py"
     params: parameters = config["uncertainty"]["parameters"]
-    output: "build/output/{resolution}/overview-uncertain-parameters.csv"
+    output:
+        publish = "build/output/overview-uncertain-parameters.csv",
+        uqlab = "build/uncertainty/uncertain-parameters.csv"
     conda: "../envs/default.yaml"
     script: "../src/uncertainty/overview_parameters.py"

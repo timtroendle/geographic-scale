@@ -152,8 +152,8 @@ rule plot_uncertainty_of_composition:
     message: "Create plot of uncertainty of system composition found in uncertainty analysis."
     input:
         src = "src/analyse/composition_uncertainty.py",
-        large_scales = "data/pce-samples-continental-national-scales.csv",
-        small_scale = "data/pce-samples-regional-scale.csv",
+        large_scales = "build/uncertainty/{}/pce-samples-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
+        small_scale = "build/uncertainty/{}/pce-samples-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
         aggregate = rules.time_aggregated_results.output[0]
     output: "build/output/{resolution}/composition-uncertainty.{plot_suffix}"
     conda: "../envs/default.yaml"
@@ -164,8 +164,8 @@ rule plot_uncertainty_of_cost:
     message: "Create plot of uncertainty of system cost found in uncertainty analysis."
     input:
         src = "src/analyse/cost_uncertainty.py",
-        large_scales = "data/pce-samples-continental-national-scales.csv",
-        small_scale = "data/pce-samples-regional-scale.csv",
+        large_scales = "build/uncertainty/{}/pce-samples-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
+        small_scale = "build/uncertainty/{}/pce-samples-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
         aggregate = rules.time_aggregated_results.output[0]
     output: "build/output/{resolution}/cost-uncertainty.{plot_suffix}"
     conda: "../envs/default.yaml"
@@ -193,8 +193,8 @@ rule plot_sobol_indices:
     message: "Create heatmap of {wildcards.order} Sobol indices of all input/output combinations."
     input:
         src = "src/analyse/sobol.py",
-        indices_cont_and_nat = "data/{order}-sobol-continental-national.csv",
-        indices_reg = "data/{order}-sobol-regional.csv"
+        indices_cont_and_nat = "build/uncertainty/{}/{{order}}-sobol-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
+        indices_reg = "build/uncertainty/{}/{{order}}-sobol-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"])
     params: parameters = config["uncertainty"]["parameters"]
     wildcard_constraints:
         order = "((total)|(first)|(total-minus-first))",

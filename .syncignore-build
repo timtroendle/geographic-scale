@@ -1,5 +1,3 @@
 # build files to ignore when receiving from Euler
-output/national/uncertainty/*.nc
-output/regional/uncertainty/*.nc
-output/national/uncertainty/**/*.nc
-output/regional/uncertainty/**/*.nc
+output/national/runs/uncertainty/
+output/regional/runs/uncertainty/

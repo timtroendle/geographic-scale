@@ -45,7 +45,22 @@ weather-uncertainty:
         small-scale: national-autarky-100-national-grid
     calliope-parameters: {}
 uncertainty:
-    experiment-design: ./config/uncertainty-experiment-design-small.tsv
+    experiment-parameters:
+        name: default
+        multi-fidelity-1:
+            scenario: continental-autarky-100-continental-grid
+            low-fidelity: national
+            high-fidelity: national
+        multi-fidelity-2:
+            scenario: national-autarky-100-national-grid
+            low-fidelity: national
+            high-fidelity: national
+        single-fidelity:
+            scenario: regional-autarky-100-regional-grid
+            resolution: national
+        number-samples:
+            low-fidelity: 10
+            high-fidelity: 3
     resolution:
         time: 1M
     subset_time: "['2016-01-01', '2016-12-31']"
@@ -67,10 +82,10 @@ uncertainty:
                 tech_groups.supply.costs.monetary.interest_rate: 1
                 tech_groups.supply_plus.costs.monetary.interest_rate: 1
                 tech_groups.transmission.costs.monetary.interest_rate: 1
-        installation-cost-pv:
-            short-name: c_pv
-            descriptive-name: Cost of solar
-            description: Cost of installing photovoltaics capacity.
+        installation-cost-util:
+            short-name: c_util
+            descriptive-name: Cost of utility-scale solar
+            description: Cost of installing photovoltaics capacity on fields.
             min: 280_000
             max: 580_000
             unit: EUR/MW
@@ -78,11 +93,21 @@ uncertainty:
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
-                tech_groups.pv.costs.monetary.energy_cap: 1
-                tech_groups.pv.costs.monetary.om_annual: 0.017
-                # FIXME This is inconsistent with current rooftop PV cost.
-                # Either make deterministic rooftop PV cost equal to utility scale PV cost.
-                # Or: add rooftop PV cost explicitely into the uncertainty analysis.
+                techs.open_field_pv.costs.monetary.energy_cap: 1
+                techs.open_field_pv.costs.monetary.om_annual: 0.017
+        installation-cost-roof:
+            short-name: c_roof
+            descriptive-name: Cost of rooftop solar
+            description: Cost of installing photovoltaics capacity on rooftops.
+            min: 760_000
+            max: 1_000_000
+            unit: EUR/MW
+            source: "Ref. @JRC:2014 (Table 9)"
+            scaling-factor: monetary
+            inverse-scaling-factor: power
+            calliope-params:
+                techs.roof_mounted_pv.costs.monetary.energy_cap: 1
+                techs.roof_mounted_pv.costs.monetary.om_annual: 0.02
         installation-cost-wind-onshore:
             short-name: c_wind
             descriptive-name: Cost of onshore wind
@@ -182,22 +207,11 @@ uncertainty:
             calliope-params:
                 techs.biofuel.costs.monetary.energy_cap: 1
                 techs.biofuel.costs.monetary.om_annual: 0.041
-        fuel-cost-biofuel: # TODO actually not independent, but varies together with `availability-biofuel`.
-            short-name: c_fuel
-            descriptive-name: Fuel cost bioenergy
-            description: Fuel cost biofuel (includes combustion efficiency and variable generation cost).
-            min: 28.12 # includes 3.1 om_gen costs
-            max: 33.68 # includes 3.1 om_gen costs
-            unit: EUR/MWh
-            source: "Ref. @RuizCastello:2015"
-            scaling-factor: monetary
-            inverse-scaling-factor: power
-            calliope-params:
-                techs.biofuel.costs.monetary.om_con: 1
-        availability-biofuel:
-            short-name: a_bio
-            descriptive-name: Availability bioenergy
-            description: Interpolation between biofuel potential scenarios.
+        biofuel-scenario:
+            short-name: ac_bio
+            descriptive-name: Bioenergy scenario
+            description: |
+                Interpolation between bioenergy scenarios determining potential and fuel cost.
             min: 0 # represents low availability scenario
             max: 1 # represents high availability scenario
             unit: "-"

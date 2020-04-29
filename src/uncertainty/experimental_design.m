@@ -1,9 +1,7 @@
+function experimental_design(IFName, OFName, NED)
 %% Initialize the input
-clearvars
 uqlab
-NED = 150;
 rng(100);
-OFName = 'GeoScaleED_20190719';
 %% Import the file (automatic Matlab generated code)
 opts = delimitedTextImportOptions("NumVariables", 6);
 
@@ -21,7 +19,7 @@ opts.ExtraColumnsRule = "ignore";
 opts.EmptyLineRule = "read";
 
 % Import the data
-GeoScale_Bounds = readtable("uncertain-parameters.csv", opts);
+GeoScale_Bounds = readtable(IFName, opts);
 
 clear opts
 
@@ -40,7 +38,7 @@ tic;XED = uq_getSample(NED,'LHS','iterations',10000);toc
 
 %% Write out the results
 % CSV file
-fout = fopen([OFName '.csv'],'w+t');
+fout = fopen(OFName,'w+t');
 % Write the header first
 for mm = 1:M
     fprintf(fout,'"%s"',GeoScale_Bounds.parameternameshort(mm));
@@ -54,17 +52,14 @@ end
 % And the data
 for ii = 1:NED
     for mm = 1:M
-       fprintf(fout,'%.16e',XED(ii,mm));
-       if mm<M
-          fprintf(fout,',');
-       else
-          fprintf(fout,'\n');
-       end
+    fprintf(fout,'%.16e',XED(ii,mm));
+    if mm<M
+        fprintf(fout,',');
+    else
+        fprintf(fout,'\n');
+    end
     end
 end
 
 fclose(fout);
-
-% Now for the mat file
-RSeed=rng;
-save(OFName,'XED','RSeed','myInput')
+end

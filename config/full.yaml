@@ -12,7 +12,22 @@ weather-uncertainty:
     calliope-parameters:
         run.solver_options.OptimalityTol: 1e-3
 uncertainty:
-    experiment-design: ./config/uncertainty-experiment-design.tsv
+    experiment-parameters:
+        name: full
+        multi-fidelity-1:
+            scenario: continental-autarky-100-continental-grid
+            low-fidelity: national
+            high-fidelity: regional
+        multi-fidelity-2:
+            scenario: national-autarky-100-national-grid
+            low-fidelity: national
+            high-fidelity: regional
+        single-fidelity:
+            scenario: regional-autarky-100-regional-grid
+            resolution: regional
+        number-samples:
+            low-fidelity: 150
+            high-fidelity: 10
     resolution:
         time: 4H
     subset_time: "['2016-01-01', '2016-12-31']"

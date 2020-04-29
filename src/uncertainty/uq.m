@@ -1,24 +1,16 @@
+function uq(IFName1, IFName2, IFName3, BFName, OutputFolder)
 %% SCRIPT CONTROL
-clearvars
 rng(100);
 
-CALCULATE = false; % Repeat the entire calculation or not. Warning: will overwrite the existing session file
+CALCULATE = true; % Repeat the entire calculation or not. Warning: will overwrite the existing session file
 SFNAME = 'uq_GeoScale_Session_MF.mat'; % Session filename (~500MB)
 
 % Choose which plots you want
-REG_PLOTSOBOL = true; % Regional Sobol indices (new outputs)
-PLOTSOBOL = true;     % Multi-fidelity indices
-PLOTDIAG  = true;     % Several diagnostics plots
+REG_PLOTSOBOL = false; % Regional Sobol indices (new outputs)
+PLOTSOBOL = false;     % Multi-fidelity indices
+PLOTDIAG  = false;     % Several diagnostics plots
 PLOTED    = false;    % ED of the LF model (not that useful)
-PLOTHIST  = true;     % Histogram of some selected QoI
-
-%% INITIALIZATION
-IFName1 = 'xy1-national-resolution-national-and-continental-scales.csv';
-IFName2 = 'xy2-regional-resolution-national-and-continental-scales.csv';
-IFName3 = 'xy3-regional-resolution-regional-scale.csv';
-
-% Parameter bounds and names (only)
-BFName = 'GeoScale_uncertain-parameters.csv';
+PLOTHIST  = false;     % Histogram of some selected QoI
 
 
 % Import the previous session if availble, recalculate everything otherwise
@@ -41,7 +33,7 @@ NEDReg = size(XYReg,1);
 
 % Get the I/O variable names from the input files
 fid = fopen(IFName1);
-tt = textscan(fid,'%s',29,'delimiter',',');
+tt = textscan(fid,'%s',32,'delimiter',',');
 fclose(fid);
 InVarNames = tt{1}(2:13);
 OutVarNames = tt{1}(14:end-1);
@@ -74,7 +66,7 @@ YEDReg = XYReg(:,M+1:end);
 
 %% Get the parameter Bounds (for the inputs)
 fid = fopen(BFName);
-tt = textscan(fid,'%s%s%s%s','delimiter',',');
+tt = textscan(fid,'%s%s%s%s%s%s','delimiter',',');
 M = size(tt{3}(2:end),1);
 Bounds = zeros(2,M);
 for ii = 1:M
@@ -254,11 +246,7 @@ for cc = 1:NEDHF
     YPCECV(~idx,:) = uq_evalModel(CVPCE, XEDHF(~idx,:))+uq_evalModel(myPCE_LF,XEDHF(~idx,:));
 end
 
-%% Store the session for later use (e.g. images)
-if CALCULATE
-    uq_saveSession(SFNAME);
-end
-
+%% Write results
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -268,22 +256,22 @@ end
 
 % Sobol indices
 
-dlmwrite('./results/total-sobol-regional.csv',mySens_Reg.Results.Total,'delimiter',',','precision','%.16e');
-dlmwrite('./results/first-sobol-regional.csv',mySens_Reg.Results.FirstOrder,'delimiter',',','precision','%.16e');
-dlmwrite('./results/total-minus-first-sobol-regional.csv',mySens_Reg.Results.Total - mySens_Reg.Results.FirstOrder,'delimiter',',','precision','%.16e');
+dlmwrite(strcat(OutputFolder, 'total-sobol-sf.csv'),mySens_Reg.Results.Total,'delimiter',',','precision','%.16e');
+dlmwrite(strcat(OutputFolder, 'first-sobol-sf.csv'),mySens_Reg.Results.FirstOrder,'delimiter',',','precision','%.16e');
+dlmwrite(strcat(OutputFolder, 'total-minus-first-sobol-sf.csv'),mySens_Reg.Results.Total - mySens_Reg.Results.FirstOrder,'delimiter',',','precision','%.16e');
 
-dlmwrite('./results/total-sobol-continental-national.csv',mySens.Results.Total,'delimiter',',','precision','%.16e');
-dlmwrite('./results/first-sobol-continental-national.csv',mySens.Results.FirstOrder,'delimiter',',','precision','%.16e');
-dlmwrite('./results/total-minus-first-sobol-continental-national.csv',mySens.Results.Total - mySens.Results.FirstOrder,'delimiter',',','precision','%.16e');
+dlmwrite(strcat(OutputFolder, 'total-sobol-mf.csv'),mySens.Results.Total,'delimiter',',','precision','%.16e');
+dlmwrite(strcat(OutputFolder, 'first-sobol-mf.csv'),mySens.Results.FirstOrder,'delimiter',',','precision','%.16e');
+dlmwrite(strcat(OutputFolder, 'total-minus-first-sobol-mf.csv'),mySens.Results.Total - mySens.Results.FirstOrder,'delimiter',',','precision','%.16e');
 
 % Samples
 
 XX = uq_getSample(myInput, 1e5);
 YY = uq_evalModel(myPCE_Reg, XX);
-dlmwrite('./results/pce-samples-regional-scale.csv',YY,'delimiter',',','precision','%.16e');
+dlmwrite(strcat(OutputFolder, 'pce-samples-sf.csv'),YY,'delimiter',',','precision','%.16e');
 
 YY = uq_evalModel(MFPCE, XX);
-dlmwrite('./results/pce-samples-continental-national-scales.csv',YY,'delimiter',',','precision','%.16e');
+dlmwrite(strcat(OutputFolder, 'pce-samples-mf.csv'),YY,'delimiter',',','precision','%.16e');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -450,4 +438,5 @@ if PLOTHIST
     uq_figure('FileName','Figures/20190719_Histo');
     histogram(YYReg(:,SelectedVarReg),'Normalization','pdf','EdgeColor','none','FaceColor',[1 0 1]) % because fuchsia
     xlabel(RegOutVarNames{SelectedVarReg})
+end
 end

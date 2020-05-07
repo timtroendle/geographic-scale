@@ -5,7 +5,6 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
-from matplotlib.patches import Rectangle
 import xarray as xr
 
 RED = "#A01914"
@@ -44,6 +43,7 @@ AUTARKY_LEVEL_MAP = {
 
 def plot_costs(path_to_aggregated_results, path_to_base_plot, path_to_special_plot):
     """Plot scenario space and results."""
+    sns.set_context("paper")
     results = read_results(path_to_aggregated_results)
 
     fig, ax, cbar_ax = set_up_figure()

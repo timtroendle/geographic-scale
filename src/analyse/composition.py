@@ -1,137 +1,246 @@
-from collections import OrderedDict
-from itertools import product
+from dataclasses import dataclass
+import io
 
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
+import xarray as xr
 
 
-GREEN = "#679436"
-RED = "#A01914"
 BLUE = "#4F6DB8"
-PALETTE = sns.light_palette(BLUE, n_colors=4, reverse=False)[1:]
+RED = "#A01914"
+ANTHRACITE = "#424242"
+SYSTEM_SCALE_COLOR = "k"
+AUTARKY_EXTENT_COLOR = "k"
+PALETTE = sns.light_palette(BLUE)
+HIGHLIGHT_COLOR = ANTHRACITE
+HIGHLIGHT_LINEWIDTH = 4
+HIGHLIGHT_LINESTYLE = "-"
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
-ERROR_BAR_LINEWIDTH = 3.5
-ERROR_BAR_COLOR = '#454545'
 
-GENERATION_CAPACITIES = OrderedDict([
-    ("Capacity|Generation total", "Total"),
-    ("Capacity|Wind", "Wind"),
-    ("Capacity|Solar PV", "Solar"),
-    ("Capacity|Bioenergy", "Bio"),
-    ("Capacity|Storage|Short term|Power", "Battery"),
-    ("Capacity|Storage|Long term|Power", "Hydrogen")
-])
-STORAGE_CAPACITIES = OrderedDict([
-    ("Capacity|Storage|Short term|Energy", "Battery"),
-    ("Capacity|Storage|Long term|Energy", "Hydrogen")
-])
-TRANSMISSION_CAPACITIES = OrderedDict([
-    ("Capacity|Transmission", "Transmission")
-])
-VRES = OrderedDict([
-    ("Energy|Potential vres", "Potential"),
-    ("Energy|Renewable curtailment|Absolute total", "Curtailment")
-])
-MAIN_SCENARIOS = [
-    "continental-autarky-100-continental-grid",
-    "national-autarky-100-national-grid",
-    "regional-autarky-100-regional-grid"
-]
-OTHER_SCENARIOS = [
-    "national-autarky-100-continental-grid",
-    "regional-autarky-100-continental-grid",
-    "regional-autarky-100-national-grid",
-]
-SCALE_ORDER = OrderedDict([
-    ("Continental scale", -0.25),
-    ("National scale", 0),
-    ("Regional scale", 0.25)
-])
+BASE_SCENARIO = "continental-autarky-100-continental-grid"
+DATA_INDEX = """autarky_layer,grid_scale,autarky_degree,cost
+Regional,Regional,0%,
+Regional,National,0%,
+Regional,Continental,0%,
+Regional,National,≤15%,
+Regional,Continental,≤15%,
+Regional,National,≤30%,
+Regional,Continental,≤30%,
+National,National,0%,
+National,Continental,0%,
+National,Continental,≤15%,
+National,Continental,≤30%,
+Continental,Continental,0%,
+"""
+
+ONSHORE_WIND_TECHS = ["wind_onshore_competing", "wind_onshore_monopoly"]
+PV_TECHS = ["open_field_pv", "roof_mounted_pv"]
+VRES_TECHS_WITHOUT_HYDRO = ONSHORE_WIND_TECHS + PV_TECHS + ["wind_offshore"]
+VRES_TECHS = VRES_TECHS_WITHOUT_HYDRO + ["hydro_run_of_river"]
+SUPPLY_TECHS = VRES_TECHS + ["hydro_reservoir"]
+STORAGE_TECHS = ["battery", "hydrogen", "pumped_hydro"]
+BALANCING_TECHS = STORAGE_TECHS + ["biofuel"]
 
 
-def composition(path_to_aggregated_results, path_to_output):
-    """Plot system compositions for all scenarios."""
-    data = pd.read_csv(path_to_aggregated_results)
-    data["Scale"] = data["Scenario"].str.split("-").str.get(-2).str.capitalize() + ' scale'
+AUTARKY_LEVEL_MAP = {
+    "100": "0%",
+    "85": "≤15%",
+    "70": "≤30%"
+}
 
+
+@dataclass
+class PlotData:
+    data: pd.DataFrame
+    cbar_label: str
+    fmt: str = '.3g'
+    annotation_scale: float = None
+
+
+def composition(path_to_aggregated_results_csv, path_to_aggregated_results_nc, path_to_output,
+                transmission_capacity_today_twkm, crossborder_capacity_today_tw):
     sns.set_context("paper")
-    fig = plt.figure(figsize=(8, 5))
-    gs = gridspec.GridSpec(2, 3, width_ratios=[2, 1, 2])
+    fig = plt.figure(figsize=(8, 7))
+    axes = fig.subplots(2, 2).flatten()
 
-    ax = fig.add_subplot(gs[0:3])
-    ax.plot([0, 0], [0, 0], color=ERROR_BAR_COLOR, lw=ERROR_BAR_LINEWIDTH,
-            label='Range including cases with\nsupply on smaller scales')
-    plot_variables(data.copy(), GENERATION_CAPACITIES, ax, scaling_factor=1e-3)
-    handles, labels = ax.get_legend_handles_labels()
-    ax.legend(handles[1:] + [handles[0]], labels[1:] + [labels[0]])
-    ax.set_ylabel("TW")
-    ax.get_legend().set_frame_on(False)
-    ax.get_legend().set_title(None)
-    ax.annotate('a – Generation capacities', xy=[-0.08, 1.05], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-
-    ax = fig.add_subplot(gs[3])
-    plot_variables(data.copy(), STORAGE_CAPACITIES, ax, scaling_factor=1e-3)
-    ax.set_ylabel("TWh")
-    ax.get_legend().remove()
-    ax.annotate('b – Storage capacities', xy=[-0.24, 1.05], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-
-    ax = fig.add_subplot(gs[4])
-    plot_variables(data.copy(), TRANSMISSION_CAPACITIES, ax)
-    ax.set_ylabel("TWkm")
-    ax.get_legend().remove()
-    ax.annotate('c – Transmission', xy=[-0.48, 1.05], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-
-    ax = fig.add_subplot(gs[5])
-    plot_variables(data.copy(), VRES, ax=ax)
-    ax.set_ylabel("TWh")
-    ax.get_legend().remove()
-    ax.annotate('d – Variable renewables', xy=[-0.26, 1.05], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-
-    fig.tight_layout()
-    fig.savefig(path_to_output, dpi=600)
-
-
-def plot_variables(data, variables, ax, scaling_factor=1):
-    data["Value"] = data["Value"] * scaling_factor
-    variable_order = {var: i for i, var in enumerate(variables.keys())}
-    sns.barplot(
-        x="Variable",
-        y="Value",
-        hue="Scale",
-        data=data[data["Variable"].isin(variables.keys()) & data["Scenario"].isin(MAIN_SCENARIOS)].replace(variables),
-        orient="v",
-        palette=PALETTE,
-        order=variables.values(),
-        hue_order=SCALE_ORDER,
-        ax=ax
+    plot_datas = read_plot_datas(
+        path_to_aggregated_results_nc,
+        path_to_aggregated_results_csv,
+        transmission_capacity_today_twkm,
+        crossborder_capacity_today_tw
     )
-    x_values = [patch.get_x() + patch.get_width() / 2 for patch in ax.patches]
-    for i, (scale, variable) in enumerate(product(SCALE_ORDER.keys(), variable_order.keys())):
-        group = data[(data["Scale"] == scale)
-                     & (data["Variable"] == variable)
-                     & data["Scenario"].isin(MAIN_SCENARIOS + OTHER_SCENARIOS)]
-        min_value = group.Value.min()
-        max_value = group.Value.max()
-        ax.vlines(
-            x=x_values[i],
-            ymin=min_value,
-            ymax=max_value,
-            linewidth=ERROR_BAR_LINEWIDTH,
-            color=ERROR_BAR_COLOR
+
+    for ax, cbar_ax, plot_data in zip(axes, range(4), plot_datas):
+        base_case_box(plot_data, ax, cbar_ax)
+
+    plt.subplots_adjust(
+        bottom=0.08,
+        top=0.93,
+        wspace=0.3,
+        hspace=0.2
+    )
+    fig.savefig(path_to_output, dpi=300)
+
+
+def read_plot_datas(path_to_aggregated_results_nc, path_to_aggregated_results_csv,
+                    transmission_capacity_today_twkm, crossborder_capacity_today_tw):
+    return [
+        PlotData(
+            data=read_total_supply_capacity(path_to_aggregated_results_nc),
+            cbar_label="a - Supply capacity [TW]",
+            fmt=".1f"
+        ),
+        PlotData(
+            data=read_biostor_capacity(path_to_aggregated_results_nc),
+            cbar_label="b - Balancing capacity [TW]",
+            fmt=".2f"
+        ),
+        PlotData(
+            data=read_transmission_capacity(path_to_aggregated_results_csv),
+            cbar_label="c - Transmission capacity [TWkm]",
+            fmt=".0f",
+            annotation_scale=transmission_capacity_today_twkm,
+        ),
+        PlotData(
+            data=read_international_transmission_capacity(path_to_aggregated_results_csv),
+            cbar_label="d - Cross-border transmission capacity [TW]",
+            fmt=".2g",
+            annotation_scale=crossborder_capacity_today_tw
+        ),
+    ]
+
+
+def base_case_box(plot_data, ax, cbar_ax):
+    results = plot_data.data
+    cbar_ticks = np.linspace(
+        start=results["cost"].min(),
+        stop=results["cost"].max(),
+        num=len(PALETTE) + 1
+    )
+    heatmap_data = (
+        results[results.autarky_degree == "0%"]
+        .pivot(index="autarky_layer", columns="grid_scale", values="cost")
+        .reindex(index=["Continental", "National", "Regional"])
+    )
+    if plot_data.annotation_scale:
+        annot = heatmap_data.applymap(
+            lambda x: f"{{:{plot_data.fmt}}}\n({x / plot_data.annotation_scale:.1f})".format(x)
         )
-    sns.despine(ax=ax)
-    ax.set_xlabel("")
+        fmt = "s"
+    else:
+        annot = True
+        fmt = plot_data.fmt
+    sns.heatmap(
+        heatmap_data,
+        annot=annot,
+        cbar=True,
+        cbar_kws={
+            "ticks": cbar_ticks,
+            "format": f"%{plot_data.fmt}",
+            "aspect": 30,
+            "shrink": 0.8
+        },
+        cmap=PALETTE,
+        vmin=results["cost"].min(),
+        vmax=results["cost"].max(),
+        linewidth=1.25,
+        square=True,
+        ax=ax,
+        fmt=fmt
+    )
+    ax.set_xlabel("Balancing scale")
+    ax.set_ylabel("Supply scale")
+    ax.set_yticklabels(ax.get_yticklabels(), rotation=90, va="center")
+    ax.annotate(plot_data.cbar_label, xy=[-0.2, 1.1], xycoords='axes fraction',
+                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+
+
+def read_transmission_capacity(path_to_agregrated_results):
+    da = (
+        pd
+        .read_csv(path_to_agregrated_results, index_col=[0, 1])
+        .to_xarray()
+        .rename({"Scenario": "scenario"})
+        .sel(Variable="Capacity|Transmission")
+        .Value
+    )
+    return bring_into_form(da)
+
+
+def read_international_transmission_capacity(path_to_agregrated_results):
+    da = (
+        pd
+        .read_csv(path_to_agregrated_results, index_col=[0, 1])
+        .to_xarray()
+        .rename({"Scenario": "scenario"})
+        .sel(Variable="Capacity|Gross import national level")
+        .Value
+    ) / 1e3 # to TW
+    return bring_into_form(da)
+
+
+def read_total_supply_capacity(path_to_agregrated_results):
+    da = (
+        xr
+        .open_dataset(path_to_agregrated_results)
+        .energy_cap
+        .sel(techs=SUPPLY_TECHS)
+        .sum(["locs", "techs"])
+    ) / 1e6 # to TW
+    return bring_into_form(da)
+
+
+def read_wind_capacity(path_to_agregrated_results):
+    da = (
+        xr
+        .open_dataset(path_to_agregrated_results)
+        .energy_cap
+        .sel(techs=ONSHORE_WIND_TECHS + ["wind_offshore"])
+        .sum(["locs", "techs"])
+    ) / 1e6 # to TW
+    return bring_into_form(da)
+
+
+def read_biostor_capacity(path_to_agregrated_results):
+    da = (
+        xr
+        .open_dataset(path_to_agregrated_results)
+        .energy_cap
+        .sel(techs=BALANCING_TECHS)
+        .sum(["locs", "techs"])
+    ) / 1e6 # to TW
+    return bring_into_form(da)
+
+
+def bring_into_form(da):
+    results = (
+        pd
+        .read_csv(io.StringIO(DATA_INDEX))
+        .set_index(["autarky_layer", "grid_scale", "autarky_degree"])
+    )
+    for scenario in da.scenario:
+        scenario = scenario.item()
+        autarky_layer, autarky_level, grid_size = parse_scenario_name(scenario)
+        autarky_level = AUTARKY_LEVEL_MAP[autarky_level]
+        results.loc[autarky_layer, grid_size, autarky_level] = da.sel(scenario=scenario).item()
+    return results.reset_index()
+
+
+def parse_scenario_name(scenario_name):
+    autarky_layer, _, autarky_level, grid_size, _ = scenario_name.split("-")
+    assert autarky_layer in ["regional", "national", "continental"]
+    assert grid_size in ["regional", "national", "continental"]
+    return autarky_layer.capitalize(), autarky_level, grid_size.capitalize()
 
 
 if __name__ == "__main__":
     composition(
-        path_to_aggregated_results=snakemake.input.results,
+        path_to_aggregated_results_csv=snakemake.input.results_csv,
+        path_to_aggregated_results_nc=snakemake.input.results_nc,
+        transmission_capacity_today_twkm=snakemake.params.transmission_today_twkm,
+        crossborder_capacity_today_tw=snakemake.params.crossborder_today_tw,
         path_to_output=snakemake.output[0]
     )

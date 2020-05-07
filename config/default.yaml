@@ -422,5 +422,7 @@ shapes: # This config must be consistent with data from https://doi.org/10.5281/
         Serbia: gadm1 # gadm1 25 regions; wiki 5 regions
         Switzerland: gadm1 # match 26
 report:
+    interregional-transmission-capacity-today: 215 # TWkm, own calculation
+    crossborder-transmission-capacity-today: 0.190 # TW, own calculation
     timeseries-plot:
         resolution: M

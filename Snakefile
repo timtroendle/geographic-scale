@@ -105,6 +105,7 @@ rule supplementary_material:
         "report/supplementary.md",
         "report/biofuel-feedstocks.csv",
         "build/output/{resolution}/report/cost-special-cases.svg",
+        "build/output/{resolution}/report/composition-all.svg",
         "build/output/{resolution}/report/total-sobol-all.svg",
         "build/output/{resolution}/report/first-sobol-all.svg",
         "build/output/{resolution}/report/total-minus-first-sobol-all.svg",

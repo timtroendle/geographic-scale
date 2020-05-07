@@ -18,8 +18,10 @@ COLOR = BLUE
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
 MAX_VALUE = 2
+NUMBER_VARIABLES = 2
 
 HYDRO_TECHS = ["hydro_run_of_river", "hydro_reservoir"]
+PUMPED_HYDRO_TECHS = ["pumped_hydro"]
 GW_TO_TW = 1e-3
 MW_TO_TW = 1e-6
 
@@ -82,46 +84,38 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
         agg.energy_cap.sel(techs=HYDRO_TECHS).sum(["techs", "locs"]).isel(scenario=0).item() * MW_TO_TW,
         index=y.index
     )
+    pumped_hydro_cap = pd.Series(
+        agg.energy_cap.sel(techs=PUMPED_HYDRO_TECHS).sum(["techs", "locs"]).isel(scenario=0).item() * MW_TO_TW,
+        index=y.index
+    )
     return [
         PlotData(
             panel_id="a",
-            title="Total supply",
+            title="Supply",
             ylabel="National scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
             x=(y["y-continental-scale-wind-gw"]
                + y["y-continental-scale-pv-gw"]
-               + y["y-continental-scale-biofuel-gw"]
                + hydro_cap),
             y=(y["y-national-scale-wind-gw"]
                + y["y-national-scale-pv-gw"]
-               + y["y-national-scale-biofuel-gw"]
                + hydro_cap),
         ),
         PlotData(
             panel_id="b",
-            title="Wind",
+            title="Balancing",
             ylabel="National scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
-            x=y["y-continental-scale-wind-gw"],
-            y=y["y-national-scale-wind-gw"],
+            x=y["y-continental-scale-biofuel-gw"] + y["y-continental-scale-storage-gw"] + pumped_hydro_cap,
+            y=y["y-national-scale-biofuel-gw"] + y["y-national-scale-storage-gw"] + pumped_hydro_cap,
         ),
         PlotData(
             panel_id="c",
-            title="Bioenergy + storage",
-            ylabel="National scale (TW)",
-            xlabel="Continental scale (TW)",
-            xlim=(0, MAX_VALUE),
-            ylim=(0, MAX_VALUE),
-            x=y["y-continental-scale-biofuel-gw"] + y["y-continental-scale-storage-gw"],
-            y=y["y-national-scale-biofuel-gw"] + y["y-national-scale-storage-gw"],
-        ),
-        PlotData(
-            panel_id="d",
-            title="Total supply",
+            title="Supply",
             ylabel="Regional scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
@@ -136,24 +130,14 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
                + hydro_cap),
         ),
         PlotData(
-            panel_id="e",
-            title="Wind",
+            panel_id="d",
+            title="Balancing",
             ylabel="Regional scale (TW)",
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
-            x=y["y-continental-scale-wind-gw"],
-            y=y["y-regional-scale-wind-gw"],
-        ),
-        PlotData(
-            panel_id="f",
-            title="Bioenergy + storage",
-            ylabel="Regional scale (TW)",
-            xlabel="Continental scale (TW)",
-            xlim=(0, MAX_VALUE),
-            ylim=(0, MAX_VALUE),
-            x=y["y-continental-scale-biofuel-gw"] + y["y-continental-scale-storage-gw"],
-            y=y["y-regional-scale-biofuel-gw"] + y["y-regional-scale-storage-gw"],
+            x=y["y-continental-scale-biofuel-gw"] + y["y-continental-scale-storage-gw"] + pumped_hydro_cap,
+            y=y["y-regional-scale-biofuel-gw"] + y["y-regional-scale-storage-gw"] + pumped_hydro_cap,
         )
     ]
 
@@ -174,7 +158,7 @@ def plot_data(plot_datas):
     cmap = blend_palette(colors, as_cmap=True)
 
     for i, plot_data in enumerate(plot_datas):
-        ax = axes[i // 3][i % 3]
+        ax = axes[i // NUMBER_VARIABLES][i % NUMBER_VARIABLES]
         ax.hexbin(
             x=plot_data.x,
             y=plot_data.y,
@@ -185,20 +169,24 @@ def plot_data(plot_datas):
         ax.set_ylim(*plot_data.ylim)
         ax.set_xlim(*plot_data.xlim)
         ax.plot(plot_data.xlim, plot_data.ylim, "--", color=GREY)
-        if i // 3 == 1:
+        if i // NUMBER_VARIABLES == 1:
             ax.set_xlabel(plot_data.xlabel)
         else:
             for tick in ax.xaxis.get_major_ticks():
                 tick.set_visible(False)
             ax.annotate(plot_data.title, xy=(0.5, 1.2), xycoords="axes fraction",
                         size='large', ha='center', va='center', fontweight='bold')
-        if i % 3 == 0:
+        if i % NUMBER_VARIABLES == 0:
             ax.set_ylabel(plot_data.ylabel)
         else:
             for tick in ax.yaxis.get_major_ticks():
                 tick.set_visible(False)
         ax.annotate(plot_data.panel_id, xy=[-0.05, 1.05], xycoords='axes fraction',
                     fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    plt.subplots_adjust(
+        left=0.2,
+        right=0.8
+    )
     return fig
 
 

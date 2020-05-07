@@ -54,11 +54,11 @@ If you want to run on another cluster, read [snakemake's documentation on cluste
 
 If you generally run on a cluster but you do not have access to MATLAB or UQLab on it, you can run all parts involving UQLab on another machine where it is installed. Manually perform the following steps:
 
-1. Run `snakemake --use-conda all_experimental_designs` on machine with UQLab and copy all experimental designs onto the cluster.
+1. Run `snakemake --use-conda all_experimental_designs` on the machine with UQLab and copy all experimental designs onto the cluster.
 
-2. Run `snakemake --use-conda --profile config/euler all_experiments` on the cluster and copy all files to machine with UQLab.
+2. Run `snakemake --use-conda --profile config/euler all_experiments` on the cluster and copy all files to the machine with UQLab.
 
-3. Run `snakemake --use-conda uncertainty_analysis` on the machine with UQLab and copy the files to cluster.
+3. Run `snakemake --use-conda uncertainty_analysis` on the machine with UQLab and copy the files to the cluster.
 
 ## Run the tests
 

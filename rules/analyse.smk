@@ -138,14 +138,28 @@ rule plot_network_map:
     script: "../src/analyse/network.py"
 
 
-rule plot_system_composition:
-    message: "Create plot of system composition of all scenarios."
+rule plot_system_composition_per_scale:
+    message: "Create plot of system composition on both scales."
     input:
         src = "src/analyse/composition.py",
-        results = rules.aggregated_results.output[0]
-    output: "build/output/{resolution}/composition.{plot_suffix}"
+        results_csv = rules.aggregated_results.output[0],
+        results_nc = rules.time_aggregated_results.output[0]
+    params:
+        transmission_today_twkm = config["report"]["interregional-transmission-capacity-today"],
+        crossborder_today_tw = config["report"]["crossborder-transmission-capacity-today"]
+    output: "build/output/{resolution}/composition.{plot_suffix}",
     conda: "../envs/default.yaml"
     script: "../src/analyse/composition.py"
+
+
+rule plot_system_composition_full:
+    message: "Create plot of system composition of all scenarios."
+    input:
+        src = "src/analyse/composition_all.py",
+        results = rules.aggregated_results.output[0]
+    output: "build/output/{resolution}/composition-all.{plot_suffix}"
+    conda: "../envs/default.yaml"
+    script: "../src/analyse/composition_all.py"
 
 
 rule plot_uncertainty_of_composition:

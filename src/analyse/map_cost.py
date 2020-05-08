@@ -28,10 +28,6 @@ MAP_MIN_Y = 1400000
 MAP_MAX_X = 6600000
 MAP_MAX_Y = 5500000
 
-PATH_TO_FONT_AWESOME = Path(__file__).parent.parent / 'fonts' / 'fa-solid-900.ttf'
-LAYER_UNICODE = "\uf5fd"
-MONEY_UNICODE = "\uf3d1"
-
 CONTINENTAL_SCENARIO = "continental-autarky-100-continental-grid"
 NATIONAL_SCENARIO = "national-autarky-100-national-grid"
 REGIONAL_SCENARIO = "regional-autarky-100-regional-grid"
@@ -42,7 +38,7 @@ def plot_map(path_to_national_shapes, path_to_regional_shapes, connected_regions
              path_to_aggregated_results, path_to_shapes, path_to_plot):
     """Plot maps of results."""
     fig = plt.figure(figsize=(8, 4), constrained_layout=True)
-    axes = fig.subplots(1, 2).flatten()
+    axes = fig.subplots(1, 3, gridspec_kw={'width_ratios': [30, 30, 1]}).flatten()
     shapes = (gpd.read_file(path_to_shapes)
                  .to_crs(EPSG_3035_PROJ4)
                  .rename(columns={"id": "locs"})
@@ -70,10 +66,12 @@ def plot_map(path_to_national_shapes, path_to_regional_shapes, connected_regions
     total_costs_national = cost_reader.read(scenario=NATIONAL_SCENARIO, level="continental") / base_costs
     total_costs_regional = cost_reader.read(scenario=REGIONAL_SCENARIO, level="continental") / base_costs
 
-    _plot_layer(national, total_costs_national, "National", "a", axes[0])
-    _plot_layer(regional, total_costs_regional, "Regional", "b", axes[1])
+    _plot_layer(national, total_costs_national, "National supply and balancing", "a", axes[0])
+    _plot_layer(regional, total_costs_regional, "Regional supply and balancing", "b", axes[1])
 
-    _plot_colorbar(fig, axes)
+    _plot_colorbar(fig, axes[2].inset_axes([0, 0.175, 1, 0.65]))
+    axes[2].axis("off")
+
     fig.savefig(path_to_plot, dpi=600, transparent=False)
 
 
@@ -95,33 +93,24 @@ def _plot_layer(units, total_cost, layer_name, panel_id, ax):
     sns.despine(ax=ax, top=True, bottom=True, left=True, right=True)
 
     ax.annotate(
-        f"{LAYER_UNICODE} ",
-        xy=[0.13, 0.95],
+        layer_name,
+        xy=[0.5, -0.05],
         xycoords='axes fraction',
-        fontproperties=matplotlib.font_manager.FontProperties(fname=PATH_TO_FONT_AWESOME.as_posix()),
-        color="black"
+        ha='center',
+        va='center',
     )
-    ax.annotate(
-        f"{MONEY_UNICODE} ",
-        xy=[0.13, 0.90],
-        xycoords='axes fraction',
-        fontproperties=matplotlib.font_manager.FontProperties(fname=PATH_TO_FONT_AWESOME.as_posix()),
-        color=sns.desaturate(RED, 0.85)
-    )
-    ax.annotate(layer_name, xy=[0.2, 0.95], xycoords='axes fraction')
-    ax.annotate(f"{total_cost:.1f}", xy=[0.2, 0.90], xycoords='axes fraction')
     ax.annotate(panel_id, xy=[0.05, 0.95], xycoords='axes fraction',
                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
 
-def _plot_colorbar(fig, axes):
+def _plot_colorbar(fig, axis):
     s_m = matplotlib.cm.ScalarMappable(cmap=CMAP, norm=NORM)
     cmap = s_m.get_cmap()
     colors = cmap(np.linspace(1 / 4, 1, cmap.N))
     cmap = matplotlib.colors.LinearSegmentedColormap.from_list('cut_jet', colors)
     s_m = matplotlib.cm.ScalarMappable(cmap=cmap, norm=matplotlib.colors.Normalize(vmin=0, vmax=3))
     s_m.set_array([])
-    cbar = fig.colorbar(s_m, ax=axes, fraction=1, aspect=35, shrink=0.65)
+    cbar = fig.colorbar(s_m, cax=axis)
     cbar.set_ticks([0, 1, 2, 3])
     cbar.set_ticklabels(["0", "1", "2", "≥3"])
     cbar.outline.set_linewidth(0)

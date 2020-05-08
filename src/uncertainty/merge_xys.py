@@ -18,9 +18,9 @@ def merge_one_case(mf1, mf2):
         df["y-supply-gw"] = (
             df["y-wind-gw"]
             + df["y-pv-gw"]
-            + df["y-biofuel-gw"]
+            + df["y-hydro-gw"]
         )
-        df["y-biostor-gw"] = (
+        df["y-balancing-gw"] = (
             df["y-biofuel-gw"]
             + df["y-storage-gw"]
         )
@@ -45,11 +45,13 @@ def merge_one_case(mf1, mf2):
             "y-cost-diff-relative": relative_measure(mf1, mf2, "y-cost-eur"),
             "y-supply-diff-relative": relative_measure(mf1, mf2, "y-supply-gw"),
             "y-wind-diff-relative": relative_measure(mf1, mf2, "y-wind-gw"),
-            "y-biostor-diff-relative": relative_measure(mf1, mf2, "y-biostor-gw"),
+            "y-balancing-diff-relative": relative_measure(mf1, mf2, "y-balancing-gw"),
             "y-large-scale-pv-gw": mf1["y-pv-gw"],
             "y-small-scale-pv-gw": mf2["y-pv-gw"],
             "y-large-scale-wind-gw": mf1["y-wind-gw"],
             "y-small-scale-wind-gw": mf2["y-wind-gw"],
+            "y-large-scale-hydro-gw": mf1["y-hydro-gw"],
+            "y-small-scale-hydro-gw": mf2["y-hydro-gw"],
             "y-large-scale-biofuel-gw": mf1["y-biofuel-gw"],
             "y-small-scale-biofuel-gw": mf2["y-biofuel-gw"],
             "y-large-scale-storage-gw": mf1["y-storage-gw"],

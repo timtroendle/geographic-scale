@@ -168,7 +168,6 @@ rule plot_uncertainty_of_composition:
         src = "src/analyse/composition_uncertainty.py",
         large_scales = "build/uncertainty/{}/pce-samples-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
         small_scale = "build/uncertainty/{}/pce-samples-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
-        aggregate = rules.time_aggregated_results.output[0]
     output: "build/output/{resolution}/composition-uncertainty.{plot_suffix}"
     conda: "../envs/default.yaml"
     script: "../src/analyse/composition_uncertainty.py"

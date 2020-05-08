@@ -33,14 +33,14 @@ NEDReg = size(XYReg,1);
 
 % Get the I/O variable names from the input files
 fid = fopen(IFName1);
-tt = textscan(fid,'%s',32,'delimiter',',');
+tt = textscan(fid,'%s',34,'delimiter',',');
 fclose(fid);
 InVarNames = tt{1}(2:13);
 OutVarNames = tt{1}(14:end-1);
 
 % Get them also for the regional outputs
 fid = fopen(IFName3);
-tt = textscan(fid,'%s',21,'delimiter',',');
+tt = textscan(fid,'%s',22,'delimiter',',');
 fclose(fid);
 RegOutVarNames = tt{1}(14:end-1);
 

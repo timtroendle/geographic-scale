@@ -30,6 +30,7 @@ run_single_location:
     runtime: 60
 y:
     output: "build/logs/uncertainty/{rule}.{wildcards}.log"
+    runtime: 30
 plot_map:
     runtime: 60
 test:

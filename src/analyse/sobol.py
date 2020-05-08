@@ -23,9 +23,39 @@ OUTPUTS = [
 ]
 DIFF_OUTPUTS = [
     "System cost",
-    "Total supply",
-    "Wind capacity",
-    "Bioenergy and\nstorage capacity"
+    "Total supply\ncapacity",
+    "Total balancing\ncapacity"
+]
+
+ROW_INDEX = [
+    "y-continental-scale-cost-eur",
+    "y-national-scale-cost-eur",
+    "y-cost-diff-eur",
+    "y-cost-diff-relative",
+    "y-supply-diff-relative",
+    "y-wind-diff-relative",
+    "y-balancing-diff-relative",
+    "y-continental-scale-pv-gw",
+    "y-national-scale-pv-gw",
+    "y-continental-scale-wind-gw",
+    "y-national-scale-wind-gw",
+    "y-continental-scale-hydro-gw",
+    "y-national-scale-hydro-gw",
+    "y-continental-scale-biofuel-gw",
+    "y-national-scale-biofuel-gw",
+    "y-continental-scale-storage-gw",
+    "y-national-scale-storage-gw",
+    "y-continental-scale-storage-gwh",
+    "y-national-scale-storage-gwh",
+    "y-continental-scale-transmission-gwkm",
+    "y-regional-scale-cost-eur",
+    "y-regional-scale-pv-gw",
+    "y-regional-scale-wind-gw",
+    "y-regional-scale-hydro-gw",
+    "y-regional-scale-biofuel-gw",
+    "y-regional-scale-storage-gw",
+    "y-regional-scale-storage-gwh",
+    "y-regional-scale-transmission-gwkm"
 ]
 
 
@@ -55,23 +85,64 @@ def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_para
         pd.read_csv(path_to_reg_data, header=None).T
     ], ignore_index=True)
     data.columns = uncertain_parameters
+    data.index = ROW_INDEX
 
     return [
         PlotData(
             name="a – Continental scale",
-            data=data.iloc[[0, 7, 9, 11, 13, 15]].set_index(pd.Index(OUTPUTS)).T,
+            data=(
+                data
+                .loc[[
+                    "y-continental-scale-cost-eur",
+                    "y-continental-scale-pv-gw",
+                    "y-continental-scale-wind-gw",
+                    "y-continental-scale-biofuel-gw",
+                    "y-continental-scale-storage-gw",
+                    "y-continental-scale-storage-gwh"]]
+                .set_index(pd.Index(OUTPUTS))
+                .T
+            )
         ),
         PlotData(
             name="b – National scale",
-            data=data.iloc[[1, 8, 10, 12, 14, 16]].set_index(pd.Index(OUTPUTS)).T,
+            data=(
+                data
+                .loc[[
+                    "y-national-scale-cost-eur",
+                    "y-national-scale-pv-gw",
+                    "y-national-scale-wind-gw",
+                    "y-national-scale-biofuel-gw",
+                    "y-national-scale-storage-gw",
+                    "y-national-scale-storage-gwh"]]
+                .set_index(pd.Index(OUTPUTS))
+                .T
+            )
         ),
         PlotData(
             name="c – Regional scale",
-            data=data.iloc[[18, 19, 20, 21, 22, 23]].set_index(pd.Index(OUTPUTS)).T,
+            data=(
+                data
+                .loc[[
+                    "y-regional-scale-cost-eur",
+                    "y-regional-scale-pv-gw",
+                    "y-regional-scale-wind-gw",
+                    "y-regional-scale-biofuel-gw",
+                    "y-regional-scale-storage-gw",
+                    "y-regional-scale-storage-gwh"]]
+                .set_index(pd.Index(OUTPUTS))
+                .T
+            )
         ),
         PlotData(
             name="d – Relative difference between continental and national scales",
-            data=data.iloc[[3, 4, 5, 6]].set_index(pd.Index(DIFF_OUTPUTS)),
+            data=(
+                data
+                .loc[[
+                    "y-cost-diff-relative",
+                    "y-supply-diff-relative",
+                    "y-balancing-diff-relative"]]
+                .set_index(pd.Index(DIFF_OUTPUTS))
+            )
         )
     ]
 

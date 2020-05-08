@@ -3,7 +3,6 @@ from dataclasses import dataclass
 import pandas as pd
 import seaborn as sns
 import numpy as np
-import xarray as xr
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from seaborn import utils
@@ -20,8 +19,6 @@ PANEL_FONT_WEIGHT = "bold"
 MAX_VALUE = 2
 NUMBER_VARIABLES = 2
 
-HYDRO_TECHS = ["hydro_run_of_river", "hydro_reservoir"]
-PUMPED_HYDRO_TECHS = ["pumped_hydro"]
 GW_TO_TW = 1e-3
 MW_TO_TW = 1e-6
 
@@ -32,11 +29,13 @@ COLUMN_HEADER = [
     "y-cost-diff-relative",
     "y-supply-diff-relative",
     "y-wind-diff-relative",
-    "y-biostor-diff-relative",
+    "y-balancing-diff-relative",
     "y-continental-scale-pv-gw",
     "y-national-scale-pv-gw",
     "y-continental-scale-wind-gw",
     "y-national-scale-wind-gw",
+    "y-continental-scale-hydro-gw",
+    "y-national-scale-hydro-gw",
     "y-continental-scale-biofuel-gw",
     "y-national-scale-biofuel-gw",
     "y-continental-scale-storage-gw",
@@ -47,6 +46,7 @@ COLUMN_HEADER = [
     "y-regional-scale-cost-eur",
     "y-regional-scale-pv-gw",
     "y-regional-scale-wind-gw",
+    "y-regional-scale-hydro-gw",
     "y-regional-scale-biofuel-gw",
     "y-regional-scale-storage-gw",
     "y-regional-scale-storage-gwh",
@@ -66,28 +66,19 @@ class PlotData:
     ylim: tuple
 
 
-def plot_composition_variability(path_to_large_scales, path_to_small_scale, path_to_scenario_results, path_to_plot):
-    plot_datas = read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_results)
+def plot_composition_variability(path_to_large_scales, path_to_small_scale, path_to_plot):
+    plot_datas = read_plot_data(path_to_large_scales, path_to_small_scale)
     fig = plot_data(plot_datas)
     fig.savefig(path_to_plot, dpi=600)
 
 
-def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_results):
+def read_plot_data(path_to_large_scales, path_to_small_scale):
     y = pd.concat([
         pd.read_csv(path_to_large_scales, index_col=None, header=None),
         pd.read_csv(path_to_small_scale, index_col=None, header=None),
 
     ], axis="columns") * GW_TO_TW
     y.columns = COLUMN_HEADER
-    agg = xr.open_dataset(path_to_scenario_results)
-    hydro_cap = pd.Series(
-        agg.energy_cap.sel(techs=HYDRO_TECHS).sum(["techs", "locs"]).isel(scenario=0).item() * MW_TO_TW,
-        index=y.index
-    )
-    pumped_hydro_cap = pd.Series(
-        agg.energy_cap.sel(techs=PUMPED_HYDRO_TECHS).sum(["techs", "locs"]).isel(scenario=0).item() * MW_TO_TW,
-        index=y.index
-    )
     return [
         PlotData(
             panel_id="a",
@@ -98,10 +89,10 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
             ylim=(0, MAX_VALUE),
             x=(y["y-continental-scale-wind-gw"]
                + y["y-continental-scale-pv-gw"]
-               + hydro_cap),
+               + y["y-continental-scale-hydro-gw"]),
             y=(y["y-national-scale-wind-gw"]
                + y["y-national-scale-pv-gw"]
-               + hydro_cap),
+               + y["y-national-scale-hydro-gw"]),
         ),
         PlotData(
             panel_id="b",
@@ -110,8 +101,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
-            x=y["y-continental-scale-biofuel-gw"] + y["y-continental-scale-storage-gw"] + pumped_hydro_cap,
-            y=y["y-national-scale-biofuel-gw"] + y["y-national-scale-storage-gw"] + pumped_hydro_cap,
+            x=y["y-continental-scale-biofuel-gw"] + y["y-continental-scale-storage-gw"],
+            y=y["y-national-scale-biofuel-gw"] + y["y-national-scale-storage-gw"],
         ),
         PlotData(
             panel_id="c",
@@ -122,12 +113,10 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
             ylim=(0, MAX_VALUE),
             x=(y["y-continental-scale-wind-gw"]
                + y["y-continental-scale-pv-gw"]
-               + y["y-continental-scale-biofuel-gw"]
-               + hydro_cap),
+               + y["y-continental-scale-hydro-gw"]),
             y=(y["y-regional-scale-wind-gw"]
                + y["y-regional-scale-pv-gw"]
-               + y["y-regional-scale-biofuel-gw"]
-               + hydro_cap),
+               + y["y-regional-scale-hydro-gw"]),
         ),
         PlotData(
             panel_id="d",
@@ -136,8 +125,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
             xlabel="Continental scale (TW)",
             xlim=(0, MAX_VALUE),
             ylim=(0, MAX_VALUE),
-            x=y["y-continental-scale-biofuel-gw"] + y["y-continental-scale-storage-gw"] + pumped_hydro_cap,
-            y=y["y-regional-scale-biofuel-gw"] + y["y-regional-scale-storage-gw"] + pumped_hydro_cap,
+            x=y["y-continental-scale-biofuel-gw"] + y["y-continental-scale-storage-gw"],
+            y=y["y-regional-scale-biofuel-gw"] + y["y-regional-scale-storage-gw"],
         )
     ]
 
@@ -194,6 +183,5 @@ if __name__ == "__main__":
     plot_composition_variability(
         path_to_large_scales=snakemake.input.large_scales,
         path_to_small_scale=snakemake.input.small_scale,
-        path_to_scenario_results=snakemake.input.aggregate,
         path_to_plot=snakemake.output[0]
     )

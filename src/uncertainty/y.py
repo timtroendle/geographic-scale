@@ -6,8 +6,9 @@ import calliope
 ENERGY_SCALING_FACTOR = 1e-3 # from MW(h) to GW(h)
 PV_TECHS = ["open_field_pv", "roof_mounted_pv"]
 WIND_TECHS = ["wind_offshore", "wind_onshore_monopoly", "wind_onshore_competing"]
+HYDRO_TECHS = ["hydro_run_of_river", "hydro_reservoir"]
 BIOFUEL_TECH = ["biofuel"]
-STORAGE_TECHS = ["hydrogen", "battery"]
+STORAGE_TECHS = ["hydrogen", "battery", "pumped_hydro"]
 
 
 def determine_y(path_to_results, scaling_factors, experiment_id, path_to_output):
@@ -17,6 +18,7 @@ def determine_y(path_to_results, scaling_factors, experiment_id, path_to_output)
             "y-cost-eur": [system_cost(results, scaling_factors)],
             "y-pv-gw": [pv_capacity(results, scaling_factors)],
             "y-wind-gw": [wind_capacity(results, scaling_factors)],
+            "y-hydro-gw": [hydro_capacity(results, scaling_factors)],
             "y-biofuel-gw": [biofuel_capacity(results, scaling_factors)],
             "y-storage-gw": [storage_capacity_power(results, scaling_factors)],
             "y-storage-gwh": [storage_capacity_energy(results, scaling_factors)],
@@ -43,6 +45,13 @@ def pv_capacity(result, scaling_factors):
 def wind_capacity(result, scaling_factors):
     return (energy_cap(result, ENERGY_SCALING_FACTOR / scaling_factors["power"])
             .sel(techs=WIND_TECHS)
+            .sum(["techs", "locs"])
+            .item())
+
+
+def hydro_capacity(result, scaling_factors):
+    return (energy_cap(result, ENERGY_SCALING_FACTOR / scaling_factors["power"])
+            .sel(techs=HYDRO_TECHS)
             .sum(["techs", "locs"])
             .item())
 

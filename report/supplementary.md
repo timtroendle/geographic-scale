@@ -41,12 +41,9 @@ To make the total number comparable to results from our model, we adjust it in t
 
 # Note S4: Effect of hydropower model choices on our results
 
-The way in which we model hydropower generation in Europe leads to peculiarities in results on the regional scale. Here, we find the lowest and the highest system cost in regions with large hydropower installations. These cost peculiarities are consequences of two model design choices: we keep hydropower capacities fixed at today's level and we assume they are amortised. In the following, we justify these two model design choices and discuss their relevance for our results.
+The way in which we model hydropower generation in Europe leads to peculiarities in results on the regional scale. Here, we find the lowest system cost in regions with large hydropower installations. These cost peculiarities are consequences of our design choice: we assume they are amortised. In the following, we justify this model design choice and discuss its relevance for our results.
 
 We assume hydropower capacities are amortised to avoid the need to model overnight cost. Overnight cost of hydropower capacities can vary strongly between projects and are thus difficult to model. Ignoring overnight cost can lead to low levelised cost of electricity in regions with large hydropower capacities. Cost is particularly low when dams provide local flexibility and other forms of more expensive flexibility provision can be avoided. Thus, our model choice leads to low cost in some regions and it also leads to slightly optimistic absolute system cost. But because we fix capacities to current levels for all Europe in all cases, the ignored overnight cost imply no benefit to any case and thus do not affect relative cost.
-
-<mark>
-We fix hydropower capacities to current levels because significant capacity expansion in Europe is unlikely[@LacalArantegui:2014]. In regions in which hydropower generation exceeds local electricity demand largely, this model choice can lead to high cost in the regional-scale case. However, on average, the impact is small. While on the continental scale levelised cost of electricity of hydropower ranges from 31 to 55 EUR per MWh, it ranges from 33 to 61 EUR per MWh on the regional scale. In fact, 35% of the hydropower potential on the regional scale is curtailed. This corresponds to 2% of total electricity system cost. Thus, if we allowed for capacity reduction on the regional scale, its cost could reduce by up to 2%. This magnitude has no significant affect on our main results.</mark>
 
 # Note S5: Effect of model simplifications
 

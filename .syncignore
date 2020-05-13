@@ -9,5 +9,6 @@ build
 build-by-euler
 backup-build-by-euler
 data/automatic
+report/report
 notebooks
 .git

@@ -11,3 +11,4 @@ dependencies:
     - jinja2=2.10.1
     - xarray=0.12.2
     - netcdf4=1.5.0.1
+    - pycountry=19.8.18

@@ -217,6 +217,19 @@ rule plot_sobol_indices:
     script: "../src/analyse/sobol.py"
 
 
+rule plot_generation_shares:
+    message: "Create plot of generation shares of two scenarios."
+    input:
+        src = "src/analyse/generation_shares.py",
+        results = rules.time_aggregated_results.output[0]
+    params:
+        scenario1 = "continental-autarky-100-continental-grid",
+        scenario2 = "regional-autarky-100-regional-grid"
+    output: "build/output/{resolution}/generation-shares.{plot_suffix}"
+    conda: "../envs/default.yaml"
+    script: "../src/analyse/generation_shares.py"
+
+
 rule overview_scenario_results:
     message: "Create table of key outputs of scenarios."
     input:

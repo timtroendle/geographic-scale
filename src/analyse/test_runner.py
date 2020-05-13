@@ -62,7 +62,7 @@ def _create_config_plugin(scenario_results, scaling_factors, path_to_biofuel_pot
             return resource / timestep_resolution
 
         @pytest.fixture(scope="session")
-        def biofuel_potentials(self):
+        def biofuel_potentials(self): # FIXME must be scaled with efficiency
             return (pd.read_csv(path_to_biofuel_potentials, index_col=0)
                       .rename(index=lambda loc: loc.replace(".", "-")))
 

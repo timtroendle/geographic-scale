@@ -230,6 +230,23 @@ rule plot_generation_shares:
     script: "../src/analyse/generation_shares.py"
 
 
+rule plot_use_of_bioenergy:
+    message: "Create plot of use of bioenergy potentials."
+    input:
+        src = "src/analyse/bioenergy_use.py",
+        results = rules.time_aggregated_results.output[0],
+        potentials = eurocalliope(
+            "build/data/{{resolution}}/biofuel/{scenario}/potential-mwh-per-year.csv"
+            .format(scenario=config["parameters"]["jrc-biofuel"]["scenario"])
+        )
+    params:
+        scenario = "regional-autarky-100-regional-grid",
+        efficiency = config["parameters"]["biofuel-efficiency"]
+    output: "build/output/{resolution}/bioenergy-use.{plot_suffix}"
+    conda: "../envs/default.yaml"
+    script: "../src/analyse/bioenergy_use.py"
+
+
 rule overview_scenario_results:
     message: "Create table of key outputs of scenarios."
     input:

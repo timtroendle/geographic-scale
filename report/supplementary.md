@@ -55,6 +55,16 @@ Furthermore, we do not consider ancillary services for the distribution and tran
 
 We also do not model the distribution grid in any way. The cost of the distribution grid is likely to be higher for smaller systems where generation is dispersed more strongly with substantial amounts of generation from roof mounted PV embedded within the distribution grid. However, technical potentials of wind and utility-scale PV are high enough in most regions in Europe so that roof mounted PV is rarely necessary. Thus, cost of the distribution grid may be higher for smaller scales, but only if roof mounted PV is prioritised over utility-scale PV.
 
+# Note S6: Effect of regional disaggregation of national electricity loads
+
+The regional disaggregation method based on population counts and industry plants that we use yields regional electricity load time series that are likely stronger correlated than in reality. In the following, we discuss the impact this may have on our findings.
+
+Most importantly, the stronger correlation impacts all cases with balancing scale above the regional level in the same way. As long as all regions within a country are connected through transmission lines, relative fluctuations between regions can be compensated through the grid. In all of these cases, we can expect that our model choice leads to a slight over- or underestimation of national transmission capacity but that the bias is similar in all cases.
+
+In the single case with regional-scale balancing, relative fluctuations between regions cannot be compensated through the grid but instead must be handled in each region individually. Here, we can expect that through our method some regions suffer slightly higher cost for balancing, but that other regions in the same country enjoy lower cost of similar levels. The impact for single regions may be noticable, but the impact on total system cost can be considered low.
+
+In summary, there is likely a small impact on the differences between the cases with balancing above the regional level and the case with balancing at the regional level. However, there is no reason to believe that this difference or any other impact on our results is large, as there is no reason to believe that correlations between regions are much lower than the ones resulting from out method.
+
 <div class="pagebreak"> </div>
 
 # Figure S1: System cost in cases including net imports

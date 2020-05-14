@@ -142,9 +142,9 @@ Using location data of each plant, we sum up time series as well as power and st
 
 ## Bioenergy
 
-We use estimations of biomass potentials for the year 2020 and reference assumptions taken from @RuizCastello:2015, but we assume no dedicated farming for energy crops and thus consider residuals and wastes only. The data is given as national aggregates, and we use national shares of farmland[@EuropeanSpaceAgency:2010], national shares of forests[@EuropeanSpaceAgency:2010], and national shares of population[@JRC:2015] as proxies to derive proportionally allocated potentials per regional administrative unit. Table\ S4 lists all feedstocks we consider together with the allocation proxy we use.
+We use estimations of biomass potentials for the year 2020 and reference assumptions taken from @RuizCastello:2015, but we assume no dedicated farming for energy crops and thus consider residuals and wastes only. The potentials sum to an European potential of 2400\ TWh/yr primary energy in our entire study area, which is used in none of our cases by more than 50% (see Supplemental Figure S4). The data is given as national aggregates, and we use national shares of farmland[@EuropeanSpaceAgency:2010], national shares of forests[@EuropeanSpaceAgency:2010], and national shares of population[@JRC:2015] as proxies to derive proportionally allocated potentials per regional administrative unit. Table\ S4 lists all feedstocks we consider together with the allocation proxy we use.
 
-We assume an efficiency of 45% for the combustion of all biomass.
+We do not discriminate between materials stemming from different feedstocks and assume an efficiency of 45% for the combustion of all biomass[@JRC:2015]. We furthermore assume that sufficient levels of storage options are available such that there is no further temporal restriction on the combustion other than the annual potential. This flexibility allows to use bioenergy combustion to balance seasonal fluctuations of solar power for example, which is used in some regions of our study area (see Supplemental Figure S9).
 
 ## Pumped storage hydro
 
@@ -154,7 +154,7 @@ To determine location, power and storage capacity of each pumped hydro station i
 
 ## Short-term and long-term storage
 
-We assume that short-term and long-term storage capacities can be deployed in all regional administrative units. We model short-term storage as Lithium-ion batteries and assume long-term storage is provided by hydrogen, as they are likely to become the dominant technology in their respective applications[@Schmidt:2019]. The models are based on two technical parameters: the ratio between power and storage capacity, and the round-trip efficiency. Short-term storage is constrained to a maximum capacity of 4\ h of full power, while long-term storage has a minimum of 4\ h capacity at full power. We assume 86% of round-trip efficiency for short-term and 40% for long-term storage.
+We assume that short-term and long-term storage capacities can be deployed in all regional administrative units. We model short-term storage as Lithium-ion batteries and assume long-term storage is provided by hydrogen stored in overground steel tanks[@Steward:2009], as they are likely to become the dominant technology in their respective applications[@Schmidt:2019]. The models are based on two technical parameters: the ratio between power and storage capacity, and the round-trip efficiency. Short-term storage is constrained to a maximum capacity of 4\ h of full power, while long-term storage has a minimum of 4\ h capacity at full power. We assume 86% of round-trip efficiency for short-term and 40% for long-term storage.
 
 Additionally, we assume that power and storage capacities can be expanded independently, constrained only by the above mentioned minimum and maximum storage capacities.
 

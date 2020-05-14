@@ -54,7 +54,9 @@ rule test:
             scenario=config["parameters"]["jrc-biofuel"]["scenario"]
         )),
         units = eurocalliope("build/data/{resolution}/units.csv")
-    params: scaling_factors = config["scaling-factors"]
+    params:
+        scaling_factors = config["scaling-factors"],
+        biofuel_efficiency = config["parameters"]["biofuel-efficiency"]
     output: "build/logs/{resolution}/test-report.html"
     conda: "../envs/test.yaml"
     script: "../src/analyse/test_runner.py"

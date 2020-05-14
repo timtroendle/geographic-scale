@@ -5,7 +5,8 @@ import calliope
 import pandas as pd
 
 
-def run_test(scenario_results, path_to_biofuel_potentials, scaling_factors, path_to_output, path_to_units):
+def run_test(scenario_results, path_to_biofuel_potentials, biofuel_efficiency,
+             scaling_factors, path_to_output, path_to_units):
     exit_code = pytest.main(
         [
             f"--html={path_to_output}",
@@ -15,12 +16,14 @@ def run_test(scenario_results, path_to_biofuel_potentials, scaling_factors, path
             scenario_results=scenario_results,
             scaling_factors=scaling_factors,
             path_to_biofuel_potentials=path_to_biofuel_potentials,
+            biofuel_efficiency=biofuel_efficiency,
             path_to_units=path_to_units)]
     )
     sys.exit(exit_code)
 
 
-def _create_config_plugin(scenario_results, scaling_factors, path_to_biofuel_potentials, path_to_units):
+def _create_config_plugin(scenario_results, scaling_factors, biofuel_efficiency,
+                          path_to_biofuel_potentials, path_to_units):
     """Creates fixtures from Snakemake configuration."""
 
     class SnakemakeConfigPlugin():
@@ -62,9 +65,13 @@ def _create_config_plugin(scenario_results, scaling_factors, path_to_biofuel_pot
             return resource / timestep_resolution
 
         @pytest.fixture(scope="session")
-        def biofuel_potentials(self): # FIXME must be scaled with efficiency
-            return (pd.read_csv(path_to_biofuel_potentials, index_col=0)
-                      .rename(index=lambda loc: loc.replace(".", "-")))
+        def biofuel_potentials(self):
+            return (
+                pd
+                .read_csv(path_to_biofuel_potentials, index_col=0)
+                .rename(index=lambda loc: loc.replace(".", "-"))
+                .mul(biofuel_efficiency)
+            )
 
         @pytest.fixture()
         def biofuel_potential(self, biofuel_potentials, location):
@@ -78,6 +85,7 @@ if __name__ == "__main__":
         scenario_results=snakemake.input.results,
         path_to_units=snakemake.input.units,
         path_to_biofuel_potentials=snakemake.input.biofuel_potentials,
+        biofuel_efficiency=snakemake.params.biofuel_efficiency,
         scaling_factors=snakemake.params.scaling_factors,
         path_to_output=snakemake.output[0]
     )

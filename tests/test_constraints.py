@@ -2,7 +2,8 @@ import pytest
 import pandas as pd
 
 DEMAND_TECH = "demand_elec"
-EPSILON = 0.001 # 0.1 %
+EPSILON_IMPORTS = 0.001 # 0.1 %
+EPSILON_BIOENERGY = 0.01 # 1 %
 
 
 @pytest.fixture
@@ -59,7 +60,7 @@ def demand_per_autarkic_group(carrier_con, transmission_loc_techs_per_autarkic_g
 
 def test_biofuel_potential_not_exceeded(carrier_prod, biofuel_potential, location):
     biofuel_generation = carrier_prod.sel(techs="biofuel", locs=location).sum("timesteps").item()
-    assert biofuel_generation <= biofuel_potential
+    assert biofuel_generation <= biofuel_potential * (1 + EPSILON_BIOENERGY)
 
 
 def test_net_imports(net_imports_per_autarkic_group, demand_per_autarkic_group, rel_net_import_threshold):
@@ -67,4 +68,4 @@ def test_net_imports(net_imports_per_autarkic_group, demand_per_autarkic_group, 
         i / -d
         for i, d in zip(net_imports_per_autarkic_group, demand_per_autarkic_group)
     ])
-    assert (rel_net_imports_per_autarkic_group <= (rel_net_import_threshold + EPSILON)).all()
+    assert (rel_net_imports_per_autarkic_group <= (rel_net_import_threshold + EPSILON_IMPORTS)).all()

@@ -1,40 +1,40 @@
 @font-face {
-    font-family: 'KlinicSlabBook';
+    font-family: 'KlinicSlabFont'; /* Name must not match local font, see weasyprint #1028. */
     font-style: normal;
     font-weight: normal;
-    src: url(fonts/KlinicSlabBook.otf);
+    src: url(fonts/KlinicSlabBook.otf) format("opentype");
 }
 @font-face {
-    font-family: 'KlinicSlabBook';
+    font-family: 'KlinicSlabFont';
     font-style: italic;
     font-weight: normal;
-    src: url(fonts/KlinicSlabBookIt.otf);
+    src: url(fonts/KlinicSlabBookIt.otf) format("opentype");
 }
 @font-face {
-    font-family: 'KlinicSlabBook';
+    font-family: 'KlinicSlabFont';
     font-style: normal;
     font-weight: bold;
-    src: url(fonts/KlinicSlabMedium.otf);
+    src: url(fonts/KlinicSlabMedium.otf) format("opentype");
 }
 @font-face {
-    font-family: 'KlinicSlabMedium';
-    font-style: normal;
+    font-family: 'KlinicSlabFont';
+    font-style: italic;
     font-weight: bold;
-    src: url(fonts/KlinicSlabMedium.otf);
+    src: url(fonts/KlinicSlabMediumIt.otf) format("opentype");
 }
 
 @page {
     size: A4;
     background-color: #ffffff;
+    margin-left: 3cm;
+    margin-right: 3cm;
+    margin-top: 3cm;
+    margin-bottom: 4cm;
     @bottom-center {
-        font-family: KlinicSlabBook, serif;
-        font-size: 1em;
+        font-family: KlinicSlabFont, serif;
+        font-size: 16px;
         content: counter(page);
       }
-}
-
-@media print {
-    .pagebreak { page-break-before: always; } /* page-break-after works, as well */
 }
 
 html {
@@ -53,39 +53,56 @@ body {
     max-width: 700px;
     background: #ffffff;
     color: rgba(0, 0, 0, 0.9);
-    font-family: KlinicSlabBook, serif;
+    font-family: KlinicSlabFont, serif;
     padding: 10px 20px;
     display: block;
     -webkit-font-smoothing: antialiased;
-    font-size: large;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: KlinicSlabMedium, serif
+    font-weight: bold;
 }
 
 h1.title {
-    font-size: xx-large;
+    font-size: 1.8em;
     line-height: 120%;
     margin-top: 1.5em;
 }
 
 h1 {
-    font-size: x-large;
+    font-size: 1.5em;
     margin-top: 1.5em;
+    margin-bottom: 1em;
 }
 
-h2, h3, h4, h5, h6 {
-    font-size: large;
+h2 {
+    font-size: 1.125em;
+    margin-top: 0em;
+    margin-bottom: 1em;
+}
+
+h3, h4, h5, h6 {
+    font-size: 1em;
+    margin-top: 0em;
+    margin-bottom: 1em;
 }
 
 h1:first-child, h2:first-child, h3:first-child, h4:first-child {
-    margin-top: 0
+    margin-top: 0;
+}
+
+p {
+    font-size: 1em;
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+div.fignos, div.tablenos {
+    margin-bottom: 1em;
 }
 
 p.author {
     font-style: italic;
-    font-size: 85%; /* used to be: smaller */
     line-height: .3em;
 }
 
@@ -103,7 +120,7 @@ a {
 }
 
 a:visited {
-    color: #4A6B82
+    color: #07c
 }
 
 a:hover {
@@ -152,7 +169,8 @@ sub {
 }
 
 figure {
-    margin: 0
+    margin: 0;
+    font-size: smaller;
 }
 
 img {
@@ -193,13 +211,14 @@ li>p+p {
 }
 
 form, legend, label {
-    font-size: 85%; /* used to be: smaller */
+    font-size: smaller;
     line-height: 18px
 }
 
 caption, figcaption {
-    font-size: small;
-    line-height: 18px
+    font-size: smaller;
+    page-break-before: avoid;
+    page-break-inside: avoid;
 }
 
 caption span, figcaption span {
@@ -211,7 +230,7 @@ blockquote {
     border-right: none;
     border-left: none;
     color: rgba(0, 0, 0, 0.7);
-    font-family: KlinicSlabMedium, serif;
+    font-weight: bold;
     line-height: 25px;
     margin-top: 25px
 }
@@ -240,14 +259,17 @@ table {
     border-spacing: 0;
     border-top: solid 1px #000;
     border-bottom: solid 1px #000;
-    margin-top: 18px;
+    margin-top: 1em;
     width: 100%;
-    font-size: 85%; /* used to be: smaller */
+    font-size: smaller;
 }
 
 table th, table td {
-    line-height: 15px;
     padding: 10px 18px 8px 0
+}
+
+table p {
+    margin-bottom: 0;
 }
 
 table thead th, table thead td {
@@ -273,9 +295,27 @@ table tbody tr:nth-child(odd) th, table tbody tr:nth-child(odd) td {
 
 table caption {
     top: 5px;
-    margin-bottom: 18px
+    margin-bottom: 1em;
+    page-break-after: avoid;
+    page-break-inside: avoid;
 }
 
 #refs a {
     word-wrap: break-word; /* break long URLs */
+}
+
+#refs {
+    line-height: 1.2em;
+}
+
+@media print {
+    .pagebreak { page-break-before: always; } /* page-break-after works, as well */
+
+    body {
+        font-size: 16px;
+    }
+
+    h1 {
+        margin-top: 0em;
+    }
 }

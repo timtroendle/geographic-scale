@@ -22,7 +22,7 @@ abstract: |
 highlights:
     - Continent-wide electricity supply is cheapest but needs large grid expansion.
     - Small-scale supply has only 20% higher cost, but needs more generation infrastructure.
-    - Strong international connections are crucial for low cost systems.
+    - Strong international connections are crucial for low-cost systems.
     - Key trade-off is between geographic scale and distribution of infrastructure.
 bibliography:
     - 'literature.bib'

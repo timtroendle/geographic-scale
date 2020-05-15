@@ -7,7 +7,7 @@ link-citations: True
 fignos-caption-name: Figure
 tablenos-caption-name: Table
 lang: en-GB
-date: 2020-05-15-dev
+date: 2020-05-15
 ---
 
 # Figure S1: Transmission network

@@ -26,6 +26,10 @@ weather_run:
     runtime: 1439
     cores: 6
     memory: 30000
+timeresolution_run:
+    runtime: 1439
+    cores: 6
+    memory: 30000
 run_single_location:
     runtime: 60
 y:

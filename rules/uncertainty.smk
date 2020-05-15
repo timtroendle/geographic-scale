@@ -169,6 +169,27 @@ rule weather_run:
         """
 
 
+rule timeresolution_run:
+    message:
+        "Run scenario {wildcards.scenario} on national and hourly resolution."
+    input:
+        model = "build/model/national/model.yaml"
+    params:
+        subset_time = config["uncertainty"]["subset_time"],
+        time_resolution = "1H",
+        optimality_tol = config["calliope-parameters"]["run.solver_options.OptimalityTol"]
+    output: protected("build/output/national/runs/uncertainty/time/{scenario}.nc")
+    conda: "../envs/calliope.yaml"
+    shell:
+        """
+        calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario}\
+        --override_dict="{{run.solver_options.OptimalityTol: {params.optimality_tol}, \
+                           model.subset_time: {params.subset_time}, \
+                           model.time.function: resample, \
+                           model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"
+        """
+
+
 rule y:
     message: "{wildcards.experiment}--{wildcards.number_samples}: Calculate y {wildcards.id} of {wildcards.scenario} on {wildcards.resolution} resolution."
     input:

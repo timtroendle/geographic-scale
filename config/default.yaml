@@ -15,6 +15,7 @@ resolution:
     time: 1M
 calliope-parameters: # arbitrary many calliope parameters applied as override
     model.subset_time: ['2016-01-01', '2016-12-31']
+    run.solver_options.OptimalityTol: 1e-4
 year: 2016
 scenarios:
     - continental-autarky-100-continental-grid

@@ -162,9 +162,13 @@ Furthermore, we do not consider ancillary services for the distribution and tran
 
 We also do not model the distribution grid in any way. The cost of the distribution grid is likely to be higher for smaller systems where generation is dispersed more strongly with substantial amounts of generation from roof mounted PV embedded within the distribution grid. However, technical potentials of wind and utility-scale PV are high enough in most regions in Europe so that roof mounted PV is rarely necessary. Thus, cost of the distribution grid may be higher for smaller scales, but only if roof mounted PV is prioritised over utility-scale PV.
 
-## Procedure S5: 4h time resolution
+## Procedure S5: Temporal resolution of the model
 
-TODO
+We run the model using a temporal resolution of four hours due to high computational requirements stemming from the high spatial resolution. Our model is spatially resolved into 497 nodes, which represent all first-level administrative units in Europe. Together with the 2,190 timesteps of the four hour temporal resolution, this leads to ~1,100,000 pairs of space and time for which the optimisation algorithm must find a solution. In comparison, models with national spatial and hourly temporal resolution, which are typically used in previous studies[@Gils:2017; @Child:2019; @Zappa:2019], pose a problem of 265,000 pairs of space and time. Due to the polynomial-time complexity of the optimisation algorithm, computation time does not scale linearly with the problem size. In fact, we find that solving a version of our model that is resolved on the national level runs 45 times faster than the original version of our model, although it has only 17 times fewer nodes.
+
+Solving our model requires > 250\ GB of internal memory and > 24h of runtime for each of the 12 cases and each of the 20 high-resolution uncertainty runs we perform. This is only possible using a high performance computing cluster. Increasing the problem size by increasing the temporal resolution is challenging. In fact, we are not aware of any study with larger problem size.
+
+The temporal resolution of our model likely impacts our results. As has been shown before, model results can change significantly with lower temporal resolutions[@Pfenninger:2017]. However, the effect can be expected to be not large for resolutions above six hours and for models that contain inter-temporal constraints like ours[@Pfenninger:2017]. We test the impact on our results by using a version of our model that is spatially resolved on the national level and has a temporal resolution of one hour. We find that total generation capacity remains nearly constant, but that total balancing capacity increases compared to a model that has a temporal resolution of four hours. This result indicates that a higher temporal resolution would likely support rather than contradict our main finding that the balancing scale drives cost more strongly than the supply scale.
 
 ## Procedure S6: Effect of regional disaggregation of national electricity loads
 

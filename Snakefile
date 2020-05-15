@@ -102,7 +102,7 @@ rule supplemental_material:
     message: "Compile the supplemental material."
     input:
         GENERAL_DOCUMENT_DEPENDENCIES,
-        "report/supplementary.md",
+        "report/supplemental.md",
         "report/supplemental.css",
         "report/biofuel-feedstocks.csv",
         "build/output/{resolution}/report/cost-special-cases.svg",
@@ -126,7 +126,7 @@ rule supplemental_material:
         """
         cd report
         ln -s ../build/output/{wildcards.resolution}/report .
-        {PANDOC} supplementary.md {params.options} --css=supplemental.css \
+        {PANDOC} supplemental.md {params.options} --css=supplemental.css \
         -o ../build/output/{wildcards.resolution}/supplemental.{wildcards.suffix}
         """
 

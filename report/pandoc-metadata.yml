@@ -18,13 +18,12 @@ tags:
     - 'acceptance'
     - 'flexibility'
 abstract: |
-    Renewable electricity resources are abundant across Europe, and the potential is sufficient to enable full electricity sector decarbonisation on different scales, from subnational regions to the entire continent, with self-sufficient or interconnected units. We show that a continental-scale, fully renewable electricity system is cheapest, but also that systems on the national scale and below are possible at cost penalties of 20% or less. The key to low cost is transmission, but it is not necessary to vastly expand the transmission system. When electricity is transmitted only to balance fluctuations within national or regional net self-sufficient supply units, the transmission system size is comparable to today’s albeit with different layout, especially expanded interconnector capacities. The largest differences across system designs concern land use and thus social acceptance: in the continental system, generation capacity is strongly concentrated on the European periphery where the best resources are, necessitating large transmission expansion. Regional systems, in contrast, have more dispersed generation near demand, where land-use pressure is already high. The key trade-off for a fully renewable European electricity supply is therefore not the effect of geographic scale on system cost, but the effect of geographic scale on the spatial distribution of required generation and transmission infrastructure.
+    The European potential of renewable electricity is sufficient to enable fully renewable supply on different scales, from self-sufficient, subnational regions to an interconnected continent. We show that a continental-scale system is cheapest, but also that systems on the national scale and below are possible at cost penalties of 20% or less. The key to low cost is transmission, but it is not necessary to vastly expand the transmission system. When electricity is transmitted only to balance fluctuations, its size is comparable to today’s albeit with expanded interconnector capacities. The largest differences across system designs concern land use and thus social acceptance: in the continental system, generation capacity is strongly concentrated on the European periphery where the best resources are. Regional systems, in contrast, have more dispersed generation. The key trade-off is therefore not the effect of geographic scale on cost, but on the spatial distribution of generation and transmission infrastructure.
 highlights:
-    - Continent-wide renewable electricity supply is cheapest but needs large grid expansion.
-    - Supply on smaller scales requires less transmission, but more generation infrastructure.
-    - Net self-sufficient, subnational regions are only 20% more expensive, if continentally interconnected.
-    - Strong international connections are crucial for cost-minimal systems.
-    - Key trade-off is between geographic scale and distribution of infrastructure, not cost.
+    - Continent-wide electricity supply is cheapest but needs large grid expansion.
+    - Small-scale supply has only 20% higher cost, but needs more generation infrastructure.
+    - Strong international connections are crucial for low cost systems.
+    - Key trade-off is between geographic scale and distribution of infrastructure.
 bibliography:
     - 'literature.bib'
 csl: joule.csl
@@ -33,5 +32,5 @@ lang: en-GB
 xnos-cleveref: True
 fignos-plus-name: "Figure\ " # does not include refs to supplementary
 tablenos-plus-name: "Table\ " # does not include refs to supplementary
-date: 2020-04-yy-dev
+date: 2020-05-15-dev
 ---

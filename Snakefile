@@ -13,7 +13,7 @@ onsuccess:
 onerror:
     if "email" in config.keys():
         shell("echo "" | mail -s 'geographical-scale crashed' {config[email]}")
-localrules: all, clean, copy_report_file, copy_report_file_without_resolution, report, supplementary_material
+localrules: all, clean, copy_report_file, copy_report_file_without_resolution, report, supplemental_material
 ruleorder: copy_report_file > copy_report_file_without_resolution
 
 include: "./rules/sync.smk"
@@ -28,7 +28,7 @@ rule all:
     input:
         "build/logs/{resolution}/test-report.html".format(resolution=config["resolution"]["space"]),
         "build/output/{resolution}/report.pdf".format(resolution=config["resolution"]["space"]),
-        "build/output/{resolution}/supplementary.pdf".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/supplemental.pdf".format(resolution=config["resolution"]["space"]),
         "build/output/{resolution}/uncertainty/weather-diff-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"])
 
 
@@ -98,11 +98,12 @@ rule report:
         """
 
 
-rule supplementary_material:
-    message: "Compile the supplementary material."
+rule supplemental_material:
+    message: "Compile the supplemental material."
     input:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/supplementary.md",
+        "report/supplemental.css",
         "report/biofuel-feedstocks.csv",
         "build/output/{resolution}/report/cost-special-cases.svg",
         "build/output/{resolution}/report/composition-all.svg",
@@ -118,15 +119,15 @@ rule supplementary_material:
         "build/output/{resolution}/report/generation-shares.svg",
         "build/output/{resolution}/report/bioenergy-use.svg"
     params: options = pandoc_options
-    output: "build/output/{resolution}/supplementary.{suffix}"
+    output: "build/output/{resolution}/supplemental.{suffix}"
     conda: "envs/pdf.yaml"
     shadow: "minimal"
     shell:
         """
         cd report
         ln -s ../build/output/{wildcards.resolution}/report .
-        {PANDOC} supplementary.md {params.options} --table-of-contents \
-        -o ../build/output/{wildcards.resolution}/supplementary.{wildcards.suffix}
+        {PANDOC} supplementary.md {params.options} --css=supplemental.css \
+        -o ../build/output/{wildcards.resolution}/supplemental.{wildcards.suffix}
         """
 
 

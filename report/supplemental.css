@@ -1,0 +1,11 @@
+@page {
+    size: A4;
+    background-color: #ffffff;
+    @bottom-center {
+        content: "";
+      }
+}
+
+p.date {
+    display: none;
+}

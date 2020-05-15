@@ -74,8 +74,14 @@ $if(highlights)$
     </ul>
 $endif$
 $if(abstract)$
-<h1 id="abstract">Abstract</h1>
+<h1 id="abstract">Summary</h1>
 $abstract$
+$endif$
+$if(tags)$
+<strong>Keywords: </strong>
+$for(tags)$
+$tags$$sep$;
+$endfor$
 $endif$
 </header>
 $endif$

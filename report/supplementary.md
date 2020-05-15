@@ -1,12 +1,5 @@
 ---
-title: 'Trade-offs between geographic scale, cost, and system design for fully renewable electricity in Europe'
-subtitle: 'Supplemental Information'
-author:
-    - Tim Tröndle (Lead Contact)
-    - Johan Lilliestam
-    - Stefano Marelli
-    - Stefan Pfenninger
-institute: IASS Potsdam and ETH Zürich
+title: Supplemental Information
 bibliography:
     - 'literature.bib'
 csl: joule.csl
@@ -14,80 +7,30 @@ link-citations: True
 fignos-caption-name: Figure
 tablenos-caption-name: Table
 lang: en-GB
-date: 2020-04-yy-dev
+date: 2020-05-15-dev
 ---
 
-This document contains supplemental information for:
+# Figure S1: Transmission network
 
-Tim Tröndle, Johan Lilliestam, Stefano Marelli and Stefan Pfenninger (<mark>YEAR</mark>). Trade-offs between geographic scale, cost, and system design for fully renewable electricity in Europe. DOI: <mark>XXXXXXXXXXXXX</mark>
-
-<div class="pagebreak"> </div>
-
-# Note S1: Code and data availability
-
-The code and reproducible workflow used to perform this analysis is available online <mark>(for review process provided within submission)</mark>.
-
-Furthermore, the resulting data is available online as well <mark>(for review process provided within submission)</mark>.
-
-# Note S2: Impact of net imports into supply area on cost
-
-To confirm the inferior impact of supply options on total cost, we assess the cost of nine further cases, in which we relax the supply scale by permitting net imports to satisfy national or regional electricity demand. This relaxation has a small impact on cost (Figure S1), with 10 percentage points or less cost reduction between net self-sufficiency (0 net imports, cases from Figure 1) and allowing up to 30% net imports. This reinforces the finding from Figure 1: geographic scale has a particularly large impact on cost because of the possibilities for balancing, not mainly because of supply options.
-
-# Note S3: Today's transmission capacities
-
-To determine today's transmission capacities, we use an approach described in ref. [@Horsch:2018] together with data from the same publication. Ref. [@Horsch:2018] use an extended version of the GridKit tool [@Wiegmans:2016] to find the location, voltage level, and number of circuits of all transmission lines in Europe. They estimate the transmission capacity per line based on the voltage level. In our study area, this leads to ~190\ GW of international (cross-border) transmission capacity, ~1,600\ GW of interregional transmission capacity, and a total of ~340\ TWkm of transmission capacity.
-
-To make the total number comparable to results from our model, we adjust it in the following way: We start by determining the transmission capacity between each pair of regions (in GW). We then ignore the actual lengths of the lines and instead map transmission capacities to transmission lines of our model, which connect centroids of all regions (see @fig:network). Using this approach, we estimate today's interregional transmission capacity to be 215\ TWkm.
-
-# Note S4: Effect of hydropower model choices on our results
-
-The way in which we model hydropower generation in Europe leads to peculiarities in results on the regional scale. Here, we find the lowest system cost in regions with large hydropower installations. These cost peculiarities are consequences of our design choice: we assume they are amortised. In the following, we justify this model design choice and discuss its relevance for our results.
-
-We assume hydropower capacities are amortised to avoid the need to model overnight cost. Overnight cost of hydropower capacities can vary strongly between projects and are thus difficult to model. Ignoring overnight cost can lead to low levelised cost of electricity in regions with large hydropower capacities. Cost is particularly low when dams provide local flexibility and other forms of more expensive flexibility provision can be avoided. Thus, our model choice leads to low cost in some regions and it also leads to slightly optimistic absolute system cost. But because we fix capacities to current levels for all Europe in all cases, the ignored overnight cost imply no benefit to any case and thus do not affect relative cost.
-
-# Note S5: Effect of model simplifications
-
-There are three aspects which our analysis does not consider and which may impact our findings. Some are likely to increase attractiveness of small-scale systems, others are likely to increase attractiveness of large-scale systems.
-
-Most importantly, we do not consider flexibility from electricity demand or from electrifying the heat and transport sectors. These additional flexibilities may be especially beneficial for smaller-scale systems, whose flexibility options are more limited and expensive. However, large electricity systems can and will benefit as well and our sensitivity analysis shows that cost differences are driven largely by the cost of bioenergy; a technology mostly used to balance seasonal fluctuations of solar generation. Only if additional flexibilities can balance seasonal fluctuations, a significant impact on system cost can be expected. This is likely not the case for demand flexibility[@Aryandoust:2017] or transportation[@Brown:2018a], but it may be possible by electrifying the heat sector[@Brown:2018a].
-
-Furthermore, we do not consider ancillary services for the distribution and transmission grids. The provision of ancillary services may be easier, i.e. less costly, for system layouts as we found them for smaller electricity systems, because not only generation but also support infrastructure is more homogeneously dispersed and thus able to provide services like frequency control or black-start everywhere. However, there is no reason to believe that this would change system cost and therefore relative system cost significantly[@Brown:2018].
-
-We also do not model the distribution grid in any way. The cost of the distribution grid is likely to be higher for smaller systems where generation is dispersed more strongly with substantial amounts of generation from roof mounted PV embedded within the distribution grid. However, technical potentials of wind and utility-scale PV are high enough in most regions in Europe so that roof mounted PV is rarely necessary. Thus, cost of the distribution grid may be higher for smaller scales, but only if roof mounted PV is prioritised over utility-scale PV.
-
-# Note S6: Effect of regional disaggregation of national electricity loads
-
-The regional disaggregation method based on population counts and industry plants that we use yields regional electricity load time series that are likely stronger correlated than in reality. In the following, we discuss the impact this may have on our findings.
-
-Most importantly, the stronger correlation impacts all cases with balancing scale above the regional level in the same way. As long as all regions within a country are connected through transmission lines, relative fluctuations between regions can be compensated through the grid. In all of these cases, we can expect that our model choice leads to a slight over- or underestimation of national transmission capacity but that the bias is similar in all cases.
-
-In the single case with regional-scale balancing, relative fluctuations between regions cannot be compensated through the grid but instead must be handled in each region individually. Here, we can expect that through our method some regions suffer slightly higher cost for balancing, but that other regions in the same country enjoy lower cost of similar levels. The impact for single regions may be noticable, but the impact on total system cost can be considered low.
-
-In summary, there is likely a small impact on the differences between the cases with balancing above the regional level and the case with balancing at the regional level. However, there is no reason to believe that this difference or any other impact on our results is large, as there is no reason to believe that correlations between regions are much lower than the ones resulting from out method.
+![**Possible locations of transmission capacities.** All lines visualise connections between two regions that can hold transmission capacities. International connections are coloured yellow, all others are coloured blue. The amount of capacities installed on these connections is an output of the optimisation and depends on the considered case.](report/network.png){#fig:network .class  tag="S1"}
 
 <div class="pagebreak"> </div>
 
-# Figure S1: System cost in cases including net imports
+# Figure S2: System cost in cases including net imports
 
-![**System cost of nine electricity systems in Europe with national or regional net supply, and continental or national balancing, relative to lowest cost, continental-scale system.** Cost of variations of three cases from Figure 1 in which net imports into the national or regional supply area are allowed to certain degrees (x-axis), from no net imports (0%, corresponds to cases from Figure 1) to imports covering up to 30% of national or regional electricity demand. Cost are relative to the entirely continental case in Figure 1.](report/cost-special-cases.svg){#fig:cost .class tag="S1"}
-
-<div class="pagebreak"> </div>
-
-# Figure S2: System composition of all cases
-
-![**Cost-optimised technology mixes for all cases. a,b,c,d**, Europe-wide installed generation capacities (**a**), storage capacities (**b**), transmission capacities (**c**), and  potential and curtailed generation from variable renewable sources (**d**) for entirely continental-, national-, and regional-scale electricity systems with minimal system cost. The thin bars indicate the range of values including cases with supply on smaller scales. See Tables\ S2 and S3 for numerical results of all cases. **a**, The total excludes all storage capacities but includes capacities of hydropower at or below today's levels (36\ GW run of river, 103\ GW reservoirs). **b**, Europe-wide installed storage capacities for battery and hydrogen storage. Up to 97\ TWh from hydro reservoirs and 1.3\ TWh from pumped hydro storage are not shown. **c**, Europe-wide installed electricity transmission capacities, ignoring transmission capacities within regions. **d**, Europe-wide potential generation and curtailed generation from the variable renewable sources solar, wind and hydro.](report/composition-all.svg){#fig:composition .class tag="S2"}
+![**System cost of nine electricity systems in Europe with national or regional net supply, and continental or national balancing, relative to lowest cost, continental-scale system.** Cost of variations of three cases from Figure 1 in which net imports into the national or regional supply area are allowed to certain degrees (x-axis), from no net imports (0%, corresponds to cases from Figure 1) to imports covering up to 30% of national or regional electricity demand. Cost are relative to the entirely continental case in Figure 1.](report/cost-special-cases.svg){#fig:cost .class tag="S2"}
 
 <div class="pagebreak"> </div>
 
-# Figure S3: Generation shares
+# Figure S3: System composition of all cases
 
-![**Technology generation shares for all countries. a,** Generation shares when supply and balancing are continental. **b,** Generation shares when supply and balancing are regional.](report/generation-shares.svg){#fig:generation-shares .class tag="S3"}
+![**Cost-optimised technology mixes for all cases. a,b,c,d**, Europe-wide installed generation capacities (**a**), storage capacities (**b**), transmission capacities (**c**), and  potential and curtailed generation from variable renewable sources (**d**) for entirely continental-, national-, and regional-scale electricity systems with minimal system cost. The thin bars indicate the range of values including cases with supply on smaller scales. See Tables\ S2 and S3 for numerical results of all cases. **a**, The total excludes all storage capacities but includes capacities of hydropower at or below today's levels (36\ GW run of river, 103\ GW reservoirs). **b**, Europe-wide installed storage capacities for battery and hydrogen storage. Up to 97\ TWh from hydro reservoirs and 1.3\ TWh from pumped hydro storage are not shown. **c**, Europe-wide installed electricity transmission capacities, ignoring transmission capacities within regions. **d**, Europe-wide potential generation and curtailed generation from the variable renewable sources solar, wind and hydro.](report/composition-all.svg){#fig:composition .class tag="S3"}
 
 <div class="pagebreak"> </div>
 
-# Figure S4: Use of bioenergy potentials
+# Figure S4: Generation shares
 
-![**Use of bioenergy potentials.** All use data from the case with highest levels of deployed bioenergy capacity in which supply and balancing are regional. Potentials are based on estimations of available residual material[@RuizCastello:2015] and sum to 2400\ TWh/yr Europe-wide (1100\ TWh/yr usable electricity) for the year 2020 and reference assumptions. **a,** Use of national potentials. **b,** Use of potentials in 497 subnational regions.](report/bioenergy-use.svg){#fig:bioenergy-use .class tag="S4"}
+![**Technology generation shares for all countries. a,** Generation shares when supply and balancing are continental. **b,** Generation shares when supply and balancing are regional.](report/generation-shares.svg){#fig:generation-shares .class tag="S4"}
 
 <div class="pagebreak"> </div>
 
@@ -109,9 +52,9 @@ In summary, there is likely a small impact on the differences between the cases 
 
 <div class="pagebreak"> </div>
 
-# Figure S8: Transmission network
+# Figure S8: Use of bioenergy potentials
 
-![**Possible locations of transmission capacities.** All lines visualise connections between two regions that can hold transmission capacities. International connections are coloured yellow, all others are coloured blue. The amount of capacities installed on these connections is an output of the optimisation and depends on the considered case.](report/network.png){#fig:network .class  tag="S8"}
+![**Use of bioenergy potentials.** All use data from the case with highest levels of deployed bioenergy capacity in which supply and balancing are regional. Potentials are based on estimations of available residual material[@RuizCastello:2015] and sum to 2400\ TWh/yr Europe-wide (1100\ TWh/yr usable electricity) for the year 2020 and reference assumptions. **a,** Use of national potentials. **b,** Use of potentials in 497 subnational regions.](report/bioenergy-use.svg){#fig:bioenergy-use .class tag="S8"}
 
 <div class="pagebreak"> </div>
 
@@ -188,6 +131,50 @@ include-encoding: UTF-8
 markdown: True
 ---
 ```
+
+<div class="pagebreak"> </div>
+
+# Supplemental Experimental Procedures
+
+## Procedure S1: Impact of net imports into supply area on cost
+
+To confirm the inferior impact of supply options on total cost, we assess the cost of nine further cases, in which we relax the supply scale by permitting net imports to satisfy national or regional electricity demand. This relaxation has a small impact on cost (Figure\ S1), with 10 percentage points or less cost reduction between net self-sufficiency (0 net imports, cases from Figure\ 1) and allowing up to 30% net imports. This reinforces the finding from Figure\ 1: geographic scale has a particularly large impact on cost because of the possibilities for balancing, not mainly because of supply options.
+
+## Procedure S2: Today's transmission capacities
+
+To determine today's transmission capacities, we use an approach described in ref. [@Horsch:2018] together with data from the same publication. Ref. [@Horsch:2018] use an extended version of the GridKit tool [@Wiegmans:2016] to find the location, voltage level, and number of circuits of all transmission lines in Europe. They estimate the transmission capacity per line based on the voltage level. In our study area, this leads to ~190\ GW of international (cross-border) transmission capacity, ~1,600\ GW of interregional transmission capacity, and a total of ~340\ TWkm of transmission capacity.
+
+To make the total number comparable to results from our model, we adjust it in the following way: We start by determining the transmission capacity between each pair of regions (in GW). We then ignore the actual lengths of the lines and instead map transmission capacities to transmission lines of our model, which connect centroids of all regions (see @fig:network). Using this approach, we estimate today's interregional transmission capacity to be 215\ TWkm.
+
+## Procedure S3: Effect of hydropower model choices on our results
+
+The way in which we model hydropower generation in Europe leads to peculiarities in results on the regional scale. Here, we find the lowest system cost in regions with large hydropower installations. These cost peculiarities are consequences of our design choice: we assume they are amortised. In the following, we justify this model design choice and discuss its relevance for our results.
+
+We assume hydropower capacities are amortised to avoid the need to model overnight cost. Overnight cost of hydropower capacities can vary strongly between projects and are thus difficult to model. Ignoring overnight cost can lead to low levelised cost of electricity in regions with large hydropower capacities. Cost is particularly low when dams provide local flexibility and other forms of more expensive flexibility provision can be avoided. Thus, our model choice leads to low cost in some regions and it also leads to slightly optimistic absolute system cost. But because we fix capacities to current levels for all Europe in all cases, the ignored overnight cost imply no benefit to any case and thus do not affect relative cost.
+
+## Procedure S4: Effect of model simplifications
+
+There are three aspects which our analysis does not consider and which may impact our findings. Some are likely to increase attractiveness of small-scale systems, others are likely to increase attractiveness of large-scale systems.
+
+Most importantly, we do not consider flexibility from electricity demand or from electrifying the heat and transport sectors. These additional flexibilities may be especially beneficial for smaller-scale systems, whose flexibility options are more limited and expensive. However, large electricity systems can and will benefit as well and our sensitivity analysis shows that cost differences are driven largely by the cost of bioenergy; a technology mostly used to balance seasonal fluctuations of solar generation. Only if additional flexibilities can balance seasonal fluctuations, a significant impact on system cost can be expected. This is likely not the case for demand flexibility[@Aryandoust:2017] or transportation[@Brown:2018a], but it may be possible by electrifying the heat sector[@Brown:2018a].
+
+Furthermore, we do not consider ancillary services for the distribution and transmission grids. The provision of ancillary services may be easier, i.e. less costly, for system layouts as we found them for smaller electricity systems, because not only generation but also support infrastructure is more homogeneously dispersed and thus able to provide services like frequency control or black-start everywhere. However, there is no reason to believe that this would change system cost and therefore relative system cost significantly[@Brown:2018].
+
+We also do not model the distribution grid in any way. The cost of the distribution grid is likely to be higher for smaller systems where generation is dispersed more strongly with substantial amounts of generation from roof mounted PV embedded within the distribution grid. However, technical potentials of wind and utility-scale PV are high enough in most regions in Europe so that roof mounted PV is rarely necessary. Thus, cost of the distribution grid may be higher for smaller scales, but only if roof mounted PV is prioritised over utility-scale PV.
+
+## Procedure S5: 4h time resolution
+
+TODO
+
+## Procedure S6: Effect of regional disaggregation of national electricity loads
+
+The regional disaggregation method based on population counts and industry plants that we use yields regional electricity load time series that are likely stronger correlated than in reality. In the following, we discuss the impact this may have on our findings.
+
+Most importantly, the stronger correlation impacts all cases with balancing scale above the regional level in the same way. As long as all regions within a country are connected through transmission lines, relative fluctuations between regions can be compensated through the grid. In all of these cases, we can expect that our model choice leads to a slight over- or underestimation of national transmission capacity but that the bias is similar in all cases.
+
+In the single case with regional-scale balancing, relative fluctuations between regions cannot be compensated through the grid but instead must be handled in each region individually. Here, we can expect that through our method some regions suffer slightly higher cost for balancing, but that other regions in the same country enjoy lower cost of similar levels. The impact for single regions may be noticable, but the impact on total system cost can be considered low.
+
+In summary, there is likely a small impact on the differences between the cases with balancing above the regional level and the case with balancing at the regional level. However, there is no reason to believe that this difference or any other impact on our results is large, as there is no reason to believe that correlations between regions are much lower than the ones resulting from out method.
 
 <div class="pagebreak"> </div>
 

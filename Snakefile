@@ -8,11 +8,11 @@ wildcard_constraints:
 onstart:
     shell("mkdir -p build/logs/uncertainty")
 onsuccess:
-    if "email" in config.keys():
-        shell("echo "" | mail -s 'geographical-scale succeeded' {config[email]}")
+    if "ifttt_apikey" in config.keys():
+        trigger_ifttt(event_name="snakemake_succeeded", apikey=config["ifttt_apikey"])
 onerror:
-    if "email" in config.keys():
-        shell("echo "" | mail -s 'geographical-scale crashed' {config[email]}")
+    if "ifttt_apikey" in config.keys():
+        trigger_ifttt(event_name="snakemake_failed", apikey=config["ifttt_apikey"])
 localrules: all, clean, copy_report_file, copy_report_file_without_resolution, report, supplemental_material
 ruleorder: copy_report_file > copy_report_file_without_resolution
 
@@ -137,3 +137,11 @@ rule clean: # removes all generated results
         rm -r ./build/*
         echo "Data downloaded to data/ has not been cleaned."
         """
+
+
+def trigger_ifttt(event_name, apikey):
+    import requests
+    response = requests.post(
+            f'https://maker.ifttt.com/trigger/{event_name}/with/key/{apikey}',
+            data={"value1": "geographic-scale"}
+    )

@@ -64,6 +64,14 @@ If you generally run on a cluster but you do not have access to MATLAB or UQLab 
 
     snakemake test --use-conda
 
+## Be notified of successes or fails
+
+As the execution of this workflow may take long, you can get notified whenever the execution terminates either successfully or unsuccessfully. Notification are handled by the webservice [IFTTT](https://ifttt.com/) for which you need a free account. To activate notifications, add your IFTTT webhooks apikey to the configuration using the configuration key `ifttt_apikey`. For example, you may want to choose running the workflow the following way to receive notifications:
+
+    snakemake --use-conda --config ifttt_apikey=<your-apikey>
+
+This workflow will then trigger the IFTTT events `snakemake_succeeded` and `snakemake_failed`. You can build IFTTT applets that react to these events, and for example let the notification be pushed to your phone or let your internet-connected light bulb flash red or green. [Here's an example](https://pimylifeup.com/using-ifttt-with-the-raspberry-pi/) that you can use as a starting point.
+
 ## Units and scaling
 
 The default units for Euro-Calliope are `MW`, `MWh`, `EUR`, and `km2`, but you can scale all of these using the configuration values in `config/default.yaml`. Apart from convenience, this may be important to handle numerical issues with your solver.

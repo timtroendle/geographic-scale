@@ -7,3 +7,4 @@ dependencies:
     - pandas=0.24.2
     - pycountry=18.12.8
     - snakemake-minimal=5.4
+    - requests=2.24.0

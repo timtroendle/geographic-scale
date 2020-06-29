@@ -58,7 +58,6 @@ COLUMN_HEADER = [
 @dataclass
 class PlotData:
     panel_id: str
-    title: str
     x: pd.Series
     y: pd.Series
     xlabel: str
@@ -93,9 +92,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
     return [
         PlotData(
             panel_id="a",
-            title="",
-            ylabel="National scale",
-            xlabel="Continental scale",
+            ylabel="National scale (-)",
+            xlabel="Continental scale (-)",
             xlim=(0, max_value),
             ylim=(0, max_value),
             x=y["y-continental-scale-cost-eur"] / norm_value,
@@ -103,9 +101,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
         ),
         PlotData(
             panel_id="b",
-            title="",
-            ylabel="Regional scale",
-            xlabel="Continental scale",
+            ylabel="Regional scale (-)",
+            xlabel="Continental scale (-)",
             xlim=(0, max_value),
             ylim=(0, max_value),
             x=y["y-continental-scale-cost-eur"] / norm_value,
@@ -113,9 +110,8 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
         ),
         PlotData(
             panel_id="c",
-            title="",
-            ylabel="Regional scale",
-            xlabel="National scale",
+            ylabel="Regional scale (-)",
+            xlabel="National scale (-)",
             xlim=(0, max_value),
             ylim=(0, max_value),
             x=y["y-national-scale-cost-eur"] / norm_value,
@@ -126,7 +122,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
 
 def plot_data(plot_datas):
     sns.set_context("paper")
-    fig = plt.figure(figsize=(8, 3))
+    fig = plt.figure(figsize=(8, 3.5))
     axes = fig.subplots(
         nrows=1,
         ncols=3,
@@ -152,12 +148,16 @@ def plot_data(plot_datas):
         ax.set_xlim(*plot_data.xlim)
         ax.plot(plot_data.xlim, plot_data.ylim, "--", color=GREY)
         ax.set_xlabel(plot_data.xlabel)
-        ax.annotate(plot_data.title, xy=(0.5, 1.2), xycoords="axes fraction",
-                    size='large', ha='center', va='center', fontweight='bold')
         ax.set_ylabel(plot_data.ylabel)
         ax.set_yticks([0, 1, 2, 3])
         ax.annotate(plot_data.panel_id, xy=[-0.05, 1.05], xycoords='axes fraction',
                     fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    fig.suptitle(
+        t="System cost relative to continental-scale base case",
+        size='large',
+        fontweight='bold',
+        y=0.95
+    )
     fig.tight_layout()
     return fig
 

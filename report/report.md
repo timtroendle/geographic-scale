@@ -76,7 +76,7 @@ The work of T.T. and J.L. was supported by a European Research Council grant (TR
 
 # Author contributions
 
-T.T., J.L. and S.P. designed the study and wrote the main article. T.T. built the model and analysed the results. S.P. and T.T. implemented necessary changes in the Calliope modelling framework. S.M. performed the sensitivity analysis and analysed its results.
+Conceptualization, T.T., J.L, and S.P.; Methodology, T.T., J.L., and S.P.; Software, T.T., S.M., S.P.; Investigation, T.T. and S.M.; Data Curation T.T.; Writing – Original Draft T.T.; Writing – Review & Editing, J.L., S.M., and S.P; Visualization, T.T. and S.P.; Project Administration J.L. and T.T.; Funding Acquisition, J.L.
 
 # Declarations of interest
 

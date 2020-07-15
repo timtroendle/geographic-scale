@@ -80,7 +80,7 @@ The work of T.T. and J.L. was supported by a European Research Council grant (TR
 
 # Author contributions
 
-Conceptualization, T.T., J.L, and S.P.; Methodology, T.T., J.L., and S.P.; Software, T.T., S.M., S.P.; Formal Analysis, T.T. and S.M.; Data Curation T.T.; Writing – Original Draft T.T.; Writing – Review & Editing, J.L., S.M., and S.P; Visualization, T.T. and S.P.; Project Administration J.L. and T.T.; Funding Acquisition, J.L.
+Conceptualization, T.T., J.L, and S.P.; Methodology, T.T., J.L., and S.P.; Software, T.T., S.M., and S.P.; Formal Analysis, T.T. and S.M.; Data Curation T.T.; Writing – Original Draft T.T.; Writing – Review & Editing, J.L., S.M., and S.P; Visualization, T.T. and S.P.; Project Administration J.L. and T.T.; Funding Acquisition, J.L.
 
 # Declarations of interest
 

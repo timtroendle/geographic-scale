@@ -171,12 +171,11 @@ rule weather_run:
 
 rule timeresolution_run:
     message:
-        "Run scenario {wildcards.scenario} on national and hourly resolution."
+        "Run scenario {wildcards.scenario} on national and high temporal resolution."
     input:
         model = "build/model/national/model.yaml"
     params:
-        subset_time = config["uncertainty"]["subset_time"],
-        time_resolution = "1H",
+        time_resolution = config["time-uncertainty"]["resolution"]["time"],
         optimality_tol = config["calliope-parameters"]["run.solver_options.OptimalityTol"]
     output: protected("build/output/national/runs/uncertainty/time/{scenario}.nc")
     conda: "../envs/calliope.yaml"
@@ -184,7 +183,6 @@ rule timeresolution_run:
         """
         calliope run {input.model} --save_netcdf {output} --scenario={wildcards.scenario}\
         --override_dict="{{run.solver_options.OptimalityTol: {params.optimality_tol}, \
-                           model.subset_time: {params.subset_time}, \
                            model.time.function: resample, \
                            model.time.function_options: {{'resolution': '{params.time_resolution}'}}}}"
         """
@@ -378,6 +376,17 @@ rule weather_diff_diff:
         diff_diff = abs(normal_diff - weather_diff) / normal_diff
         with open(output[0], "w") as f_output:
             f_output.write(str(diff_diff))
+
+
+rule time_diff:
+    message: "Determine the diff of runs of different temporal resolution."
+    input:
+        src = "src/uncertainty/time_diff.py",
+        lowres = "build/output/national/runs/national-autarky-100-national-grid.nc",
+        highres = "build/output/national/runs/uncertainty/time/national-autarky-100-national-grid.nc"
+    output: "build/output/national/uncertainty/time-diff.csv"
+    conda: "../envs/calliope.yaml"
+    script: "../src/uncertainty/time_diff.py"
 
 
 rule overview_uncertainty_parameters:

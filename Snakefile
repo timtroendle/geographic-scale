@@ -30,6 +30,7 @@ rule all:
         "build/output/{resolution}/report.docx".format(resolution=config["resolution"]["space"]),
         "build/output/{resolution}/report.pdf".format(resolution=config["resolution"]["space"]),
         "build/output/{resolution}/supplemental.pdf".format(resolution=config["resolution"]["space"]),
+        "build/output/national/uncertainty/time-diff.csv",
         "build/output/{resolution}/uncertainty/weather-diff-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"])
 
 

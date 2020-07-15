@@ -45,6 +45,9 @@ weather-uncertainty:
         large-scale: continental-autarky-100-continental-grid
         small-scale: national-autarky-100-national-grid
     calliope-parameters: {}
+time-uncertainty:
+    resolution:
+        time: 2W
 uncertainty:
     experiment-parameters:
         name: default

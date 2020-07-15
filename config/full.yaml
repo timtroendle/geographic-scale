@@ -11,6 +11,9 @@ weather-uncertainty:
         time: 4H
     calliope-parameters:
         run.solver_options.OptimalityTol: 1e-3
+time-uncertainty:
+    resolution:
+        time: 1H
 uncertainty:
     experiment-parameters:
         name: full

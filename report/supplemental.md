@@ -17,43 +17,43 @@ cover-page: False
 
 # Figure S3: System composition of all cases
 
-![**Cost-optimised technology mixes for all cases. a,b,c,d**, Europe-wide installed generation capacities (**a**), storage capacities (**b**), transmission capacities (**c**), and  potential and curtailed generation from variable renewable sources (**d**) for entirely continental-, national-, and regional-scale electricity systems with minimal system cost. The thin bars indicate the range of values including cases with supply on smaller scales. See Tables\ S2 and S3 for numerical results of all cases. **a**, The total excludes all storage capacities but includes capacities of hydropower at or below today's levels (36\ GW run of river, 103\ GW reservoirs). **b**, Europe-wide installed storage capacities for battery and hydrogen storage. Up to 97\ TWh from hydro reservoirs and 1.3\ TWh from pumped hydro storage are not shown. **c**, Europe-wide installed electricity transmission capacities, ignoring transmission capacities within regions. **d**, Europe-wide potential generation and curtailed generation from the variable renewable sources solar, wind and hydro.](report/composition-all.svg){#fig:composition .class tag="S3"}
+![**Cost-optimised technology mixes for all cases. A,B,C,D,**, Europe-wide installed generation capacities (**A**), storage capacities (**B**), transmission capacities (**C**), and  potential and curtailed generation from variable renewable sources (**D**) for entirely continental-, national-, and regional-scale electricity systems with minimal system cost. The thin bars indicate the range of values including cases with supply on smaller scales. See Tables\ S2 and S3 for numerical results of all cases. **A**, The total excludes all storage capacities but includes capacities of hydropower at or below today's levels (36\ GW run of river, 103\ GW reservoirs). **B**, Europe-wide installed storage capacities for battery and hydrogen storage. Up to 97\ TWh from hydro reservoirs and 1.3\ TWh from pumped hydro storage are not shown. **C**, Europe-wide installed electricity transmission capacities, ignoring transmission capacities within regions. **D**, Europe-wide potential generation and curtailed generation from the variable renewable sources solar, wind and hydro.](report/composition-all.svg){#fig:composition .class tag="S3"}
 
 <div class="pagebreak"> </div>
 
 # Figure S4: Generation shares
 
-![**Technology generation shares for all countries. a,** Generation shares when supply and balancing are continental. **b,** Generation shares when supply and balancing are regional.](report/generation-shares.svg){#fig:generation-shares .class tag="S4"}
+![**Technology generation shares for all countries. A,** Generation shares when supply and balancing are continental. **B,** Generation shares when supply and balancing are regional.](report/generation-shares.svg){#fig:generation-shares .class tag="S4"}
 
 <div class="pagebreak"> </div>
 
 # Figure S5: Total Sobol' indices
 
-![**Total Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/total-sobol-all.svg){#fig:total-sobol .class tag="S5"}
+![**Total Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. A,B,C,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**A**), national- (**B**), and regional-scale (**C**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **D,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/total-sobol-all.svg){#fig:total-sobol .class tag="S5"}
 
 <div class="pagebreak"> </div>
 
 # Figure S6: First-order Sobol' indices
 
-![**First-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/first-sobol-all.svg){#fig:first-sobol .class tag="S6"}
+![**First-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. A,B,C,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**A**), national- (**B**), and regional-scale (**C**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **D,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/first-sobol-all.svg){#fig:first-sobol .class tag="S6"}
 
 <div class="pagebreak"> </div>
 
 # Figure S7: Difference Sobol' indices
 
-![**Total minus first-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. a,b,c,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**a**), national- (**b**), and regional-scale (**c**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **d,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/total-minus-first-sobol-all.svg){#fig:higher-sobol .class tag="S7"}
+![**Total minus first-order Sobol' indices for combinations of all considered input uncertainties and selected model outputs of entirely continental-, national-, and regional-scale electricity systems. A,B,C,** Sobol' indices of input parameters considering total system cost and total installed capacities (x-axis) of the continental- (**A**), national- (**B**), and regional-scale (**C**) systems. The y-axis shows the twelve input parameters included in the uncertainty analysis. **D,** Sobol' indices of input parameters considering difference in system cost between the continental- and national-scale systems. The x-axis shows the twelve input parameters included in the uncertainty analysis. The y-axis shows the model-wide result variables for which continental to national scale differences are compared.](report/total-minus-first-sobol-all.svg){#fig:higher-sobol .class tag="S7"}
 
 <div class="pagebreak"> </div>
 
 # Figure S8: Use of bioenergy potentials
 
-![**Use of bioenergy potentials.** All use data from the case with highest levels of deployed bioenergy capacity in which supply and balancing are regional. Potentials are based on estimations of available residual material[@RuizCastello:2015] and sum to 2400\ TWh/yr Europe-wide (1100\ TWh/yr usable electricity) for the year 2020 and reference assumptions. **a,** Use of national potentials. **b,** Use of potentials in 497 subnational regions.](report/bioenergy-use.svg){#fig:bioenergy-use .class tag="S8"}
+![**Use of bioenergy potentials.** All use data from the case with highest levels of deployed bioenergy capacity in which supply and balancing are regional. Potentials are based on estimations of available residual material[@RuizCastello:2015] and sum to 2400\ TWh/yr Europe-wide (1100\ TWh/yr usable electricity) for the year 2020 and reference assumptions. **A,** Use of national potentials. **B,** Use of potentials in 497 subnational regions.](report/bioenergy-use.svg){#fig:bioenergy-use .class tag="S8"}
 
 <div class="pagebreak"> </div>
 
 # Figure S9: Distribution of time series across regions
 
-![**Distribution of time series for all regions of the entirely regional-scale electricity system. a,b,c,d,e,f,** Distribution of time series for all regions with low flexibility cost (combined cost of bioenergy, hydrogen, and battery storage) (**a,b,c**) and all regions whose flexibility cost lies within the highest decile (**d,e,f**). **a,b,** Combined wind and solar weekly generation potential time series relative to local demand. Seasonal fluctuations are more pronounced for the case with higher cost due to higher shares of solar electricity. Regions with high solar shares are often urban regions with low or no wind potential. **c,d,** Weekly generation time series from biomass combustion relative to demand. Generation has a more pronounced seasonality and is generally larger in regions with higher flexibility cost. **e,f,** Weekly time series of hydrogen storage levels relative to installed storage capacity. In regions with higher cost, hydrogen storage is used primarily to balance seasonal fluctuations, instead of balancing fluctuations within weeks or months as it is done for lower cost regions, leading to fewer storage cycles and higher cost.](report/timeseries.svg){#fig:timeseries .class tag="S9"}
+![**Distribution of time series for all regions of the entirely regional-scale electricity system. A,B,C,D,E,F,** Distribution of time series for all regions with low flexibility cost (combined cost of bioenergy, hydrogen, and battery storage) (**A,B,C**) and all regions whose flexibility cost lies within the highest decile (**D,E,F**). **A,B,** Combined wind and solar weekly generation potential time series relative to local demand. Seasonal fluctuations are more pronounced for the case with higher cost due to higher shares of solar electricity. Regions with high solar shares are often urban regions with low or no wind potential. **C,D,** Weekly generation time series from biomass combustion relative to demand. Generation has a more pronounced seasonality and is generally larger in regions with higher flexibility cost. **E,F,** Weekly time series of hydrogen storage levels relative to installed storage capacity. In regions with higher cost, hydrogen storage is used primarily to balance seasonal fluctuations, instead of balancing fluctuations within weeks or months as it is done for lower cost regions, leading to fewer storage cycles and higher cost.](report/timeseries.svg){#fig:timeseries .class tag="S9"}
 
 <div class="pagebreak"> </div>
 
@@ -66,6 +66,13 @@ alignment: LLLLLL
 include: report/overview-uncertain-parameters.csv
 include-encoding: UTF-8
 markdown: True
+width:
+    - 0.23
+    - 0.23
+    - 0.10
+    - 0.10
+    - 0.10
+    - 0.23
 ---
 ```
 
@@ -122,6 +129,14 @@ alignment: LRRRRRR
 include: report/overview-cost-assumptions.csv
 include-encoding: UTF-8
 markdown: True
+width:
+    - 0.14
+    - 0.14
+    - 0.14
+    - 0.14
+    - 0.14
+    - 0.14
+    - 0.14
 ---
 ```
 

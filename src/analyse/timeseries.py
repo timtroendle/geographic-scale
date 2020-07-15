@@ -50,7 +50,7 @@ def timeseries(path_to_result, path_to_units, scaling_factors, connected_regions
     """Create plots of timeseries for regional result."""
     plot_datas = read_plot_data(path_to_result, scaling_factors, connected_regions)
     fig = plot_timeseries(plot_datas, resolution)
-    fig.savefig(path_to_plot, dpi=600)
+    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
     units = mask_all_units(path_to_units, plot_datas)
     units.to_netcdf(path_to_displayed_units)
 
@@ -115,7 +115,7 @@ def plot_timeseries(plot_datas, resolution):
     fig = plt.figure(figsize=(8, 8))
     axes = fig.subplots(len(plot_datas), 2, sharex=True)
     plt.subplots_adjust(wspace=0)
-    panel_ids = "abcdefghi"
+    panel_ids = "ABCDEF"
 
     for i, plot_data in enumerate(plot_datas):
         axes[i][0].get_shared_y_axes().join(axes[i][0], axes[i][1])

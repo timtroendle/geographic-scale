@@ -1,5 +1,4 @@
 from itertools import chain
-from pathlib import Path
 
 import numpy as np
 import xarray as xr
@@ -18,6 +17,7 @@ CMAP = matplotlib.colors.LinearSegmentedColormap.from_list("signature-BlRd", RED
 NORM = matplotlib.colors.Normalize(vmin=-1, vmax=3)
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
+LAYER_FONT_WEIGHT = "medium"
 EDGE_WIDTH = 0.06
 EDGE_COLOR = "white"
 
@@ -66,13 +66,13 @@ def plot_map(path_to_national_shapes, path_to_regional_shapes, connected_regions
     total_costs_national = cost_reader.read(scenario=NATIONAL_SCENARIO, level="continental") / base_costs
     total_costs_regional = cost_reader.read(scenario=REGIONAL_SCENARIO, level="continental") / base_costs
 
-    _plot_layer(national, total_costs_national, "National supply and balancing", "a", axes[0])
-    _plot_layer(regional, total_costs_regional, "Regional supply and balancing", "b", axes[1])
+    _plot_layer(national, total_costs_national, "National supply and balancing", "A", axes[0])
+    _plot_layer(regional, total_costs_regional, "Regional supply and balancing", "B", axes[1])
 
     _plot_colorbar(fig, axes[2].inset_axes([0, 0.175, 1, 0.65]))
     axes[2].axis("off")
 
-    fig.savefig(path_to_plot, dpi=600, transparent=False)
+    fig.savefig(path_to_plot, dpi=300, transparent=False, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def _plot_layer(units, total_cost, layer_name, panel_id, ax):
@@ -98,6 +98,7 @@ def _plot_layer(units, total_cost, layer_name, panel_id, ax):
         xycoords='axes fraction',
         ha='center',
         va='center',
+        weight=LAYER_FONT_WEIGHT
     )
     ax.annotate(panel_id, xy=[0.05, 0.95], xycoords='axes fraction',
                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)

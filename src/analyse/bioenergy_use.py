@@ -33,7 +33,7 @@ def bioenergy_use(path_to_results, path_to_potentials, efficiency, scenario, pat
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
     ax.set_ylim(0, 1)
     ax.annotate(
-        f"a - National use of bioenergy potentials",
+        f"A - National use of bioenergy potentials",
         xy=[-0.05, 1.05],
         xycoords='axes fraction',
         fontsize=PANEL_FONT_SIZE,
@@ -51,7 +51,7 @@ def bioenergy_use(path_to_results, path_to_potentials, efficiency, scenario, pat
     ax.set_xlabel("Share of bioenergy potential used")
     ax.set_ylabel("Frequency")
     ax.annotate(
-        f"b - Regional use of bioenergy potentials",
+        f"B - Regional use of bioenergy potentials",
         xy=[-0.05, 1.05],
         xycoords='axes fraction',
         fontsize=PANEL_FONT_SIZE,
@@ -60,7 +60,7 @@ def bioenergy_use(path_to_results, path_to_potentials, efficiency, scenario, pat
 
     sns.despine(fig)
     fig.tight_layout()
-    fig.savefig(path_to_plot, dpi=300)
+    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_potentials(path_to_potentials, efficiency):

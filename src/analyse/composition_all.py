@@ -70,32 +70,32 @@ def composition(path_to_aggregated_results, path_to_output):
     ax.set_ylabel("TW")
     ax.get_legend().set_frame_on(False)
     ax.get_legend().set_title(None)
-    ax.annotate('a – Generation capacities', xy=[-0.08, 1.05], xycoords='axes fraction',
+    ax.annotate('A – Generation capacities', xy=[-0.08, 1.05], xycoords='axes fraction',
                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     ax = fig.add_subplot(gs[3])
     plot_variables(data.copy(), STORAGE_CAPACITIES, ax, scaling_factor=1e-3)
     ax.set_ylabel("TWh")
     ax.get_legend().remove()
-    ax.annotate('b – Storage capacities', xy=[-0.24, 1.05], xycoords='axes fraction',
+    ax.annotate('B – Storage capacities', xy=[-0.24, 1.05], xycoords='axes fraction',
                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     ax = fig.add_subplot(gs[4])
     plot_variables(data.copy(), TRANSMISSION_CAPACITIES, ax)
     ax.set_ylabel("TWkm")
     ax.get_legend().remove()
-    ax.annotate('c – Transmission', xy=[-0.48, 1.05], xycoords='axes fraction',
+    ax.annotate('C – Transmission', xy=[-0.48, 1.05], xycoords='axes fraction',
                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     ax = fig.add_subplot(gs[5])
     plot_variables(data.copy(), VRES, ax=ax)
     ax.set_ylabel("TWh")
     ax.get_legend().remove()
-    ax.annotate('d – Variable renewables', xy=[-0.26, 1.05], xycoords='axes fraction',
+    ax.annotate('D – Variable renewables', xy=[-0.26, 1.05], xycoords='axes fraction',
                 fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
 
     fig.tight_layout()
-    fig.savefig(path_to_output, dpi=600)
+    fig.savefig(path_to_output, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def plot_variables(data, variables, ax, scaling_factor=1):

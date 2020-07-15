@@ -73,7 +73,7 @@ uncertainty:
             min: 0.016
             max: 0.138
             unit: "-/yr"
-            source: "Max and min for solar and wind between 2009 and 2017 in ref. @Steffen:2019"
+            source: "Max and min for solar and wind between 2009 and 2017 in ref.\ @Steffen:2019"
             scaling-factor:
             inverse-scaling-factor:
             calliope-params:
@@ -103,7 +103,7 @@ uncertainty:
             min: 760_000
             max: 1_000_000
             unit: EUR/MW
-            source: "Ref. @JRC:2014 (Table 9)"
+            source: "Ref.\ @JRC:2014 (Table 9)"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -116,7 +116,7 @@ uncertainty:
             min: 800_000
             max: 1_700_000
             unit: EUR/MW
-            source: "Ref. @JRC:2014 (Table 4)"
+            source: "Ref.\ @JRC:2014 (Table 4)"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -129,7 +129,7 @@ uncertainty:
             min: 1_790_000
             max: 3_270_000
             unit: EUR/MW
-            source: "Ref. @JRC:2014 (Table 5)"
+            source: "Ref.\ @JRC:2014 (Table 5)"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -142,7 +142,7 @@ uncertainty:
             min: 31_000
             max: 141_000
             unit: EUR/MW
-            source: "Ref. @Schmidt:2019"
+            source: "Ref.\ @Schmidt:2019"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -154,7 +154,7 @@ uncertainty:
             min: 36_000
             max: 166_000
             unit: EUR/MWh
-            source: "Ref. @Schmidt:2019"
+            source: "Ref.\ @Schmidt:2019"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -166,7 +166,7 @@ uncertainty:
             min: 1_123_000
             max: 2_100_000
             unit: EUR/MW
-            source: "Ref. @Schmidt:2019"
+            source: "Ref.\ @Schmidt:2019"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -178,7 +178,7 @@ uncertainty:
             min: 6_000
             max: 12_000
             unit: EUR/MWh
-            source: "Ref. @Schmidt:2019"
+            source: "Ref.\ @Schmidt:2019"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -190,7 +190,7 @@ uncertainty:
             min: 0.7
             max: 1.08
             unit: EUR/MW/m
-            source: "Ref. @JRC:2014 (Table 39)"
+            source: "Ref.\ @JRC:2014 (Table 39)"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -202,7 +202,7 @@ uncertainty:
             min: 1_380_000
             max: 3_450_000
             unit: EUR/MW
-            source: "Ref. @JRC:2014 (Table 48)"
+            source: "Ref.\ @JRC:2014 (Table 48)"
             scaling-factor: monetary
             inverse-scaling-factor: power
             calliope-params:
@@ -216,7 +216,7 @@ uncertainty:
             min: 0 # represents low availability scenario
             max: 1 # represents high availability scenario
             unit: "-"
-            source: "Ref. @RuizCastello:2015"
+            source: "Ref.\ @RuizCastello:2015"
             scaling-factor:
             inverse-scaling-factor:
             calliope-params: # handled as special case in code

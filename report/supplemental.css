@@ -6,6 +6,10 @@
       }
 }
 
+body {
+    font-family: Avenir, sans-serif;
+}
+
 p.date {
     display: none;
 }

@@ -14,6 +14,7 @@ RED = "#A01914"
 BLUE = "#4F6DB8"
 PANEL_FONT_SIZE = 10
 PANEL_FONT_WEIGHT = "bold"
+LAYER_FONT_WEIGHT = "medium"
 EDGE_WIDTH = 0.06
 EDGE_COLOR = "white"
 
@@ -63,7 +64,7 @@ class PlotData:
 def create_map(path_to_shapes, connected_regions, scenarios, path_to_aggregated_results, path_to_plot):
     plot_datas = prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions, scenarios)
     fig = plot_data(plot_datas)
-    fig.savefig(path_to_plot, dpi=600)
+    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions, scenarios):
@@ -83,7 +84,7 @@ def prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions, 
         postprocess_combined_regions(results.carrier_con.sel(techs=TRANSMISSION_TECH), connected_regions)
         / postprocess_combined_regions(results.carrier_con.sel(techs=DEMAND_TECH), connected_regions)
     )
-    letters = list("abcdefghijklmnopq")
+    letters = list("ABCDEF")
     generation = [
         PlotData(
             shapes=shapes.assign(rel_gen=rel_gen.sel(scenario=scenario).to_series()),
@@ -143,6 +144,7 @@ def plot_data(plot_datas):
         xycoords='axes fraction',
         ha='center',
         va='center',
+        weight=LAYER_FONT_WEIGHT
     )
     axes[1][1].annotate(
         "National supply",
@@ -150,6 +152,7 @@ def plot_data(plot_datas):
         xycoords='axes fraction',
         ha='center',
         va='center',
+        weight=LAYER_FONT_WEIGHT
     )
     axes[1][2].annotate(
         "Regional supply",
@@ -157,6 +160,7 @@ def plot_data(plot_datas):
         xycoords='axes fraction',
         ha='center',
         va='center',
+        weight=LAYER_FONT_WEIGHT
     )
     fig.tight_layout()
     return fig

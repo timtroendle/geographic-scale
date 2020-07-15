@@ -69,7 +69,7 @@ class PlotData:
 def plot_composition_variability(path_to_large_scales, path_to_small_scale, path_to_plot):
     plot_datas = read_plot_data(path_to_large_scales, path_to_small_scale)
     fig = plot_data(plot_datas)
-    fig.savefig(path_to_plot, dpi=600)
+    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_plot_data(path_to_large_scales, path_to_small_scale):
@@ -81,7 +81,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale):
     y.columns = COLUMN_HEADER
     return [
         PlotData(
-            panel_id="a",
+            panel_id="A",
             title="Supply",
             ylabel="National scale (TW)",
             xlabel="Continental scale (TW)",
@@ -95,7 +95,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale):
                + y["y-national-scale-hydro-gw"]),
         ),
         PlotData(
-            panel_id="b",
+            panel_id="B",
             title="Balancing",
             ylabel="National scale (TW)",
             xlabel="Continental scale (TW)",
@@ -105,7 +105,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale):
             y=y["y-national-scale-biofuel-gw"] + y["y-national-scale-storage-gw"],
         ),
         PlotData(
-            panel_id="c",
+            panel_id="C",
             title="Supply",
             ylabel="Regional scale (TW)",
             xlabel="Continental scale (TW)",
@@ -119,7 +119,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale):
                + y["y-regional-scale-hydro-gw"]),
         ),
         PlotData(
-            panel_id="d",
+            panel_id="D",
             title="Balancing",
             ylabel="Regional scale (TW)",
             xlabel="Continental scale (TW)",

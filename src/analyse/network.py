@@ -42,7 +42,7 @@ def visualise_links(path_to_units, path_to_results, path_to_plot):
     ax.set_xlim(MAP_MIN_X, MAP_MAX_X)
     ax.set_ylim(MAP_MIN_Y, MAP_MAX_Y)
 
-    fig.savefig(path_to_plot, dpi=300, transparent=False)
+    fig.savefig(path_to_plot, dpi=300, transparent=False, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_network_graph(shapes, model):

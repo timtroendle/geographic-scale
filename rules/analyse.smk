@@ -90,6 +90,7 @@ rule plot_cost:
     message: "Plot overview over cost."
     input:
         src = "src/analyse/cost.py",
+        matplotlibrc = "matplotlibrc",
         results = rules.time_aggregated_results.output[0]
     output:
         base = "build/output/{resolution}/cost.{plot_suffix}",
@@ -102,13 +103,14 @@ rule plot_map_cost:
     message: "Create map of cost."
     input:
         src = "src/analyse/map_cost.py",
+        matplotlibrc = "matplotlibrc",
         shapes = eurocalliope("build/data/{resolution}/units.geojson"),
         national_shapes = eurocalliope("build/data/national/units.geojson"),
         regional_shapes = eurocalliope("build/data/regional/units.geojson"),
         results = rules.time_aggregated_results.output[0]
     params:
         connected_regions = config["connected-regions"]
-    output: "build/output/{resolution}/map-cost.png"
+    output: "build/output/{resolution}/map-cost.{plot_suffix}"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/map_cost.py"
 
@@ -117,6 +119,7 @@ rule plot_map_energy:
     message: "Create map of generation and transmission."
     input:
         src = "src/analyse/map_energy.py",
+        matplotlibrc = "matplotlibrc",
         shapes = eurocalliope("build/data/{resolution}/units.geojson"),
         results = rules.time_aggregated_results.output[0]
     params:
@@ -124,7 +127,7 @@ rule plot_map_energy:
         scenarios = ["continental-autarky-100-continental-grid",
                      "national-autarky-100-continental-grid",
                      "regional-autarky-100-continental-grid"]
-    output: "build/output/{resolution}/map-energy.png"
+    output: "build/output/{resolution}/map-energy.{plot_suffix}"
     conda: "../envs/geo.yaml"
     script: "../src/analyse/map_energy.py"
 
@@ -133,6 +136,7 @@ rule plot_network_map:
     message: "Create map of electricity grid."
     input:
         src = "src/analyse/network.py",
+        matplotlibrc = "matplotlibrc",
         units = eurocalliope("build/data/{resolution}/units.geojson"),
         results = "build/output/{resolution}/runs/continental-autarky-100-continental-grid.nc"
     output: "build/output/{resolution}/network.{plot_suffix}"
@@ -144,6 +148,7 @@ rule plot_system_composition_per_scale:
     message: "Create plot of system composition on both scales."
     input:
         src = "src/analyse/composition.py",
+        matplotlibrc = "matplotlibrc",
         results_csv = rules.aggregated_results.output[0],
         results_nc = rules.time_aggregated_results.output[0]
     params:
@@ -158,6 +163,7 @@ rule plot_system_composition_full:
     message: "Create plot of system composition of all scenarios."
     input:
         src = "src/analyse/composition_all.py",
+        matplotlibrc = "matplotlibrc",
         results = rules.aggregated_results.output[0]
     output: "build/output/{resolution}/composition-all.{plot_suffix}"
     conda: "../envs/default.yaml"
@@ -168,6 +174,7 @@ rule plot_uncertainty_of_composition:
     message: "Create plot of uncertainty of system composition found in uncertainty analysis."
     input:
         src = "src/analyse/composition_uncertainty.py",
+        matplotlibrc = "matplotlibrc",
         large_scales = "build/uncertainty/{}/pce-samples-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
         small_scale = "build/uncertainty/{}/pce-samples-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
     output: "build/output/{resolution}/composition-uncertainty.{plot_suffix}"
@@ -179,6 +186,7 @@ rule plot_uncertainty_of_cost:
     message: "Create plot of uncertainty of system cost found in uncertainty analysis."
     input:
         src = "src/analyse/cost_uncertainty.py",
+        matplotlibrc = "matplotlibrc",
         large_scales = "build/uncertainty/{}/pce-samples-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
         small_scale = "build/uncertainty/{}/pce-samples-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
         aggregate = rules.time_aggregated_results.output[0]
@@ -191,6 +199,7 @@ rule plot_timeseries:
     message: "Create plot of timeseries on {wildcards.resolution} resolution."
     input:
         src = "src/analyse/timeseries.py",
+        matplotlibrc = "matplotlibrc",
         result = "build/output/{resolution}/runs/regional-autarky-100-regional-grid.nc",
         units = eurocalliope("build/data/{resolution}/units.csv")
     params:
@@ -208,6 +217,7 @@ rule plot_sobol_indices:
     message: "Create heatmap of {wildcards.order} Sobol indices of all input/output combinations."
     input:
         src = "src/analyse/sobol.py",
+        matplotlibrc = "matplotlibrc",
         indices_cont_and_nat = "build/uncertainty/{}/{{order}}-sobol-mf.csv".format(config["uncertainty"]["experiment-parameters"]["name"]),
         indices_reg = "build/uncertainty/{}/{{order}}-sobol-sf.csv".format(config["uncertainty"]["experiment-parameters"]["name"])
     params: parameters = config["uncertainty"]["parameters"]
@@ -223,6 +233,7 @@ rule plot_generation_shares:
     message: "Create plot of generation shares of two scenarios."
     input:
         src = "src/analyse/generation_shares.py",
+        matplotlibrc = "matplotlibrc",
         results = rules.time_aggregated_results.output[0]
     params:
         scenario1 = "continental-autarky-100-continental-grid",
@@ -236,6 +247,7 @@ rule plot_use_of_bioenergy:
     message: "Create plot of use of bioenergy potentials."
     input:
         src = "src/analyse/bioenergy_use.py",
+        matplotlibrc = "matplotlibrc",
         results = rules.time_aggregated_results.output[0],
         potentials = eurocalliope(
             "build/data/{{resolution}}/biofuel/{scenario}/potential-mwh-per-year.csv"

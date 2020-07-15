@@ -56,7 +56,7 @@ def plot_costs(path_to_aggregated_results, path_to_base_plot, path_to_special_pl
         wspace=0.0,
         hspace=0.2
     )
-    fig.savefig(path_to_base_plot, dpi=600, transparent=False)
+    fig.savefig(path_to_base_plot, dpi=300, transparent=False, pil_kwargs={"compression": "tiff_lzw"})
 
     fig, ax, cbar_ax = set_up_figure()
     special_case_box(results, ax, cbar_ax)
@@ -68,7 +68,7 @@ def plot_costs(path_to_aggregated_results, path_to_base_plot, path_to_special_pl
         wspace=0.0,
         hspace=0.2
     )
-    fig.savefig(path_to_special_plot, dpi=600, transparent=False)
+    fig.savefig(path_to_special_plot, dpi=300, transparent=False, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def set_up_figure():

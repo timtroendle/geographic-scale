@@ -53,7 +53,7 @@ def generation_shares(path_to_results, scenario1, scenario2, path_to_plot):
         .plot(kind="barh", stacked=True, ax=ax, width=0.9, color=COLORS, legend=False)
     )
     ax.annotate(
-        f"a - {plot_label(scenario1)}",
+        f"A - {plot_label(scenario1)}",
         xy=[-0.1, 1.02],
         xycoords='axes fraction',
         fontsize=PANEL_FONT_SIZE,
@@ -75,7 +75,7 @@ def generation_shares(path_to_results, scenario1, scenario2, path_to_plot):
         .plot(kind="barh", stacked=True, ax=ax, width=0.9, color=COLORS)
     )
     ax.annotate(
-        f"b - {plot_label(scenario2)}",
+        f"B - {plot_label(scenario2)}",
         xy=[-0.1, 1.02],
         xycoords='axes fraction',
         fontsize=PANEL_FONT_SIZE,
@@ -97,7 +97,7 @@ def generation_shares(path_to_results, scenario1, scenario2, path_to_plot):
     sns.despine(fig)
     fig.tight_layout()
     plt.subplots_adjust(bottom=0.1)
-    fig.savefig(path_to_plot, dpi=300)
+    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_generation_shares(path_to_results):

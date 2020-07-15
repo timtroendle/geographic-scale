@@ -4,7 +4,7 @@ configfile: "./config/default.yaml"
 wildcard_constraints:
     resolution = "((continental)|(national)|(regional))", # supported spatial resolutions
     scenario = "({})".format("|".join([f"({scenario})" for scenario in config["scenarios"]])),
-    plot_suffix = "((png)|(svg))"
+    plot_suffix = "((png)|(svg)|(tiff))"
 onstart:
     shell("mkdir -p build/logs/uncertainty")
 onsuccess:
@@ -36,7 +36,7 @@ rule all:
 rule copy_report_file:
     message: "Copy file {input[0]} into dedicated report folder."
     input: "build/output/{resolution}/{filename}.{suffix}"
-    wildcard_constraints: suffix = "((csv)|(png)|(svg))"
+    wildcard_constraints: suffix = "((csv)|(png)|(svg)|(tiff))"
     output: "build/output/{resolution}/report/{filename}.{suffix}"
     shell: "cp {input} {output}"
 
@@ -44,7 +44,7 @@ rule copy_report_file:
 rule copy_report_file_without_resolution:
     message: "Copy file {input[0]} into dedicated report folder."
     input: "build/output/{filename}.{suffix}"
-    wildcard_constraints: suffix = "((csv)|(png)|(svg))"
+    wildcard_constraints: suffix = "((csv)|(png)|(svg)|(tiff))"
     output: "build/output/{resolution}/report/{filename}.{suffix}"
     shell: "cp {input} {output}"
 
@@ -81,12 +81,19 @@ rule report:
         "report/report.md",
         "report/summaries.yaml",
         "build/output/{resolution}/report/total-sobol-diff.svg",
+        "build/output/{resolution}/report/total-sobol-diff.tiff",
         "build/output/{resolution}/report/cost.svg",
+        "build/output/{resolution}/report/cost.tiff",
         "build/output/{resolution}/report/map-cost.png",
+        "build/output/{resolution}/report/map-cost.tiff",
         "build/output/{resolution}/report/map-energy.png",
+        "build/output/{resolution}/report/map-energy.tiff",
         "build/output/{resolution}/report/composition.svg",
+        "build/output/{resolution}/report/composition.tiff",
         "build/output/{resolution}/report/composition-uncertainty.png",
+        "build/output/{resolution}/report/composition-uncertainty.tiff",
         "build/output/{resolution}/report/cost-uncertainty.png",
+        "build/output/{resolution}/report/cost-uncertainty.tiff",
     output: "build/output/{resolution}/report.{suffix}"
     params: options = pandoc_options
     conda: "envs/pdf.yaml"

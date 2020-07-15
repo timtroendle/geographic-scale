@@ -76,7 +76,7 @@ def sobol(path_to_cont_and_nat_data, path_to_reg_data, all_data, parameters, pat
     else:
         plot_data = prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters)
         fig = plot_diff_data(plot_data)
-    fig.savefig(path_to_plot, dpi=600)
+    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters):
@@ -89,7 +89,7 @@ def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_para
 
     return [
         PlotData(
-            name="a – Continental scale",
+            name="A – Continental scale",
             data=(
                 data
                 .loc[[
@@ -104,7 +104,7 @@ def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_para
             )
         ),
         PlotData(
-            name="b – National scale",
+            name="B – National scale",
             data=(
                 data
                 .loc[[
@@ -119,7 +119,7 @@ def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_para
             )
         ),
         PlotData(
-            name="c – Regional scale",
+            name="C – Regional scale",
             data=(
                 data
                 .loc[[
@@ -134,7 +134,7 @@ def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_para
             )
         ),
         PlotData(
-            name="d – Relative difference between continental and national scales",
+            name="D – Relative difference between continental and national scales",
             data=(
                 data
                 .loc[[
@@ -231,7 +231,7 @@ def plot_diff_data(plot_data):
 
     ax.xaxis.set_tick_params(bottom=False)
     ax.yaxis.set_tick_params(left=False)
-    fig.tight_layout(rect=[0, 0, 0.95, 1])
+    fig.tight_layout(rect=[0, 0, 0.9, 1])
     return fig
 
 

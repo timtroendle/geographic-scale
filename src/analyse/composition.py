@@ -82,7 +82,7 @@ def composition(path_to_aggregated_results_csv, path_to_aggregated_results_nc, p
         wspace=0.3,
         hspace=0.2
     )
-    fig.savefig(path_to_output, dpi=300)
+    fig.savefig(path_to_output, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_plot_datas(path_to_aggregated_results_nc, path_to_aggregated_results_csv,
@@ -90,23 +90,23 @@ def read_plot_datas(path_to_aggregated_results_nc, path_to_aggregated_results_cs
     return [
         PlotData(
             data=read_total_supply_capacity(path_to_aggregated_results_nc),
-            cbar_label="a - Supply capacity [TW]",
+            cbar_label="A - Supply capacity [TW]",
             fmt=".1f"
         ),
         PlotData(
             data=read_biostor_capacity(path_to_aggregated_results_nc),
-            cbar_label="b - Balancing capacity [TW]",
+            cbar_label="B - Balancing capacity [TW]",
             fmt=".2f"
         ),
         PlotData(
             data=read_transmission_capacity(path_to_aggregated_results_csv),
-            cbar_label="c - Transmission capacity [TWkm]",
+            cbar_label="C - Transmission capacity [TWkm]",
             fmt=".0f",
             annotation_scale=transmission_capacity_today_twkm,
         ),
         PlotData(
             data=read_international_transmission_capacity(path_to_aggregated_results_csv),
-            cbar_label="d - Cross-border transmission capacity [TW]",
+            cbar_label="D - Cross-border transmission capacity [TW]",
             fmt=".2g",
             annotation_scale=crossborder_capacity_today_tw
         ),

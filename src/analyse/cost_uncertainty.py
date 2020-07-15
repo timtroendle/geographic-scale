@@ -69,7 +69,7 @@ class PlotData:
 def plot_cost_variability(path_to_large_scales, path_to_small_scale, path_to_scenario_results, path_to_plot):
     plot_datas = read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_results)
     fig = plot_data(plot_datas)
-    fig.savefig(path_to_plot, dpi=600)
+    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_results):
@@ -91,7 +91,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
 
     return [
         PlotData(
-            panel_id="a",
+            panel_id="A",
             ylabel="National scale (-)",
             xlabel="Continental scale (-)",
             xlim=(0, max_value),
@@ -100,7 +100,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
             y=y["y-national-scale-cost-eur"] / norm_value,
         ),
         PlotData(
-            panel_id="b",
+            panel_id="B",
             ylabel="Regional scale (-)",
             xlabel="Continental scale (-)",
             xlim=(0, max_value),
@@ -109,7 +109,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
             y=y["y-regional-scale-cost-eur"] / norm_value,
         ),
         PlotData(
-            panel_id="c",
+            panel_id="C",
             ylabel="Regional scale (-)",
             xlabel="National scale (-)",
             xlim=(0, max_value),

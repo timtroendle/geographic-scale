@@ -1,3 +1,7 @@
+---
+cover-page: True
+---
+
 # Introduction
 
 To fulfil its commitment under the Paris climate agreement, Europe must eliminate electricity sector emissions. For this, future electricity supply will be based largely, or entirely, on renewable sources[@IPCC:2018]. Although ambitious, this is possible because solar and wind generation technologies are mature[@Brown:2018; @IRENA:2019], their generation potential is sufficient[@McKenna:2015; @Jacobson:2017; @Trondle:2019; @Ruiz:2019; @Caglayan:2019], various options are available to balance variable renewable generation on time scales ranging from hours to years[@Rasmussen:2012; @Grams:2017; @Schlachtberger:2017], and systems relying on them can have similar cost as today’s system[@Connolly:2016; @Plessmann:2017; @Brown:2018; @Child:2019]. As renewables are abundantly available across the continent, very different kinds of future electricity system designs are possible, from a Europe-wide electricity grid sharing generation resources among all countries, to myriads of locally self-sufficient units, either disconnected or with limited interconnection, as well as combinations of these two extremes[@Battaglini:2009; @Blarke:2013]. Here, we investigate the impact on cost and cost-optimised system design of decarbonising Europe’s electricity supply using renewables on different geographic scales and with different degrees of self-sufficiency.

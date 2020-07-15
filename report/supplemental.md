@@ -1,13 +1,6 @@
 ---
 title: Supplemental Information
-bibliography:
-    - 'literature.bib'
-csl: joule.csl
-link-citations: True
-fignos-caption-name: Figure
-tablenos-caption-name: Table
-lang: en-GB
-date: 2020-07-17-dev
+cover-page: False
 ---
 
 # Figure S1: Transmission network

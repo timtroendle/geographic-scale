@@ -53,6 +53,7 @@ GENERAL_DOCUMENT_DEPENDENCIES = [
     "report/report.css",
     "report/joule.csl",
     "report/template.html",
+    "report/pandoc-metadata.yaml",
     "report/fonts/KlinicSlabBook.otf",
     "report/fonts/KlinicSlabBookIt.otf",
     "report/fonts/KlinicSlabMedium.otf",
@@ -77,7 +78,7 @@ rule report:
     input:
         GENERAL_DOCUMENT_DEPENDENCIES,
         "report/report.md",
-        "report/pandoc-metadata.yml",
+        "report/summaries.yaml",
         "build/output/{resolution}/report/total-sobol-diff.svg",
         "build/output/{resolution}/report/cost.svg",
         "build/output/{resolution}/report/map-cost.png",
@@ -93,7 +94,8 @@ rule report:
         """
         cd report
         ln -s ../build/output/{wildcards.resolution}/report .
-        {PANDOC} report.md pandoc-metadata.yml {params.options} \
+        {PANDOC} report.md {params.options} \
+        --metadata-file=pandoc-metadata.yaml --metadata-file=summaries.yaml \
         -o ../build/output/{wildcards.resolution}/report.{wildcards.suffix}
         """
 
@@ -127,6 +129,7 @@ rule supplemental_material:
         cd report
         ln -s ../build/output/{wildcards.resolution}/report .
         {PANDOC} supplemental.md {params.options} --css=supplemental.css \
+        --metadata-file=pandoc-metadata.yaml \
         -o ../build/output/{wildcards.resolution}/supplemental.{wildcards.suffix}
         """
 

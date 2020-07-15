@@ -1,5 +1,5 @@
 sheet	col	row	longname	input	keystrokes	comment
-			open-file	build-by-euler/output/regional/timeseries-selection.nc	o	
+			open-file	build/euler/output/regional/timeseries-selection.nc	o	
 timeseries-selection		1	dive-row		^J	
 name	locs		key-col		!	
 name	costs		hide-col		-	

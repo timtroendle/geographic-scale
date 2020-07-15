@@ -1,5 +1,5 @@
 sheet	col	row	longname	input	keystrokes	comment
-			open-file	build-by-euler/output/national/aggregation.nc	o	
+			open-file	build/euler/output/national/aggregation.nc	o	
 aggregation		7	dive-row		^J	
 cost	tech_group		freq-col		F	
 cost_tech_group_freq		キsupply	select-row		s	

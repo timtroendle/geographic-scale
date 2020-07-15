@@ -1,5 +1,5 @@
 sheet	col	row	longname	input	keystrokes	comment
-			open-file	build-by-euler/output/regional/aggregation.nc	o	
+			open-file	build/euler/output/regional/aggregation.nc	o	
 aggregation		3	dive-row		^J	
 carrier_con	techs	16	select-equal-cell		,	
 carrier_con			dup-selected		"	

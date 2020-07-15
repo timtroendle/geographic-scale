@@ -1,5 +1,5 @@
 sheet	col	row	longname	input	keystrokes	comment
-			open-file	build-by-euler/output/regional/aggregation.nc	o	
+			open-file	build/euler/output/regional/aggregation.nc	o	
 aggregation		2	dive-row		^J	
 carrier_prod	scenario		freq-col		F	
 carrier_prod_scenario_freq		キcontinental-autarky-100-continental-grid	dup-row		^J	

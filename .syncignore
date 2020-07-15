@@ -6,7 +6,6 @@ __pycache__
 .vscode
 .DS_Store
 build
-build-by-euler
 backup-build-by-euler
 data/automatic
 report/report

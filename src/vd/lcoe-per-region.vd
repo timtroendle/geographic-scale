@@ -1,5 +1,5 @@
 sheet	col	row	longname	input	keystrokes	comment
-			open-file	build-by-euler/output/regional/aggregation.nc	o	
+			open-file	build/euler/output/regional/aggregation.nc	o	
 aggregation		7	dive-row		^J	
 cost	scenario		freq-col		F	
 cost_scenario_freq		キregional-autarky-100-regional-grid	dup-row		^J	

@@ -74,18 +74,6 @@ By applying a multi-fidelity sparse polynomial chaos expansion to our high-resol
 
 Extending previous studies[@Schlachtberger:2017; @Horsch:2017; @Eriksen:2017], we confirm that fully renewable electricity supply in Europe does not necessarily require vastly increased transmission capacities, contradicting recent statements and views[@Joskow:2019]. By allowing systems to balance regional-scale supply within a continental grid, their cost penalty can be reduced to 20% above the least-cost, continental-scale system but without the need for large transmission expansion. We further show that a fully renewable electricity system is possible not only in continent-spanning[@Bussar:2014; @Horsch:2017; @Zappa:2019] and national[@Eriksen:2017; @Schlachtberger:2017] designs, as past work has shown, but also on the regional scales and we show why cost and design differences appear across the different scales. While cost and total generation capacity are higher on smaller scales, they are likely not so high as to be economically infeasible, and these higher costs allow system operators to avoid transmission capacity expansion. The cost differences can be expected to be even smaller should the heat and transport sectors be coupled tightly with the electricity sector[@Mathiesen:2015; @Brown:2018a]. Our results show how system cost of fully renewable electricity systems depend strongly on the balancing scale, but not as much on the supply scale, and that transmission needs can be traded off against generation capacity requirements. Thus, we show that very different system designs are possible, from the very small and regional to the very large and continental. It is important that policymakers and societies decide which type of system they find most attractive, in the knowledge that only one or the other can be built and that countries and citizens must accept either generation or transmission infrastructure for a transition to a fully renewable future in Europe to be feasible.
 
-# Acknowledgements
-
-The work of T.T. and J.L. was supported by a European Research Council grant (TRIPOD, grant agreement number 715132). The work of S.P. was supported by the Swiss Competence Center for Energy Research − Supply of Electricity (SCCER SoE), contract number 1155002546.
-
-# Author contributions
-
-Conceptualization, T.T., J.L, and S.P.; Methodology, T.T., J.L., and S.P.; Software, T.T., S.M., and S.P.; Formal Analysis, T.T. and S.M.; Data Curation T.T.; Writing – Original Draft T.T.; Writing – Review & Editing, J.L., S.M., and S.P; Visualization, T.T. and S.P.; Project Administration J.L. and T.T.; Funding Acquisition, J.L.
-
-# Declarations of interest
-
-None.
-
 # Experimental procedures
 
 ## Resource Availability
@@ -207,5 +195,17 @@ We furthermore assess the uncertainty of our results stemming from uncertainty o
 We assess the sensitivity of differences in system cost and technology deployment between large and small-scale system layouts. We consider as uncertain parameters the cost of ten different technologies, the weighted cost of capital, and the availability of biomass for combustion. Following a maximum entropy approach, we model their uncertainty with uniform distributions over ranges taken from the literature (see Table\ S1). We perform a global sensitivity analysis of system cost and several other model outputs in this twelve dimensional space. This allows us to derive the distribution of each model output and it allows us to derive total and first-order Sobol' indices. The Sobol' indices determine the share of the variance of each output that is explained by the uncertainty of each input. Building on this, we use the indices to compare the relative importance of all input parameters for the uncertainty of each output.
 
 To derive the output distribution and Sobol' indices, we need to let parametric uncertainty propagate into and through the model. In a classical Monte Carlo simulation, the input distributions are sampled many times to derive samples of the output. Because of the high computational requirements, in particular the time our model takes to run, this approach would be prohibitive for our study. Thus, we employ a method described in refs. @Sudret:2008 and @LeGratiet:2017 to perform a polynomial chaos expansion of our original model to derive a surrogate model. We use the MATLAB package UQLab[@Marelli:2014]. From this surrogate model, Sobol' indices can be determined analytically and the distribution of the outputs can be derived using Monte Carlo sampling. We derive the surrogate model by sampling 150 times from the input parameters using maximin Euclidean-distance-optimised Latin Hypercube Sampling, and by running continental-, national-, and regional-scale models each once for each input parameter vector. Due to the high computational requirements of running national- and continental-scale models, we perform these runs on a spatial resolution with low fidelity in which each country represents one transmission grid node. To remove the biases these low fidelity model runs introduce, we perform 10 additional runs on the original, high-fidelity resolution and use a multi-fidelity approach[@Palar:2016] to retrieve a single surrogate model for continental and national scales. The estimated cross-validation error of the surrogate model is below 5% and thus we deem the surrogate sufficiently accurate[@LeGratiet:2017] to derive total- and first-order Sobol' indices.
+
+# Acknowledgements
+
+The work of T.T. and J.L. was supported by a European Research Council grant (TRIPOD, grant agreement number 715132). The work of S.P. was supported by the Swiss Competence Center for Energy Research − Supply of Electricity (SCCER SoE), contract number 1155002546.
+
+# Author contributions
+
+Conceptualization, T.T., J.L, and S.P.; Methodology, T.T., J.L., and S.P.; Software, T.T., S.M., and S.P.; Formal Analysis, T.T. and S.M.; Data Curation T.T.; Writing – Original Draft T.T.; Writing – Review & Editing, J.L., S.M., and S.P; Visualization, T.T. and S.P.; Project Administration J.L. and T.T.; Funding Acquisition, J.L.
+
+# Declarations of interest
+
+None.
 
 # References

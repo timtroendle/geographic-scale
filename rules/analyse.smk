@@ -144,6 +144,30 @@ rule plot_network_map:
     script: "../src/analyse/network.py"
 
 
+rule plot_bubble_map:
+    message: "Create bubble map of generation infrastructure."
+    input:
+        src = "src/analyse/bubble_map.py",
+        matplotlibrc = "matplotlibrc",
+        shapes = eurocalliope("build/data/{resolution}/units.geojson"),
+        continent_shape = eurocalliope("build/data/continental/units.geojson"),
+        results = rules.time_aggregated_results.output[0]
+    params: resolution_km = 100
+    output: "build/output/{resolution}/map-generation--{scenario}--{colour}--{markersize}.{plot_suffix}"
+    conda: "../envs/geo.yaml"
+    wildcard_constraints:
+        markersize = "((gen)|(\d\d))",
+        colour = "((blue)|(yellow))"
+    script: "../src/analyse/bubble_map.py"
+
+
+rule graphical_abstract:
+    message: "Create maps for graphical abstract."
+    input:
+        "build/output/regional/map-generation--continental-autarky-100-continental-grid--blue--gen.png",
+        "build/output/regional/map-generation--regional-autarky-100-continental-grid--yellow--10.png",
+
+
 rule plot_system_composition_per_scale:
     message: "Create plot of system composition on both scales."
     input:

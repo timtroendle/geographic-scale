@@ -206,6 +206,6 @@ Conceptualization, T.T., J.L, and S.P.; Methodology, T.T., J.L., and S.P.; Softw
 
 # Declarations of interest
 
-None.
+The authors declare no competing interests.
 
 # References

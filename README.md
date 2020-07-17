@@ -4,6 +4,8 @@ Analysis of the costs of electricity autarky and small scale grids.
 
 This repository contains the entire scientific project, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
 
+[![data DOI](https://img.shields.io/badge/data-10.5281%2Fzenodo.3950308-blue)](https://doi.org/10.5281/zenodo.3950308)
+
 ## Getting ready
 
 1. Clone the repo. Because `euro-calliope` is added as a git submodule, you may want to clone using `git clone --recurse-submodules <link-to-this-repo>`.

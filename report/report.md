@@ -88,7 +88,7 @@ No materials were used in this study.
 
 ### Data and Code Availability
 
-The datasets generated during this study are available on Zenodo <mark>(for review process provided within submission)</mark>.
+The datasets generated during this study are available on Zenodo (https://doi.org/10.5281/zenodo.3950308)[https://doi.org/10.5281/zenodo.3950308].
 
 The model code and all analysis steps are publicly available as a reproducible Snakemake[@Koster:2012] workflow on Zenodo <mark>(for review process provided within submission)</mark>.
 

@@ -6,6 +6,7 @@ capacity-factors:
     min: 0.001 # consider smaller values to be 0; this helps numerics in the LP
     max: 10 # for hydro reservoirs, value chosen so that numerical range is << 1e6
             # considering a time resolution of 4 H (0.001 - 10*4=40)
+    trim-ninja-timeseries: False
 parameters:
     biofuel-efficiency: 0.45
     jrc-biofuel:

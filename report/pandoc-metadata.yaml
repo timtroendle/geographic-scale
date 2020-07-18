@@ -25,5 +25,5 @@ lang: en-GB
 xnos-cleveref: True
 fignos-plus-name: "Figure\ " # does not include refs to supplementary
 tablenos-plus-name: "Table\ " # does not include refs to supplementary
-date: 2020-07-17-rc1
+date: 2020-07-18
 ---

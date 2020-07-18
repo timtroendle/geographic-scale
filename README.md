@@ -1,10 +1,11 @@
-# Geographical Scale
-
-Analysis of the costs of electricity autarky and small scale grids.
+# Trade-offs between geographic scale, cost, and infrastructure requirements for fully renewable electricity in Europe
 
 This repository contains the entire scientific project, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
 
 [![data DOI](https://img.shields.io/badge/data-10.5281%2Fzenodo.3950308-blue)](https://doi.org/10.5281/zenodo.3950308)
+[![code DOI](https://img.shields.io/badge/code-10.5281%2Fzenodo.3950775-blue)](https://doi.org/10.5281/zenodo.3950775)
+
+This study uses the model of the European electricity system [euro-calliope v1.0](https://zenodo.org/record/3949794).
 
 ## Getting ready
 
@@ -44,9 +45,9 @@ To generate a PDF of the dependency graph of all steps, and if you have `dot` in
 
 To run on Euler, use the following command:
 
-    snakemake --use-conda --profile config/euler [--config email=<you@provider.org>]
+    snakemake --use-conda --profile config/euler [--config ifttt_apikey=<your-apikey>]
 
-By providing an email address, you will be informed by mail when Snakemake finishes execution.
+By providing an IFTTT api key, you can be informed when Snakemake finishes execution, see below.
 
 If you prefer working locally, you can sync this repository to Euler and receive build changes by running `snakemake send` and `snakemake receive`.
 

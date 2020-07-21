@@ -111,7 +111,7 @@ def read_plot_data(path_to_result, scaling_factors, connected_regions):
 
 
 def plot_timeseries(plot_datas, resolution):
-    sns.set_context("paper")
+    sns.set_context("paper", font_scale=1.1)
     fig = plt.figure(figsize=(8, 8))
     axes = fig.subplots(len(plot_datas), 2, sharex=True)
     plt.subplots_adjust(wspace=0)

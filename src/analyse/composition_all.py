@@ -57,7 +57,7 @@ def composition(path_to_aggregated_results, path_to_output):
     data = pd.read_csv(path_to_aggregated_results)
     data["Scale"] = data["Scenario"].str.split("-").str.get(-2).str.capitalize() + ' scale'
 
-    sns.set_context("paper")
+    sns.set_context("paper", font_scale=1.1)
     fig = plt.figure(figsize=(8, 5))
     gs = gridspec.GridSpec(2, 3, width_ratios=[2, 1, 2])
 

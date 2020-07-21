@@ -19,7 +19,7 @@ def bioenergy_use(path_to_results, path_to_potentials, efficiency, scenario, pat
     nat_use = use.groupby("country").sum("locs")
     nat_potentials = potentials.groupby(use.country).sum("locs")
 
-    sns.set_context("paper")
+    sns.set_context("paper", font_scale=1.1)
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(211)
     (

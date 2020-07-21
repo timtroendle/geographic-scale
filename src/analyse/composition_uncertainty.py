@@ -132,7 +132,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale):
 
 
 def plot_data(plot_datas):
-    sns.set_context("paper")
+    sns.set_context("paper", font_scale=1.1)
     fig = plt.figure(figsize=(8, 5))
     axes = fig.subplots(
         nrows=2,

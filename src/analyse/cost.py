@@ -43,7 +43,7 @@ AUTARKY_LEVEL_MAP = {
 
 def plot_costs(path_to_aggregated_results, path_to_base_plot, path_to_special_plot):
     """Plot scenario space and results."""
-    sns.set_context("paper")
+    sns.set_context("paper", font_scale=1.1)
     results = read_results(path_to_aggregated_results)
 
     fig, ax, cbar_ax = set_up_figure()

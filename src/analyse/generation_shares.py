@@ -39,7 +39,7 @@ PANEL_FONT_WEIGHT = "bold"
 
 def generation_shares(path_to_results, scenario1, scenario2, path_to_plot):
     shares = read_generation_shares(path_to_results)
-    sns.set_context("paper")
+    sns.set_context("paper", font_scale=1.1)
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(121)
     (

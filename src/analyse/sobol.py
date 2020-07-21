@@ -156,7 +156,7 @@ def prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_par
 
 
 def plot_all_data(plot_datas):
-    sns.set_context("paper")
+    sns.set_context("paper", font_scale=1.1)
     fig = plt.figure(figsize=(8, 9))
     axes = fig.subplots(
         nrows=2,
@@ -204,7 +204,7 @@ def plot_all_data(plot_datas):
 
 
 def plot_diff_data(plot_data):
-    sns.set_context("paper")
+    sns.set_context("paper", font_scale=1.1)
     fig = plt.figure(figsize=(8, 4))
     ax = fig.subplots(nrows=1, ncols=1)
     fig.subplots_adjust(right=0.6, bottom=0.26)

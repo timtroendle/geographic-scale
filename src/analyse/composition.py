@@ -62,7 +62,7 @@ class PlotData:
 
 def composition(path_to_aggregated_results_csv, path_to_aggregated_results_nc, path_to_output,
                 transmission_capacity_today_twkm, crossborder_capacity_today_tw):
-    sns.set_context("paper")
+    sns.set_context("paper", font_scale=1.1)
     fig = plt.figure(figsize=(8, 7))
     axes = fig.subplots(2, 2).flatten()
 

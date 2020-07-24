@@ -75,15 +75,31 @@ rule aggregated_results:
 
 
 rule time_aggregated_results:
-    message: "Create NetCDF overview over all results."
+    message: "Create NetCDF overview over all results and aggregate time."
     input:
-        src = "src/analyse/time_aggregation.py",
+        src = "src/analyse/postprocess.py",
         scenarios = expand("build/output/{{resolution}}/runs/{scenario}.nc", scenario=config["scenarios"]),
         units = eurocalliope("build/data/{resolution}/units.geojson")
-    params: scaling_factors = config["scaling-factors"]
+    params:
+        scaling_factors = config["scaling-factors"],
+        aggregate_time = True
     conda: "../envs/geo.yaml"
     output: "build/output/{resolution}/aggregation.nc"
-    script: "../src/analyse/time_aggregation.py"
+    script: "../src/analyse/postprocess.py"
+
+
+rule all_results:
+    message: "Create NetCDF overview over all results."
+    input:
+        src = "src/analyse/postprocess.py",
+        scenarios = expand("build/output/{{resolution}}/runs/{scenario}.nc", scenario=config["scenarios"]),
+        units = eurocalliope("build/data/{resolution}/units.geojson")
+    params:
+        scaling_factors = config["scaling-factors"],
+        aggregate_time = False
+    conda: "../envs/geo.yaml"
+    output: "build/output/{resolution}/raw.nc"
+    script: "../src/analyse/postprocess.py"
 
 
 rule plot_cost:

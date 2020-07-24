@@ -50,4 +50,7 @@ aggregated_results:
     memory: 128000
 time_aggregated_results:
     runtime: 120
-    memory: 48000
+    memory: 24000
+all_results:
+    runtime: 120
+    memory: 64000

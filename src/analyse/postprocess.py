@@ -1,4 +1,4 @@
-"""Collect time aggregated results."""
+"""Collect and postprocess results."""
 from dataclasses import dataclass
 
 import calliope
@@ -66,18 +66,19 @@ VARIABLES = [
 ]
 
 
-def excavate_all_results(paths_to_scenarios, path_to_units, scaling_factors, path_to_output):
-    """Collect time aggregated results of all scenarios."""
+def excavate_all_results(paths_to_scenarios, path_to_units, scaling_factors, aggregate_time, path_to_output):
+    """Collect and postprocess results of all scenarios."""
+    models = [calliope.read_netcdf(path_to_scenario) for path_to_scenario in paths_to_scenarios]
     scenarios = {
-        calliope.read_netcdf(path_to_scenario).results.attrs["scenario"]: calliope.read_netcdf(path_to_scenario)
-        for path_to_scenario in paths_to_scenarios
+        model.results.attrs["scenario"]: model
+        for model in models
     }
     units = (gpd.read_file(path_to_units)
                 .set_index("id")
                 .rename(index=lambda idx: idx.replace(".", "-"))
                 .rename_axis(index="locs")
                 .to_xarray())
-    exporter = CalliopeExporter(scenarios, units, scaling_factors)
+    exporter = CalliopeExporter(scenarios, units, scaling_factors, aggregate_time)
     ds = xr.Dataset({
         variable.name: exporter(variable)
         for variable in VARIABLES
@@ -90,10 +91,11 @@ def excavate_all_results(paths_to_scenarios, path_to_units, scaling_factors, pat
 
 class CalliopeExporter:
 
-    def __init__(self, scenarios, units, scaling_factors):
+    def __init__(self, scenarios, units, scaling_factors, aggregate_time):
         self.__scenarios = scenarios
         self.__units = units
         self.__scaling_factors = scaling_factors
+        self.__aggregate_time = aggregate_time
 
     def __call__(self, variable):
         if variable not in VARIABLES:
@@ -109,7 +111,7 @@ class CalliopeExporter:
             data = data.squeeze("carriers").drop("carriers")
         if "costs" in data.dims:
             data = data.squeeze("costs").drop("costs")
-        if "timesteps" in data.dims:
+        if self.__aggregate_time and ("timesteps" in data.dims):
             data = data.sum("timesteps")
         if "techs" in data.dims:
             if data.techs.str.contains("ac_transmission").any():
@@ -128,5 +130,6 @@ if __name__ == "__main__":
         paths_to_scenarios=snakemake.input.scenarios,
         path_to_units=snakemake.input.units,
         scaling_factors=snakemake.params.scaling_factors,
+        aggregate_time=snakemake.params.aggregate_time,
         path_to_output=snakemake.output[0]
     )

@@ -17,8 +17,6 @@ PALETTE = sns.light_palette(BLUE)
 HIGHLIGHT_COLOR = ANTHRACITE
 HIGHLIGHT_LINEWIDTH = 4
 HIGHLIGHT_LINESTYLE = "-"
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
 
 BASE_SCENARIO = "continental-autarky-100-continental-grid"
 DATA_INDEX = """autarky_layer,grid_scale,autarky_degree,cost
@@ -62,8 +60,7 @@ class PlotData:
 
 def composition(path_to_aggregated_results_csv, path_to_aggregated_results_nc, path_to_output,
                 transmission_capacity_today_twkm, crossborder_capacity_today_tw):
-    sns.set_context("paper", font_scale=1.1)
-    fig = plt.figure(figsize=(8, 7))
+    fig = plt.figure(figsize=(6.77, 5.5))
     axes = fig.subplots(2, 2).flatten()
 
     plot_datas = read_plot_datas(
@@ -78,11 +75,11 @@ def composition(path_to_aggregated_results_csv, path_to_aggregated_results_nc, p
 
     plt.subplots_adjust(
         bottom=0.08,
-        top=0.93,
         wspace=0.3,
+        top=0.95,
         hspace=0.2
     )
-    fig.savefig(path_to_output, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_output, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_plot_datas(path_to_aggregated_results_nc, path_to_aggregated_results_csv,
@@ -154,8 +151,7 @@ def base_case_box(plot_data, ax, cbar_ax):
     ax.set_xlabel("Balancing scale")
     ax.set_ylabel("Supply scale")
     ax.set_yticklabels(ax.get_yticklabels(), rotation=90, va="center")
-    ax.annotate(plot_data.cbar_label, xy=[-0.2, 1.1], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.set_title(plot_data.cbar_label, loc="left")
 
 
 def read_transmission_capacity(path_to_agregrated_results):

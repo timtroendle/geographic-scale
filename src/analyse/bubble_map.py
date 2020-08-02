@@ -48,7 +48,7 @@ def bubble_map(path_to_shapes, path_to_continent_shape, scenario, resolution_km,
     ax.set_ylim(MAP_MIN_Y, MAP_MAX_Y)
     sns.despine(fig=fig, top=True, bottom=True, left=True, right=True)
 
-    fig.savefig(path_to_output, dpi=300)
+    fig.savefig(path_to_output)
 
 
 def read_shapes(path_to_shapes, path_to_results, scenario):

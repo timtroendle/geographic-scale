@@ -8,8 +8,6 @@ import pycountry
 
 GREEN = "#679436"
 COLOR = GREEN
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
 
 
 def bioenergy_use(path_to_results, path_to_potentials, efficiency, scenario, path_to_plot):
@@ -19,8 +17,7 @@ def bioenergy_use(path_to_results, path_to_potentials, efficiency, scenario, pat
     nat_use = use.groupby("country").sum("locs")
     nat_potentials = potentials.groupby(use.country).sum("locs")
 
-    sns.set_context("paper", font_scale=1.1)
-    fig = plt.figure(figsize=(8, 8))
+    fig = plt.figure(figsize=(6.67, 6.67))
     ax = fig.add_subplot(211)
     (
         (nat_use / nat_potentials)
@@ -32,12 +29,9 @@ def bioenergy_use(path_to_results, path_to_potentials, efficiency, scenario, pat
     ax.set_ylabel("Share of bioenergy potential used")
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
     ax.set_ylim(0, 1)
-    ax.annotate(
+    ax.set_title(
         f"A - National use of bioenergy potentials",
-        xy=[-0.05, 1.05],
-        xycoords='axes fraction',
-        fontsize=PANEL_FONT_SIZE,
-        weight=PANEL_FONT_WEIGHT
+        loc="left"
     )
 
     ax = fig.add_subplot(212)
@@ -50,17 +44,14 @@ def bioenergy_use(path_to_results, path_to_potentials, efficiency, scenario, pat
     ax.set_title("")
     ax.set_xlabel("Share of bioenergy potential used")
     ax.set_ylabel("Frequency")
-    ax.annotate(
+    ax.set_title(
         f"B - Regional use of bioenergy potentials",
-        xy=[-0.05, 1.05],
-        xycoords='axes fraction',
-        fontsize=PANEL_FONT_SIZE,
-        weight=PANEL_FONT_WEIGHT
+        loc="left"
     )
 
     sns.despine(fig)
     fig.tight_layout()
-    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_plot, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_potentials(path_to_potentials, efficiency):

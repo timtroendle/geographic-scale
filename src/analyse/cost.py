@@ -15,8 +15,6 @@ PALETTE = sns.light_palette(RED)
 HIGHLIGHT_COLOR = ANTHRACITE
 HIGHLIGHT_LINEWIDTH = 4
 HIGHLIGHT_LINESTYLE = "-"
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
 
 BASE_SCENARIO = "continental-autarky-100-continental-grid"
 DATA_INDEX = """autarky_layer,grid_scale,autarky_degree,cost
@@ -43,36 +41,35 @@ AUTARKY_LEVEL_MAP = {
 
 def plot_costs(path_to_aggregated_results, path_to_base_plot, path_to_special_plot):
     """Plot scenario space and results."""
-    sns.set_context("paper", font_scale=1.1)
     results = read_results(path_to_aggregated_results)
 
-    fig, ax, cbar_ax = set_up_figure()
+    fig, ax, cbar_ax = set_up_figure((4.41, 2.5))
     base_case_box(results, ax, cbar_ax)
     plt.subplots_adjust(
-        left=0.20,
+        left=0.08,
         bottom=0.2,
-        right=0.66,
+        right=0.77,
         top=0.88,
         wspace=0.0,
         hspace=0.2
     )
-    fig.savefig(path_to_base_plot, dpi=300, transparent=False, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_base_plot, pil_kwargs={"compression": "tiff_lzw"})
 
-    fig, ax, cbar_ax = set_up_figure()
+    fig, ax, cbar_ax = set_up_figure((6.67, 2.5))
     special_case_box(results, ax, cbar_ax)
     plt.subplots_adjust(
-        left=0.20,
+        left=0.25,
         bottom=0.2,
         right=0.70,
         top=0.88,
         wspace=0.0,
         hspace=0.2
     )
-    fig.savefig(path_to_special_plot, dpi=300, transparent=False, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_special_plot, pil_kwargs={"compression": "tiff_lzw"})
 
 
-def set_up_figure():
-    fig = plt.figure(figsize=(8, 3.5))
+def set_up_figure(figsize):
+    fig = plt.figure(figsize=figsize)
     gs = gridspec.GridSpec(1, 2, width_ratios=[5, 0.1])
     ax = fig.add_subplot(gs[0])
     cbar_ax = fig.add_subplot(gs[1])

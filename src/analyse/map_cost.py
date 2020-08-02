@@ -15,8 +15,6 @@ RED_TO_BLUE = [ # from https://gka.github.io using lightness correction
 ]
 CMAP = matplotlib.colors.LinearSegmentedColormap.from_list("signature-BlRd", RED_TO_BLUE)
 NORM = matplotlib.colors.Normalize(vmin=-1, vmax=3)
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
 LAYER_FONT_WEIGHT = "medium"
 EDGE_WIDTH = 0.06
 EDGE_COLOR = "white"
@@ -37,7 +35,7 @@ DEMAND_TECH = "demand_elec"
 def plot_map(path_to_national_shapes, path_to_regional_shapes, connected_regions,
              path_to_aggregated_results, path_to_shapes, path_to_plot):
     """Plot maps of results."""
-    fig = plt.figure(figsize=(8, 4), constrained_layout=True)
+    fig = plt.figure(figsize=(4.41, 2.2), constrained_layout=True)
     axes = fig.subplots(1, 3, gridspec_kw={'width_ratios': [30, 30, 1]}).flatten()
     shapes = (gpd.read_file(path_to_shapes)
                  .to_crs(EPSG_3035_PROJ4)
@@ -72,7 +70,7 @@ def plot_map(path_to_national_shapes, path_to_regional_shapes, connected_regions
     _plot_colorbar(fig, axes[2].inset_axes([0, 0.175, 1, 0.65]))
     axes[2].axis("off")
 
-    fig.savefig(path_to_plot, dpi=300, transparent=False, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_plot, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def _plot_layer(units, total_cost, layer_name, panel_id, ax):
@@ -100,8 +98,7 @@ def _plot_layer(units, total_cost, layer_name, panel_id, ax):
         va='center',
         weight=LAYER_FONT_WEIGHT
     )
-    ax.annotate(panel_id, xy=[0.05, 0.95], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.set_title(panel_id, loc="left")
 
 
 def _plot_colorbar(fig, axis):

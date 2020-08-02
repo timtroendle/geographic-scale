@@ -21,6 +21,7 @@ include: "./rules/construct.smk"
 include: "./rules/uncertainty.smk"
 include: "./rules/analyse.smk"
 include: "./rules/impossible.smk"
+include: "./rules/publication.smk"
 
 
 rule all:
@@ -32,6 +33,13 @@ rule all:
         "build/output/{resolution}/supplemental.pdf".format(resolution=config["resolution"]["space"]),
         "build/output/national/uncertainty/time-diff.csv",
         "build/output/{resolution}/uncertainty/weather-diff-diff.txt".format(resolution=config["weather-uncertainty"]["resolution"]["space"])
+        "build/output/{resolution}/figures/figure1.tiff".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/figures/figure2.tiff".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/figures/figure3.tiff".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/figures/figure4.tiff".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/figures/figure5.tiff".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/figures/figure6.tiff".format(resolution=config["resolution"]["space"]),
+        "build/output/{resolution}/figures/figure7.tiff".format(resolution=config["resolution"]["space"])
 
 
 rule copy_report_file:
@@ -82,19 +90,12 @@ rule report:
         "report/report.md",
         "report/summaries.yaml",
         "build/output/{resolution}/report/total-sobol-diff.svg",
-        "build/output/{resolution}/report/total-sobol-diff.tiff",
         "build/output/{resolution}/report/cost.svg",
-        "build/output/{resolution}/report/cost.tiff",
         "build/output/{resolution}/report/map-cost.png",
-        "build/output/{resolution}/report/map-cost.tiff",
         "build/output/{resolution}/report/map-energy.png",
-        "build/output/{resolution}/report/map-energy.tiff",
         "build/output/{resolution}/report/composition.svg",
-        "build/output/{resolution}/report/composition.tiff",
         "build/output/{resolution}/report/composition-uncertainty.png",
-        "build/output/{resolution}/report/composition-uncertainty.tiff",
         "build/output/{resolution}/report/cost-uncertainty.png",
-        "build/output/{resolution}/report/cost-uncertainty.tiff",
     output: "build/output/{resolution}/report.{suffix}"
     params: options = pandoc_options
     conda: "envs/pdf.yaml"

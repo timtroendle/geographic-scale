@@ -2,7 +2,6 @@ from dataclasses import dataclass
 
 import pandas as pd
 import xarray as xr
-import seaborn as sns
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -15,8 +14,6 @@ BLUE = "#4F6DB8"
 YELLOW = "#FABC3C"
 GREY = "#C0C0C0"
 COLOR = BLUE
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
 
 HYDRO_TECHS = ["hydro_run_of_river", "hydro_reservoir"]
 BASE_SCENARIO = "continental-autarky-100-continental-grid"
@@ -69,7 +66,7 @@ class PlotData:
 def plot_cost_variability(path_to_large_scales, path_to_small_scale, path_to_scenario_results, path_to_plot):
     plot_datas = read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_results)
     fig = plot_data(plot_datas)
-    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_plot, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_results):
@@ -121,8 +118,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale, path_to_scenario_r
 
 
 def plot_data(plot_datas):
-    sns.set_context("paper", font_scale=1.1)
-    fig = plt.figure(figsize=(8, 3.5))
+    fig = plt.figure(figsize=(4.41, 1.9))
     axes = fig.subplots(
         nrows=1,
         ncols=3,
@@ -150,14 +146,8 @@ def plot_data(plot_datas):
         ax.set_xlabel(plot_data.xlabel)
         ax.set_ylabel(plot_data.ylabel)
         ax.set_yticks([0, 1, 2, 3])
-        ax.annotate(plot_data.panel_id, xy=[-0.05, 1.05], xycoords='axes fraction',
-                    fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-    fig.suptitle(
-        t="System cost relative to continental-scale base case",
-        size='large',
-        fontweight='bold',
-        y=0.95
-    )
+        ax.set_title(plot_data.panel_id, loc="left")
+    fig.suptitle(t="System cost relative to continental-scale base case")
     fig.tight_layout()
     return fig
 

@@ -4,13 +4,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
 GREEN = "#679436"
 BLUE = "#4F6DB8"
 BLUE_CMAP = sns.light_palette(BLUE, n_colors=10, reverse=False, as_cmap=False)
-HIGHLIGHT_COLOR = "#424242"
-HIGHLIGHT_LINEWIDTH = 4
 CMAP = BLUE_CMAP
 
 OUTPUTS = [
@@ -76,7 +72,7 @@ def sobol(path_to_cont_and_nat_data, path_to_reg_data, all_data, parameters, pat
     else:
         plot_data = prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters)
         fig = plot_diff_data(plot_data)
-    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_plot, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def prepare_all_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_parameters):
@@ -156,8 +152,7 @@ def prepare_diff_data(path_to_cont_and_nat_data, path_to_reg_data, uncertain_par
 
 
 def plot_all_data(plot_datas):
-    sns.set_context("paper", font_scale=1.1)
-    fig = plt.figure(figsize=(8, 9))
+    fig = plt.figure(figsize=(6.67, 7.5))
     axes = fig.subplots(
         nrows=2,
         ncols=3,
@@ -188,13 +183,7 @@ def plot_all_data(plot_datas):
             cbar_ax=cbar_ax,
             cmap=CMAP
         )
-        ax.annotate(
-            plot_data.name,
-            xy=[0, 1 + 0.05 * 6 / len(plot_data.data.index)],
-            xycoords='axes fraction',
-            fontsize=PANEL_FONT_SIZE,
-            weight=PANEL_FONT_WEIGHT
-        )
+        ax.set_title(plot_data.name, loc="left")
         ax.xaxis.set_tick_params(bottom=False)
         ax.yaxis.set_tick_params(left=False)
     fig.tight_layout(h_pad=0.7, rect=[0, 0, 0.9, 1])
@@ -204,10 +193,9 @@ def plot_all_data(plot_datas):
 
 
 def plot_diff_data(plot_data):
-    sns.set_context("paper", font_scale=1.1)
-    fig = plt.figure(figsize=(8, 4))
+    fig = plt.figure(figsize=(4.41, 2.5))
     ax = fig.subplots(nrows=1, ncols=1)
-    fig.subplots_adjust(right=0.6, bottom=0.26)
+    fig.subplots_adjust(right=0.85, bottom=0.26)
     cbar_ax = fig.add_axes([0.9, 0.25, 0.015, 0.65])
 
     sns.heatmap(
@@ -221,13 +209,7 @@ def plot_diff_data(plot_data):
         cbar_ax=cbar_ax,
         cmap=CMAP,
     )
-    ax.annotate(
-        plot_data.name,
-        xy=[0, 1 + 0.05 * 6 / len(plot_data.data.index)],
-        xycoords='axes fraction',
-        fontsize=PANEL_FONT_SIZE,
-        weight=PANEL_FONT_WEIGHT
-    )
+    ax.set_title(plot_data.name, loc="left")
 
     ax.xaxis.set_tick_params(bottom=False)
     ax.yaxis.set_tick_params(left=False)

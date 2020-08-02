@@ -33,14 +33,11 @@ COLORS = [
     sns.desaturate(YELLOW, 0.85),
     sns.desaturate(RED, 0.85)
 ]
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
 
 
 def generation_shares(path_to_results, scenario1, scenario2, path_to_plot):
     shares = read_generation_shares(path_to_results)
-    sns.set_context("paper", font_scale=1.1)
-    fig = plt.figure(figsize=(8, 8))
+    fig = plt.figure(figsize=(6.67, 6.67))
     ax = fig.add_subplot(121)
     (
         shares
@@ -52,13 +49,7 @@ def generation_shares(path_to_results, scenario1, scenario2, path_to_plot):
         .loc[:, ["hydro", "bioenergy", "solar", "wind"]]
         .plot(kind="barh", stacked=True, ax=ax, width=0.9, color=COLORS, legend=False)
     )
-    ax.annotate(
-        f"A - {plot_label(scenario1)}",
-        xy=[-0.1, 1.02],
-        xycoords='axes fraction',
-        fontsize=PANEL_FONT_SIZE,
-        weight=PANEL_FONT_WEIGHT
-    )
+    ax.set_title(f"A - {plot_label(scenario1)}", loc="left")
     ax.set_ylabel("")
     ax.xaxis.set_major_formatter(mtick.PercentFormatter(1.0))
     ax.set_xlabel("Generation share")
@@ -74,13 +65,7 @@ def generation_shares(path_to_results, scenario1, scenario2, path_to_plot):
         .loc[:, ["hydro", "bioenergy", "solar", "wind"]]
         .plot(kind="barh", stacked=True, ax=ax, width=0.9, color=COLORS)
     )
-    ax.annotate(
-        f"B - {plot_label(scenario2)}",
-        xy=[-0.1, 1.02],
-        xycoords='axes fraction',
-        fontsize=PANEL_FONT_SIZE,
-        weight=PANEL_FONT_WEIGHT
-    )
+    ax.set_title(f"B - {plot_label(scenario2)}", loc="left")
     ax.set_ylabel("")
     ax.xaxis.set_major_formatter(mtick.PercentFormatter(1.0))
     ax.set_xlabel("Generation share")
@@ -97,7 +82,7 @@ def generation_shares(path_to_results, scenario1, scenario2, path_to_plot):
     sns.despine(fig)
     fig.tight_layout()
     plt.subplots_adjust(bottom=0.1)
-    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_plot, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_generation_shares(path_to_results):

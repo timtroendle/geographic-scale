@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 import pandas as pd
-import seaborn as sns
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -14,8 +13,6 @@ BLUE = "#4F6DB8"
 YELLOW = "#FABC3C"
 GREY = "#C0C0C0"
 COLOR = BLUE
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
 MAX_VALUE = 2
 NUMBER_VARIABLES = 2
 
@@ -69,7 +66,7 @@ class PlotData:
 def plot_composition_variability(path_to_large_scales, path_to_small_scale, path_to_plot):
     plot_datas = read_plot_data(path_to_large_scales, path_to_small_scale)
     fig = plot_data(plot_datas)
-    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_plot, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_plot_data(path_to_large_scales, path_to_small_scale):
@@ -132,8 +129,7 @@ def read_plot_data(path_to_large_scales, path_to_small_scale):
 
 
 def plot_data(plot_datas):
-    sns.set_context("paper", font_scale=1.1)
-    fig = plt.figure(figsize=(8, 5))
+    fig = plt.figure(figsize=(4.41, 4))
     axes = fig.subplots(
         nrows=2,
         ncols=int(len(plot_datas) / 2),
@@ -163,18 +159,17 @@ def plot_data(plot_datas):
         else:
             for tick in ax.xaxis.get_major_ticks():
                 tick.set_visible(False)
-            ax.annotate(plot_data.title, xy=(0.5, 1.2), xycoords="axes fraction",
-                        size='large', ha='center', va='center', fontweight='bold')
+            ax.set_title(plot_data.title, loc="left")
         if i % NUMBER_VARIABLES == 0:
             ax.set_ylabel(plot_data.ylabel)
         else:
             for tick in ax.yaxis.get_major_ticks():
                 tick.set_visible(False)
-        ax.annotate(plot_data.panel_id, xy=[-0.05, 1.05], xycoords='axes fraction',
-                    fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+        ax.set_title(plot_data.panel_id, loc="left")
     plt.subplots_adjust(
-        left=0.2,
-        right=0.8
+        left=0.13,
+        right=0.93,
+        top=0.93
     )
     return fig
 

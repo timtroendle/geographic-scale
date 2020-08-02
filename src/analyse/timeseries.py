@@ -10,8 +10,6 @@ import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
 GREEN = "#679436"
 RED = "#A01914"
 BLUE = "#4F6DB8"
@@ -50,7 +48,7 @@ def timeseries(path_to_result, path_to_units, scaling_factors, connected_regions
     """Create plots of timeseries for regional result."""
     plot_datas = read_plot_data(path_to_result, scaling_factors, connected_regions)
     fig = plot_timeseries(plot_datas, resolution)
-    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_plot)
     units = mask_all_units(path_to_units, plot_datas)
     units.to_netcdf(path_to_displayed_units)
 
@@ -111,8 +109,7 @@ def read_plot_data(path_to_result, scaling_factors, connected_regions):
 
 
 def plot_timeseries(plot_datas, resolution):
-    sns.set_context("paper", font_scale=1.1)
-    fig = plt.figure(figsize=(8, 8))
+    fig = plt.figure(figsize=(6.67, 6.67))
     axes = fig.subplots(len(plot_datas), 2, sharex=True)
     plt.subplots_adjust(wspace=0)
     panel_ids = "ABCDEF"
@@ -161,10 +158,8 @@ def plot_timeseries(plot_datas, resolution):
             axes[i][1].xaxis.set_tick_params(reset=True, top=False)
         sns.despine(ax=axes[i][0], top=True, right=True)
         sns.despine(ax=axes[i][1], left=True)
-        axes[i][0].annotate(panel_ids[2 * i], xy=[-0.05, 1.05], xycoords='axes fraction',
-                            fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
-        axes[i][1].annotate(panel_ids[2 * i + 1], xy=[-0.05, 1.05], xycoords='axes fraction',
-                            fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+        axes[i][0].set_title(panel_ids[2 * i], loc="left")
+        axes[i][1].set_title(panel_ids[2 * i + 1], loc="left")
         axes[i][0].annotate(plot_data.name, xy=(-0.19, 0.5), xycoords="axes fraction",
                             size='large', ha='right', va='center', rotation=90)
 

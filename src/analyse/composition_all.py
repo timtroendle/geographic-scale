@@ -11,9 +11,7 @@ GREEN = "#679436"
 RED = "#A01914"
 BLUE = "#4F6DB8"
 PALETTE = sns.light_palette(BLUE, n_colors=4, reverse=False)[1:]
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
-ERROR_BAR_LINEWIDTH = 3.5
+ERROR_BAR_LINEWIDTH = 2.5
 ERROR_BAR_COLOR = '#454545'
 
 GENERATION_CAPACITIES = OrderedDict([
@@ -57,8 +55,7 @@ def composition(path_to_aggregated_results, path_to_output):
     data = pd.read_csv(path_to_aggregated_results)
     data["Scale"] = data["Scenario"].str.split("-").str.get(-2).str.capitalize() + ' scale'
 
-    sns.set_context("paper", font_scale=1.1)
-    fig = plt.figure(figsize=(8, 5))
+    fig = plt.figure(figsize=(6.67, 4.2))
     gs = gridspec.GridSpec(2, 3, width_ratios=[2, 1, 2])
 
     ax = fig.add_subplot(gs[0:3])
@@ -70,32 +67,28 @@ def composition(path_to_aggregated_results, path_to_output):
     ax.set_ylabel("TW")
     ax.get_legend().set_frame_on(False)
     ax.get_legend().set_title(None)
-    ax.annotate('A – Generation capacities', xy=[-0.08, 1.05], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.set_title('A – Generation capacities', loc="left")
 
     ax = fig.add_subplot(gs[3])
     plot_variables(data.copy(), STORAGE_CAPACITIES, ax, scaling_factor=1e-3)
     ax.set_ylabel("TWh")
     ax.get_legend().remove()
-    ax.annotate('B – Storage capacities', xy=[-0.24, 1.05], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.set_title('B – Storage capacities', loc="left")
 
     ax = fig.add_subplot(gs[4])
     plot_variables(data.copy(), TRANSMISSION_CAPACITIES, ax)
     ax.set_ylabel("TWkm")
     ax.get_legend().remove()
-    ax.annotate('C – Transmission', xy=[-0.48, 1.05], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.set_title('C – Transmission', loc="left")
 
     ax = fig.add_subplot(gs[5])
     plot_variables(data.copy(), VRES, ax=ax)
     ax.set_ylabel("TWh")
     ax.get_legend().remove()
-    ax.annotate('D – Variable renewables', xy=[-0.26, 1.05], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.set_title('D – Variable renewables', loc="left")
 
     fig.tight_layout()
-    fig.savefig(path_to_output, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_output, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def plot_variables(data, variables, ax, scaling_factor=1):

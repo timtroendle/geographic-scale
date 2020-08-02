@@ -12,8 +12,6 @@ from matplotlib.lines import Line2D
 GREEN = "#679436"
 RED = "#A01914"
 BLUE = "#4F6DB8"
-PANEL_FONT_SIZE = 10
-PANEL_FONT_WEIGHT = "bold"
 LAYER_FONT_WEIGHT = "medium"
 EDGE_WIDTH = 0.06
 EDGE_COLOR = "white"
@@ -64,7 +62,7 @@ class PlotData:
 def create_map(path_to_shapes, connected_regions, scenarios, path_to_aggregated_results, path_to_plot):
     plot_datas = prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions, scenarios)
     fig = plot_data(plot_datas)
-    fig.savefig(path_to_plot, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_plot, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def prepare_data(path_to_shapes, path_to_aggregated_results, connected_regions, scenarios):
@@ -122,7 +120,7 @@ def scale(scenario_name):
 
 def plot_data(plot_datas):
     assert len(plot_datas) == 6
-    fig = plt.figure(figsize=(8, 5.5))
+    fig = plt.figure(figsize=(6.77, 4.65))
     n_maps_per_row = 3
     axes = fig.subplots(
         nrows=2,
@@ -195,8 +193,7 @@ def plot_map(ax, plot_data):
     ax.set_yticks([])
     sns.despine(ax=ax, top=True, bottom=True, left=True, right=True)
 
-    ax.annotate(plot_data.panel_id, xy=[0.1, 0.9], xycoords='axes fraction',
-                fontsize=PANEL_FONT_SIZE, weight=PANEL_FONT_WEIGHT)
+    ax.set_title(plot_data.panel_id, loc="left")
 
 
 def plot_legend(ax, plot_data):

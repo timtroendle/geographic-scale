@@ -1,2 +1,31 @@
 font.sans-serif: Avenir, Arial
 font.weight: book
+axes.titleweight: bold
+figure.titleweight: bold
+figure.dpi: 300
+savefig.transparent: False
+
+## The following are adoptions from seaborns paper context settings
+font.size: 7.6
+axes.labelsize: 7.6
+axes.titlesize: 7.8
+xtick.labelsize: 7
+ytick.labelsize: 7
+legend.fontsize: 7
+legend.title_fontsize: 7.8
+
+axes.linewidth: 0.8
+grid.linewidth: 0.64
+lines.linewidth: 0.96
+lines.markersize: 3.84
+patch.linewidth: 0.64
+
+xtick.major.width: 0.8
+ytick.major.width: 0.8
+xtick.minor.width: 0.64
+ytick.minor.width: 0.64
+
+xtick.major.size: 3.84
+ytick.major.size: 3.84
+xtick.minor.size: 2.56
+ytick.minor.size: 2.56

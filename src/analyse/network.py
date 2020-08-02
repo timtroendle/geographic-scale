@@ -31,7 +31,7 @@ def visualise_links(path_to_units, path_to_results, path_to_plot):
     )
     network_graph = read_network_graph(units, model)
 
-    fig = plt.figure(figsize=(8, 8), constrained_layout=True)
+    fig = plt.figure(figsize=(6.67, 6.67), constrained_layout=True)
     ax = fig.subplots(1, 1)
 
     plot_network(units, network_graph, ax)
@@ -42,7 +42,7 @@ def visualise_links(path_to_units, path_to_results, path_to_plot):
     ax.set_xlim(MAP_MIN_X, MAP_MAX_X)
     ax.set_ylim(MAP_MIN_Y, MAP_MAX_Y)
 
-    fig.savefig(path_to_plot, dpi=300, transparent=False, pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(path_to_plot, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def read_network_graph(shapes, model):

@@ -90,7 +90,7 @@ No materials were used in this study.
 
 The datasets generated during this study are available on Zenodo with DOI [10.5281/zenodo.3950308](https://doi.org/10.5281/zenodo.3950308).
 
-The model code and all analysis steps are publicly available as a reproducible Snakemake[@Koster:2012] workflow on Zenodo with DOI [10.5281/zenodo.3950775](https://doi.org/10.5281/zenodo.3950775).
+The model code and all analysis steps are publicly available as a reproducible Snakemake[@Koster:2012] workflow on Zenodo with DOIs [10.5281/zenodo.3949794](https://doi.org/10.5281/zenodo.3949794) and [10.5281/zenodo.3950775](https://doi.org/10.5281/zenodo.3950775).
 
 ## Model overview
 

@@ -79,7 +79,7 @@ rule time_aggregated_results:
     input:
         src = "src/analyse/postprocess.py",
         scenarios = expand("build/output/{{resolution}}/runs/{scenario}.nc", scenario=config["scenarios"]),
-        units = eurocalliope("build/data/{resolution}/units.geojson")
+        units = eurocalliope("build/data/{resolution}/units.csv")
     params:
         scaling_factors = config["scaling-factors"],
         aggregate_time = True

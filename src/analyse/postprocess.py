@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 import calliope
-import geopandas as gpd
+import pandas as pd
 import xarray as xr
 
 
@@ -67,17 +67,21 @@ def excavate_all_results(paths_to_scenarios, path_to_units, scaling_factors, agg
         model.results.attrs["scenario"]: model
         for model in models
     }
-    units = (gpd.read_file(path_to_units)
-                .set_index("id")
-                .rename(index=lambda idx: idx.replace(".", "-"))
-                .rename_axis(index="locs")
-                .to_xarray())
+    units = (
+        pd
+        .read_csv(path_to_units)
+        .set_index("id")
+        .rename(index=lambda idx: idx.replace(".", "-"))
+        .rename_axis(index="locs")
+        .to_xarray()
+    )
     exporter = CalliopeExporter(scenarios, units, scaling_factors, aggregate_time)
     ds = xr.Dataset({
         variable.name: exporter(variable)
         for variable in VARIABLES
     })
     ds.coords["country_code"] = units.country_code
+    ds.coords["location_name"] = units.name
     ds.coords["tech_group"] = list(scenarios.values())[0].get_formatted_array("inheritance")
     ds.coords["tech_group"].loc[:] = [parent.split('.')[-1] for parent in ds["tech_group"].values]
     ds.to_netcdf(path_to_output)

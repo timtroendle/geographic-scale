@@ -46,12 +46,6 @@ VARIABLES = [
         description="total levelised cost"
     ),
     Variable(
-        name="capacity_factor",
-        scaling_factor=lambda sf: 1,
-        unit="-",
-        description="capacity factors of supply, storage, and transmission"
-    ),
-    Variable(
         name="resource",
         scaling_factor=lambda sf: 1,
         unit="-",

@@ -2,6 +2,7 @@
 
 This repository contains the entire scientific project, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
 
+[![article DOI](https://img.shields.io/badge/article-10.1016/j.joule.2020.07.018-blue)](https://doi.org/10.1016/j.joule.2020.07.018)
 [![data DOI](https://img.shields.io/badge/data-10.5281%2Fzenodo.3950308-blue)](https://doi.org/10.5281/zenodo.3950308)
 [![code DOI](https://img.shields.io/badge/code-10.5281%2Fzenodo.3950775-blue)](https://doi.org/10.5281/zenodo.3950775)
 
